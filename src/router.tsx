@@ -15,7 +15,7 @@ export function Router(){
             <Route path='/' element={<DefaultLayout/>}>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/clientes' element={<Clients/>}/>
-                <Route path='/calendário' element={<Calendar/>}/>
+                <Route path='/calendario' element={<Calendar/>}/>
             </Route>
         </Routes>
 
