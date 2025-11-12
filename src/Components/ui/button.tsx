@@ -49,10 +49,8 @@ const sizeStyles = {
   icon: css`
     height: 2.5rem;
     width: 2.5rem;
-    padding: 0;
     flex: auto 0 auto;
     justify-content: center;
-    margin-left: 0.4rem;
   `,
 };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper} from "../../Components/ui/card";
+import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
 import { Badge } from "../../Components/ui/badge";
 import { Check, X, Eye, Bookmark } from "lucide-react";
@@ -91,7 +91,7 @@ export function Home(){
                 </ContentWrapper>
               </StyledCardHeader>
               <StyledCardContent>
-                <div className="flex gap-2">
+                <ButtonWrapper>
                   <Button
                     onClick={ () => setPo("confirmed")}
                     className="flex-1 bg-green-600 hover:bg-green-700 text-white"
@@ -117,7 +117,7 @@ export function Home(){
                   >
                     <Eye className="h-4 w-4" />
                   </Button>
-                </div>
+                </ButtonWrapper>
               </StyledCardContent>
             </StyledCard>
         // fim do card de agendamento

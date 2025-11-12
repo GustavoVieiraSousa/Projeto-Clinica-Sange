@@ -62,12 +62,18 @@ export const PatientRow = styled.div`
   gap: 1rem;
 `;
 
+export const ButtonWrapper = styled.div`
+display: flex;
+gap: 0.5rem;
+`;
+
 export const ContentWrapper = styled.div`
 width: 100%;
 flex-direction: row;
 display: flex;
 align-items: center;
 justify-content: space-between;
+padding-top: 0.5rem;
 padding-left: 1.25rem;
 padding-right: 1.25rem;
 
