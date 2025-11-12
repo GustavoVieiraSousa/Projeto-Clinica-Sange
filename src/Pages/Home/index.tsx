@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle } from "../../Components/ui/card";
+import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
 import { Badge } from "../../Components/ui/badge";
-import { Check, X, Eye} from "lucide-react";
+import { Check, X, Eye, Bookmark } from "lucide-react";
 import * as S from "./styles";
 
 type TimeOfDay = "all" | "morning" | "afternoon" | "night";
@@ -10,16 +10,20 @@ type TimeOfDay = "all" | "morning" | "afternoon" | "night";
 
 export function Home(){
     const [timeFilter, setTimeFilter] = useState<TimeOfDay>("all");
-    const [po, setPo] = useState<"absent" | "confirmed">("absent");
+    const [po, setPo] = useState<"absent" | "confirmed" |"destructive">("absent");
+
 
     const getStatusBadge = (status: string) => {
     switch (status) {
       case "confirmed":
-        return <Badge className="bg-green-600 text-white">Confirmado</Badge>;
-      case "absent":
-        return <Badge variant="destructive">Ausente</Badge>;
+        return <Badge variant="success">Confirmado</Badge>;
+      case "destructive":
+       return <Badge variant="destructive">Ausente</Badge>;
+        
       default:
-        return <Badge variant="secondary">Pendente</Badge>;
+         
+         return <Badge variant="secondary">Pendente</Badge>;
+        
     }}
 
     return(
@@ -66,20 +70,25 @@ export function Home(){
       </S.FilterContainer>
 
       <div className="grid gap-4">
+        //Template de card de agendamento
+
             <StyledCard key="1" className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
               <StyledCardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-blue-100 rounded-lg px-4 py-2">
+                <ContentWrapper className="flex items-center justify-between">
+                  <PatientRow>
+                    <TimePill>
                       <p className="text-2xl font-bold text-blue-600">09:00</p>
-                    </div>
-                    <div>
+                    </TimePill>
+                    <PatientDetails>
                       <StyledCardTitle className="text-xl text-card-foreground">Ana Silva</StyledCardTitle>
                       <StyledCardDescription className="mt-1 text-muted-foreground">Fortalecimento do joelho</StyledCardDescription>
-                    </div>
+                    </PatientDetails>
+                  </PatientRow>
+                  <div>
+                  <Bookmark className="h-10 w-10 text-purple-600 mb-1" fill="hsl(262 83% 58%)" color="hsl(262 83% 58%)"/>
+                  {getStatusBadge(po)}
                   </div>
-                  {getStatusBadge("absent")}
-                </div>
+                </ContentWrapper>
               </StyledCardHeader>
               <StyledCardContent>
                 <div className="flex gap-2">
@@ -93,8 +102,8 @@ export function Home(){
                   </Button>
 
                   <Button
-                    onClick={() => setPo("absent")}
-                    variant={po === "absent" ? "secondary" : "destructive"}
+                    onClick={() => setPo("destructive")}
+                    variant={po === "destructive" ? "secondary" : "destructive"}
                     className="flex-1"
                   >
                     <X className="h-4 w-4 mr-2" />
@@ -111,6 +120,7 @@ export function Home(){
                 </div>
               </StyledCardContent>
             </StyledCard>
+        // fim do card de agendamento
       </div>
     </S.Container>
     )

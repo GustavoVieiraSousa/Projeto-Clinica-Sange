@@ -36,3 +36,41 @@ export const StyledCardFooter = styled.div`
   align-items: center;
   padding: 0 1.5rem 1.5rem 1.5rem; /* pt-0 p-6 */
 `;
+
+export const PatientDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+`;
+
+export const TimePill = styled.div`
+  background: hsl(var(--primary)/10%); /* fallback azul claro */
+  color: hsl(262 83% 58%);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size:1.25rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.25rem;
+`;
+
+export const PatientRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const ContentWrapper = styled.div`
+width: 100%;
+flex-direction: row;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-left: 1.25rem;
+padding-right: 1.25rem;
+
+gap: 1rem;
+
+`
