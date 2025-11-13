@@ -58,16 +58,12 @@ const Base = styled.span<{ $variant: Variant }>`
   user-select: none;
   ${(p) => variantStyles[p.$variant]}
 
-  /* small fallback if CSS variables aren't present, using theme values when provided */
+ 
   ${(p) =>
     !p.theme && css``}
 `;
 
-/**
- * Badge component
- * Uso: <Badge variant="destructive">Ausente</Badge>
- * Mantém suporte a className para ajustes de layout (ex: className="ml-2")
- */
+
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ variant = "default", children, className, ...rest }, ref) => {
     return (

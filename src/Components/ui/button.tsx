@@ -56,7 +56,7 @@ const sizeStyles = {
 
 const variantStyles = {
   default: css`
-    background: ${(p) => p.theme.primary ?? "#0ea5a4"};
+    background: hsl(var(--success));
     color: ${(p) => p.theme["primary-foreground"] ?? "#fff"};
     border: 1px solid transparent;
 
@@ -114,15 +114,10 @@ const Base = styled.button<{ $variant: Variant; $size: Size }>`
     filter: none;
   }
 
-  /* allow consumers to pass Tailwind classes via className — keep specificity low */
+ 
 `;
 
-/**
- * Button - styled-components version
- * Uso:
- * <Button variant="destructive" size="default" onClick={...}>Excluir</Button>
- * Passe className para ajustar (ex.: flex-1) — será preservado.
- */
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "default", size = "default", children, className, ...rest }, ref) => {
     return (

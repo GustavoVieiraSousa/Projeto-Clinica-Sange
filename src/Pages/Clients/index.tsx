@@ -1,8 +1,145 @@
+import { useState } from "react";
+import { StyledCard, StyledCardDescription, StyledCardContent, StyledCardHeader, StyledCardTitle } from "../../Components/ui/card";
+import { Button } from "../../Components/ui/button";
+import { Input } from "../../Components/ui/input";
+import { Search, UserPlus, Users as UsersIcon, Mail, Phone } from "lucide-react";
+import * as S from "./styles";
+
+
+
+
+
 export function Clients(){
-
+const [searchTerm, setSearchTerm] = useState("");
     return(
+         <S.Container>
+      <S.Header>
+        <S.HeaderLeft>
+          <UsersIcon />
+          <div>
+            <S.Title>Pacientes</S.Title>
+            <S.Subtitle>3 pacientes cadastrados</S.Subtitle>
+          </div>
+        </S.HeaderLeft>
+        <Button onClick={console.log} size="lg">
+          <UserPlus />
+          Novo Paciente
+        </Button>
+      </S.Header>
 
-        <h1> Clients Page</h1>
+    <S.SearchContainer>
+      <S.SearchIcon>
+        <Search />
+      </S.SearchIcon>
+      <Input
+        placeholder="Buscar paciente por nome, email ou telefone..."
+        value={searchTerm}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+      />
+    </S.SearchContainer>
+/* aqui será o sistema de repetição de cards de pacientes dentro da grid pelo amor de deus*/
+      <S.PatientGrid>
+        
+          <S.PatientCard 
+            key= "1"
+            onClick={console.log}
+          >
+            <StyledCard>
+              <StyledCardHeader>
+                <StyledCardTitle>Gugas da gaita</StyledCardTitle>
+                
+                
+              </StyledCardHeader>
+             
+              <StyledCardContent>
+                 <StyledCardDescription>
+                  <S.ContactInfo>
+                    <S.ContactItem>
+                      <Mail />
+                      <S.ContactText>gustavo.sousa12@mail.com</S.ContactText>
+                    </S.ContactItem>
+                    <S.ContactItem>
+                      <Phone />
+                      <S.ContactText>"(11) 91547-0828"</S.ContactText>
+                    </S.ContactItem>
+                  </S.ContactInfo>
+                </StyledCardDescription>
+                <S.CPFText>
+                  CPF: 123.456.789-00
+                </S.CPFText>
+              </StyledCardContent>
+            </StyledCard>
+          </S.PatientCard>
+
+
+
+          <S.PatientCard 
+            key= "1"
+            onClick={console.log}
+          >
+            <StyledCard>
+              <StyledCardHeader>
+                <StyledCardTitle>Gugas da gaita</StyledCardTitle>
+                
+                
+              </StyledCardHeader>
+             
+              <StyledCardContent>
+                 <StyledCardDescription>
+                  <S.ContactInfo>
+                    <S.ContactItem>
+                      <Mail />
+                      <S.ContactText>gustavo.sousa12@mail.com</S.ContactText>
+                    </S.ContactItem>
+                    <S.ContactItem>
+                      <Phone />
+                      <S.ContactText>"(11) 91547-0828"</S.ContactText>
+                    </S.ContactItem>
+                  </S.ContactInfo>
+                </StyledCardDescription>
+                <S.CPFText>
+                  CPF: 123.456.789-00
+                </S.CPFText>
+              </StyledCardContent>
+            </StyledCard>
+          </S.PatientCard>
+
+
+          <S.PatientCard 
+            key= "1"
+            onClick={console.log}
+          >
+            <StyledCard>
+              <StyledCardHeader>
+                <StyledCardTitle>Gugas da gaita</StyledCardTitle>
+                
+                
+              </StyledCardHeader>
+             
+              <StyledCardContent>
+                 <StyledCardDescription>
+                  <S.ContactInfo>
+                    <S.ContactItem>
+                      <Mail />
+                      <S.ContactText>gustavo.sousa12@mail.com</S.ContactText>
+                    </S.ContactItem>
+                    <S.ContactItem>
+                      <Phone />
+                      <S.ContactText>"(11) 91547-0828"</S.ContactText>
+                    </S.ContactItem>
+                  </S.ContactInfo>
+                </StyledCardDescription>
+                <S.CPFText>
+                  CPF: 123.456.789-00
+                </S.CPFText>
+              </StyledCardContent>
+            </StyledCard>
+          </S.PatientCard>
+
+          /*final do bang doido/*
+      </S.PatientGrid>
+    
+    </S.Container>
 
     )
 }

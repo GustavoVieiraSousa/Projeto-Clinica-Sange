@@ -11,30 +11,29 @@ export const StyledCard = styled.div`
 export const StyledCardHeader = styled.div`
   display: flex;
   flex-direction: 3, column;
-  gap: 0.1rem; /* space-y-1.5 */
-  padding: 1.0rem; /* p-6 */
+  gap: 0.1rem; 
+  padding: 1.0rem;
 `;
 
 export const StyledCardTitle = styled.h3`
-  font-size: 1.5rem; /* text-2xl */
-  font-weight: 600; /* font-semibold */
-  line-height: 1; /* leading-none */
-  letter-spacing: -0.01em; /* tracking-tight (approx) */
+  font-size: 1.5rem; 
+  font-weight: 600;
+  letter-spacing: -0.01em; 
 `;
 
 export const StyledCardDescription = styled.p`
-  font-size: 0.875rem; /* text-sm */
+  font-size: 0.875rem; 
   color: hsl(var(--muted-foreground));
 `;
 
 export const StyledCardContent = styled.div`
-  padding: 0 1.5rem 1.5rem 1.5rem; /* pt-0 p-6 */
+  padding: 0 1.5rem 1.5rem 1.5rem; 
 `;
 
 export const StyledCardFooter = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 1.5rem 1.5rem 1.5rem; /* pt-0 p-6 */
+  padding: 0 1.5rem 1.5rem 1.5rem; 
 `;
 
 export const PatientDetails = styled.div`
@@ -44,7 +43,7 @@ export const PatientDetails = styled.div`
 `;
 
 export const TimePill = styled.div`
-  background: hsl(var(--primary)/10%); /* fallback azul claro */
+  background: hsl(var(--primary)/10%); 
   color: hsl(262 83% 58%);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;

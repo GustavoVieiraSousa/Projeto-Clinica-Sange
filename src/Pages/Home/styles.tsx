@@ -6,6 +6,7 @@ export const Container = styled.div`
   gap: 1.5rem;
   padding: 0 4rem;
   padding-top: 2rem;
+  background: hsl(var(--background));
 `
 
 export const Header = styled.div`
