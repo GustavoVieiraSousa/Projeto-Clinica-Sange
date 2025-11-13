@@ -16,7 +16,9 @@ const StyledInput = styled.input`
   &::placeholder {
     color: hsl(var(--muted-foreground));
   }
-
+   &:hover {
+    border-color: hsl(var(--foreground)/0.3);
+  }
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--background));

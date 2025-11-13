@@ -37,6 +37,7 @@ export const SearchContainer = styled.div`
   
   input {
     padding-left: 2.5rem;
+    
   }
 `;
 
