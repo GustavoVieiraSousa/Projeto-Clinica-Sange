@@ -1,29 +1,26 @@
-import type { BodyProblems } from "../../@types/patient";
+
 import * as S from "./styles";
 
-interface BodyDiagramProps {
-  bodyProblems?: BodyProblems;
-}
 
-const BodyDiagram = ({ bodyProblems }: BodyDiagramProps) => {
+const BodyDiagram = () => {
   return (
     <S.Container>
       <S.DiagramWrapper>
         <S.BodyPart 
-          $severity={bodyProblems?.upper?.severity}
+          $severity="low"
           $position="upper"
         >
           <S.PartLabel>Superior</S.PartLabel>
         </S.BodyPart>
         
         <S.BackPart 
-          $severity={bodyProblems?.back?.severity}
+          $severity="high"
         >
           <S.PartLabel>Costas</S.PartLabel>
         </S.BackPart>
         
         <S.BodyPart 
-          $severity={bodyProblems?.lower?.severity}
+          $severity="medium"
           $position="lower"
         >
           <S.PartLabel>Inferior</S.PartLabel>
