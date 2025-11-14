@@ -177,7 +177,7 @@ export function Home(){
        <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        onEdit={() => {}}
+       
       />
 
     </S.Container>

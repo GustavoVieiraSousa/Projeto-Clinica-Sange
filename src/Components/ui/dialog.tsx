@@ -50,6 +50,8 @@ const StyledContent = styled(DialogPrimitive.Content)`
   display: grid;
   width: 100%;
   max-width: 32rem;
+  max-height: 85vh;
+  overflow: auto;
   translate: -50% -50%;
   gap: 1rem;
   border: 1px solid hsl(var(--border));

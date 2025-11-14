@@ -154,7 +154,7 @@ const handleViewPatient = () => {
       <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        onEdit={() => {}}
+
       />
     
     </S.Container>
