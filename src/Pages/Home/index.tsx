@@ -72,7 +72,7 @@ export function Home(){
       <div className="grid gap-4">
         //Template de card de agendamento
 
-            <StyledCard key="1" className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
+            <StyledCard key="id" className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
               <StyledCardHeader className="pb-3">
                 <ContentWrapper className="flex items-center justify-between">
                   <PatientRow>
@@ -121,6 +121,7 @@ export function Home(){
               </StyledCardContent>
             </StyledCard>
         // fim do card de agendamento
+
       </div>
     </S.Container>
     )
