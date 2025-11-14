@@ -4,6 +4,7 @@ import { Button } from "../../Components/ui/button";
 import { Input } from "../../Components/ui/input";
 import { Search, UserPlus, Users as UsersIcon, Mail, Phone } from "lucide-react";
 import * as S from "./styles";
+import PatientDialog from "../../Components/Patient_Dialog";
 
 
 
@@ -11,6 +12,17 @@ import * as S from "./styles";
 
 export function Clients(){
 const [searchTerm, setSearchTerm] = useState("");
+const [dialogOpen, setDialogOpen] = useState(false);
+
+const handleViewPatient = () => {
+    const patient = "2";
+    if (patient) {
+      
+      setDialogOpen(true);
+    }
+  };
+
+
     return(
          <S.Container>
       <S.Header>
@@ -42,7 +54,7 @@ const [searchTerm, setSearchTerm] = useState("");
         
           <S.PatientCard 
             key= "1"
-            onClick={console.log}
+            onClick={handleViewPatient}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -75,7 +87,7 @@ const [searchTerm, setSearchTerm] = useState("");
 
           <S.PatientCard 
             key= "1"
-            onClick={console.log}
+            onClick={handleViewPatient}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -107,7 +119,7 @@ const [searchTerm, setSearchTerm] = useState("");
 
           <S.PatientCard 
             key= "1"
-            onClick={console.log}
+            onClick={handleViewPatient}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -138,6 +150,12 @@ const [searchTerm, setSearchTerm] = useState("");
 
           /*final do bang doido/*
       </S.PatientGrid>
+
+      <PatientDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onEdit={() => {}}
+      />
     
     </S.Container>
 

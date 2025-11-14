@@ -91,17 +91,17 @@ export const SeverityBadge = styled.span<{ $severity: "low" | "medium" | "high" 
     switch (props.$severity) {
       case "low":
         return `
-          background: hsl(84 81% 44% / 0.1);
+          background: hsl(84 81% 44% );
           color: hsl(84 81% 44%);
         `;
       case "medium":
         return `
-          background: hsl(43 96% 56% / 0.1);
+          background: hsl(43 96% 56% );
           color: hsl(43 96% 56%);
         `;
       case "high":
         return `
-          background: hsl(0 84% 60% / 0.1);
+          background: hsl(0 84% 60% );
           color: hsl(0 84% 60%);
         `;
     }
