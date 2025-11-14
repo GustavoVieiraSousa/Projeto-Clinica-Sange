@@ -1,6 +1,6 @@
 export interface BodyProblem {
   description: string;
-  severity: "low" | "medium" | "high";
+  severity: "low" | "medium" | "high" | "none";
 }
 
 export interface BodyProblems {

@@ -11,6 +11,7 @@ type PatientStatus = "absent" | "confirmed" | "destructive" | "pending";
 
 export function Home(){
     const [timeFilter, setTimeFilter] = useState<TimeOfDay>("all");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [patientData, setPatientData] = useState<any[]>([]);
     const [patientStatus, setPatientStatus] = useState<{ [key: number]: PatientStatus }>({});
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -43,6 +44,7 @@ export function Home(){
           if (json && Array.isArray(json.data)) {
             setPatientData(json.data);
             const initialStatus: { [key: number]: PatientStatus } = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             json.data.forEach((_: any, idx: number) => {
               initialStatus[idx] = "pending";
             });

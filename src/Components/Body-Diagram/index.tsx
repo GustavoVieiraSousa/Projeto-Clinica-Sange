@@ -7,7 +7,7 @@ const BodyDiagram = () => {
     <S.Container>
       <S.DiagramWrapper>
         <S.BodyPart 
-          $severity="low"
+          $severity= "none"
           $position="upper"
         >
           <S.PartLabel>Superior</S.PartLabel>

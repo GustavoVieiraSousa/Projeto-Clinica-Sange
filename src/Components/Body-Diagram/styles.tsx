@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const getSeverityColor = (severity?: "low" | "medium" | "high") => {
+const getSeverityColor = (severity?: "low" | "medium" | "high" | "none") => {
   switch (severity) {
     case "low":
       return "hsl(84 81% 44%)"; // accent (yellow-green)
@@ -8,8 +8,9 @@ const getSeverityColor = (severity?: "low" | "medium" | "high") => {
       return "hsl(43 96% 56%)"; // orange
     case "high":
       return "hsl(0 84% 60%)"; // destructive (red)
-    default:
+    case "none":
       return "hsl(var(--muted))";
+    ;
   }
 };
 
@@ -32,7 +33,7 @@ export const DiagramWrapper = styled.div`
   margin: 0 auto;
 `;
 
-export const BodyPart = styled.div<{ $severity?: "low" | "medium" | "high"; $position: "upper" | "lower" }>`
+export const BodyPart = styled.div<{ $severity?: "low" | "medium" | "high" | "none"; $position: "upper" | "lower" }>`
   width: 100%;
   height: 120px;
   border: 2px solid ${props => getSeverityColor(props.$severity)};
