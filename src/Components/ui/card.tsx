@@ -6,6 +6,7 @@ export const StyledCard = styled.div`
   background: hsl(var(--card));
   color: hsl(var(--card-foreground));
   box-shadow: 0 1px 2px 0 hsl(var(--foreground) / 0.06);
+  margin-bottom: 1.5rem; 
 `;
 
 export const StyledCardHeader = styled.div`

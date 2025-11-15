@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
+import PatientDialog from "../../Components/Patient_Dialog";
 import { Badge } from "../../Components/ui/badge";
 import { Check, X, Eye, Bookmark } from "lucide-react";
 import * as S from "./styles";
@@ -10,8 +11,15 @@ type PatientStatus = "absent" | "confirmed" | "destructive" | "pending";
 
 export function Home(){
     const [timeFilter, setTimeFilter] = useState<TimeOfDay>("all");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [patientData, setPatientData] = useState<any[]>([]);
     const [patientStatus, setPatientStatus] = useState<{ [key: number]: PatientStatus }>({});
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+
+
+
+   
 
     const getStatusBadge = (status: PatientStatus) => {
     switch (status) {
@@ -98,6 +106,14 @@ export function Home(){
       })();
     };
 
+    const handleViewPatient = () => {
+    const patient = "2";
+    if (patient) {
+      
+      setDialogOpen(true);
+    }
+  };
+
     return(
          <S.Container>
       <S.Header>
@@ -142,6 +158,7 @@ export function Home(){
       </S.FilterContainer>
 
       <div className="grid gap-4">
+        
         {patientData.map((patient, idx) => (
           <StyledCard key={idx} className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
             <StyledCardHeader className="pb-3">
@@ -184,7 +201,7 @@ export function Home(){
                 </Button>
               
                 <Button
-                  onClick={() => console.log(patient)}
+                  onClick={() => handleViewPatient()}
                   variant="outline"
                   size="icon"
                 >
@@ -195,6 +212,13 @@ export function Home(){
           </StyledCard>
         ))}
       </div>
+
+       <PatientDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+       
+      />
+
     </S.Container>
     )
 }
