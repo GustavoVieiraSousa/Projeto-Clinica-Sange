@@ -150,10 +150,12 @@ const handleViewPatient = () => {
 
           /*final do bang doido/*
       </S.PatientGrid>
-
+      
       <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
+        onEdit={true}
+
 
       />
     

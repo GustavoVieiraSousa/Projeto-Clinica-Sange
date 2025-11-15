@@ -127,6 +127,7 @@ export const StyledDialogTitle = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
   
   button {
     width: 100%;
@@ -136,5 +137,22 @@ export const ButtonContainer = styled.div`
       width: 1rem;
       height: 1rem;
     }
+
+    @media (max-width: 640px) {
+      button {
+      width: 100%;
+      flex: 1 1 100%;
+      }
+    }
   }
 `;
+
+export const DataItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+export const CorIcon = styled.div`
+color: hsl(var(--primary));
+`

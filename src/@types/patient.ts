@@ -27,6 +27,7 @@ export interface Patient {
   address: string;
   city?: string;
   smoker?: boolean;
+  healthInsurance?: string;
   
   // Dados da Patologia
   clinicalDiagnosis?: string;
