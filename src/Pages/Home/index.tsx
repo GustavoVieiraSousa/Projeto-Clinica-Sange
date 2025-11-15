@@ -23,6 +23,15 @@ export function Home(){
         return <Badge variant="secondary">Pendente</Badge>;
     }};
 
+    const convertPatientStatus = (dayStatus: any): PatientStatus => {
+      if (dayStatus === true || dayStatus === 1 || dayStatus === "1") {
+        return "confirmed";
+      } else if (dayStatus === false || dayStatus === 0 || dayStatus === "0") {
+        return "destructive";
+      }
+      return "pending";
+    };
+
     //get pacient data from PHP (when timeFilter changes)
     useEffect(() => {
       (async () => {
@@ -35,9 +44,11 @@ export function Home(){
 
           if (json && Array.isArray(json.data)) {
             setPatientData(json.data);
+            // ← MUDE AQUI: usar dayStatus do banco de dados
             const initialStatus: { [key: number]: PatientStatus } = {};
-            json.data.forEach((_: any, idx: number) => {
-              initialStatus[idx] = "pending";
+            json.data.forEach((patient: any, idx: number) => {
+              // Converter o status do banco para PatientStatus
+              initialStatus[idx] = convertPatientStatus(patient.dayStatus);
             });
             setPatientStatus(initialStatus);
           } else if (Array.isArray(json)) {
@@ -58,6 +69,33 @@ export function Home(){
         ...prev,
         [idx]: newStatus
       }));
+      (async () => {
+        try {
+          const patient = patientData[idx];
+          const patientCode = patient.patientCode; // ← USE patientCode, não patientCode
+
+          if (!patientCode) {
+            console.error('patientCode not found in patient data');
+            return;
+          }
+
+          const url = `http://localhost/Projeto-Clinica-Sange/src/php/setPatientStatus.php?patientCode=${patientCode}&patientStatus=${newStatus}`;
+          console.log('Sending request to:', url);
+          
+          const res = await fetch(url);
+          console.log('fetch status', res.status, res.statusText);
+          const json = await res.json();
+          console.log('response json:', json);
+
+          if (json.status === 'success') {
+            console.log('OK, PatientStatus sent for:', patient.name);
+          } else {
+            console.warn('Unexpected error, PHP Response:', json.message);
+          }
+        } catch (err) {
+          console.error('Error sending status:', err);
+        }
+      })();
     };
 
     return(

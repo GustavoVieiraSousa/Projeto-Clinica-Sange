@@ -1,8 +1,8 @@
 <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
+    // ini_set('display_errors', 1);
+    // ini_set('display_startup_errors', 1);
+    // error_reporting(E_ALL);
+    
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     require_once 'connection.php';
@@ -47,6 +47,7 @@
 
                     foreach($getPaciente as $gP){
                         $dataObject = [
+                            'patientCode' => $gC['conCodigo'] ?? 0,
                             'day' => $gC['conDiaAgendado'] ?? null,
                             'dayStatus' => $gC['conStatusDiaAgendado'] ?? null, //If patient was present on that day
                             'time' => $gD['diaHorario'] ?? null,
