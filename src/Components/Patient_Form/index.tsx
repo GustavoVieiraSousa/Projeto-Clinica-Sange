@@ -83,6 +83,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
 
   useEffect(() => {
     if (patientCode) {
+        console.log(patientCode);
       setFormData({
         name:  "",
         email:  "",
@@ -90,7 +91,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
         cpf:  "",
         birthDate:"",
         cardNumber:  "",
-        age:  "",
+        age:   "",
         gender:  "masculino",
         maritalStatus:  "",
         weight: "",
