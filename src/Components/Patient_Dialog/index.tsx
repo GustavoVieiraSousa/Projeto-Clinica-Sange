@@ -14,6 +14,7 @@ interface PatientDialogProps {
 }
 
 const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
   
   useEffect(() => {
@@ -119,6 +120,43 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     <div>
                       <S.InfoLabel>CPF</S.InfoLabel>
                       <S.InfoValue>{patient?.patientCPF ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Calendar className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Data de Nascimento</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientBirthDate ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
+
+                <S.InfoItem>
+                  <S.CorIcon>
+                    <MapPin className="h-4 w-4 text-primary" />
+                  </S.CorIcon>
+                  <div>
+                    <S.InfoLabel>Endereço</S.InfoLabel>
+                    <S.InfoValue>Rua {patient?.addressStreet ?? "-"}, {patient?.addressNeighborhood ?? "-"} - nº {patient?.addressNumber ?? "-"} ({patient?.addressComplement ?? ""}) | CEP: {patient?.addressCEP ?? "-"}</S.InfoValue>
+                  </div>
+                </S.InfoItem>
+              </S.Section>
+
+              <Separator />
+
+               <S.Section>
+                <S.SectionTitle>Dados da consulta</S.SectionTitle>
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <FileText className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>CPF</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientHour ?? "-"}</S.InfoValue>
                     </div>
                   </S.InfoItem>
                   

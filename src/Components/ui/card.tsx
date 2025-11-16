@@ -22,7 +22,7 @@ export const StyledCardTitle = styled.h3`
   letter-spacing: -0.01em; 
 `;
 
-export const StyledCardDescription = styled.p`
+export const StyledCardDescription = styled.div`
   font-size: 0.875rem; 
   color: hsl(var(--muted-foreground));
 `;

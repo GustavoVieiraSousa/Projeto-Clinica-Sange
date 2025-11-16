@@ -27,6 +27,7 @@ export function Home(){
         return <Badge variant="secondary">Pendente</Badge>;
     }};
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const convertPatientStatus = (dayStatus: any): PatientStatus => {
       if (dayStatus === true || dayStatus === 1 || dayStatus === "1") {
         return "confirmed";
@@ -37,6 +38,7 @@ export function Home(){
     };
 
     // retorna a variável CSS para fill/color do Bookmark conforme pacNivelImportancia
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getBookmarkVar = (patient: any) => {
       const level = patient.patientLevel ? patient.patientLevel : null;
 
@@ -58,6 +60,7 @@ export function Home(){
           if (json && Array.isArray(json.data)) {
             setPatientData(json.data);
             const initialStatus: { [key: number]: PatientStatus } = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             json.data.forEach((patient: any, idx: number) => {
               initialStatus[idx] = convertPatientStatus(patient.dayStatus);
             });

@@ -46,6 +46,13 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     medication: "",
     painStart: "",
     painPosition: "",
+    backPain:"",
+    backPainDesc:"",
+    upperPain:"",
+    upperPainDesc:"",
+    lowerPain:"",
+    lowerPainDesc:"",
+
     workPosition: "",
     surgery: "",
     surgeryDate: "",
@@ -85,7 +92,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     if (patientCode) {
         console.log(patientCode);
       setFormData({
-        name:  "",
+        name: "",
         email:  "",
         phone:  "",
         cpf:  "",
@@ -111,6 +118,14 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
         medication:  "",
         painStart:  "",
         painPosition:  "",
+
+        backPain:"",
+        backPainDesc:"",
+        upperPain:"",
+        upperPainDesc:"",
+        lowerPain:"",
+        lowerPainDesc:"",
+
         workPosition:"",
         surgery: "",
         surgeryDate:  "",
@@ -200,6 +215,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 <Label htmlFor="gender">Sexo</Label>
                 <Select
                   value={formData.gender}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, gender: value as any })}
                 >
                   <SelectTrigger id="gender">
@@ -465,6 +481,82 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 rows={2}
               />
             </S.FormField>
+
+            <S.FormField>
+              <Label htmlFor="backPain">Dores nas Costas</Label>
+               <Select
+                  value={formData.backPain}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  onValueChange={(value) => setFormData({ ...formData, backPain: value as any })}
+                >
+                  <SelectTrigger id="muscleTone">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
+                    <SelectItem value="low">Leve</SelectItem>
+                    <SelectItem value="medium">Média</SelectItem>
+                    <SelectItem value="high">Alta</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Textarea
+                    id="backPainDesc"
+                    value={formData.backPainDesc}
+                    onChange={(e) => setFormData({ ...formData, backPainDesc: e.target.value })}
+                    rows={2}
+              />
+            </S.FormField>
+
+             <S.FormField>
+              <Label htmlFor="upperPain">Dores na parte superior</Label>
+               <Select
+                  value={formData.upperPain}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  onValueChange={(value) => setFormData({ ...formData, upperPain: value as any })}
+                >
+                  <SelectTrigger id="upperPain">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
+                    <SelectItem value="low">Leve</SelectItem>
+                    <SelectItem value="medium">Média</SelectItem>
+                    <SelectItem value="high">Alta</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Textarea
+                    id="upperPainDesc"
+                    value={formData.upperPainDesc}
+                    onChange={(e) => setFormData({ ...formData, upperPainDesc: e.target.value })}
+                    rows={2}
+              />
+            </S.FormField>
+
+             <S.FormField>
+              <Label htmlFor="lowerPain">Dores nas Partes inferiores</Label>
+               <Select
+                  value={formData.lowerPain}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  onValueChange={(value) => setFormData({ ...formData, lowerPain: value as any })}
+                >
+                  <SelectTrigger id="lowerPain">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
+                    <SelectItem value="low">Leve</SelectItem>
+                    <SelectItem value="medium">Média</SelectItem>
+                    <SelectItem value="high">Alta</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Textarea
+                    id="lowerPainDesc"
+                    value={formData.lowerPainDesc}
+                    onChange={(e) => setFormData({ ...formData, lowerPainDesc: e.target.value })}
+                    rows={2}
+              />
+            </S.FormField>
+
           </S.Section>
 
           {/* Exame Físico */}
@@ -558,6 +650,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 <Label htmlFor="adm">ADM (Amplitude de Movimento)</Label>
                 <Select
                   value={formData.adm}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, adm: value as any })}
                 >
                   <SelectTrigger id="adm">
@@ -574,6 +667,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 <Label htmlFor="fm">FM (Força Muscular)</Label>
                 <Select
                   value={formData.fm}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, fm: value as any })}
                 >
                   <SelectTrigger id="fm">
@@ -590,6 +684,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 <Label htmlFor="muscleTone">Tônus Muscular</Label>
                 <Select
                   value={formData.muscleTone}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, muscleTone: value as any })}
                 >
                   <SelectTrigger id="muscleTone">
@@ -607,6 +702,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 <Label htmlFor="movement">Movimento</Label>
                 <Select
                   value={formData.movement}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, movement: value as any })}
                 >
                   <SelectTrigger id="movement">
