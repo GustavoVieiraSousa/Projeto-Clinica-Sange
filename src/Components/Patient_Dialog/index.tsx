@@ -3,14 +3,13 @@ import { Button } from "../../Components/ui/button";
 import { Separator } from "../../Components/ui/separator";
 import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer } from "lucide-react";
 import BodyDiagram from "../../Components/Body-Diagram";
-import type { Patient } from "../../@types/patient";
 import * as S from "./styles";
 import { useEffect, useState } from "react";
 
 interface PatientDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onEdit?: (patient: Patient) => void;
+  onEdit?: (patientCode: number) => void;
   patientCode: number;
 }
 
@@ -65,6 +64,11 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
       
     })();
   }, [patientCode]);
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(patient);
+    }
+  };
 
   const patient = patientInfo[0] ?? {};
 
@@ -543,7 +547,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     Imprimir PDF
                   </Button>
                   {onEdit && (
-                    <Button onClick={console.log}>
+                    <Button onClick={handleEdit}>
                       <Edit />
                       Editar Paciente
                     </Button>

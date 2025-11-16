@@ -5,6 +5,7 @@ import { Input } from "../../Components/ui/input";
 import { Search, UserPlus, Users as UsersIcon, Mail, Phone } from "lucide-react";
 import * as S from "./styles";
 import PatientDialog from "../../Components/Patient_Dialog";
+import PatientForm from "../../Components/Patient_Form";
 
 
 
@@ -13,14 +14,29 @@ import PatientDialog from "../../Components/Patient_Dialog";
 export function Clients(){
 const [searchTerm, setSearchTerm] = useState("");
 const [dialogOpen, setDialogOpen] = useState(false);
+const [patientCode, setPatientCode] = useState<number>(0);
+const [formOpen, setFormOpen] = useState(false);
 
-const handleViewPatient = () => {
-    const patient = "2";
-    if (patient) {
-      
+
+const handleViewPatient = (patientCode: number) => {
+    if (patientCode !== 0) {
       setDialogOpen(true);
+      setPatientCode(patientCode);
     }
   };
+   const handleNewPatient = () => {
+    setPatientCode(0);
+    setFormOpen(true);
+  };
+
+
+   const handleEditPatient = (patientCode: number) => {
+    setPatientCode(patientCode);
+    setDialogOpen(false);
+    setFormOpen(true);
+  };
+
+
 
 
     return(
@@ -33,7 +49,7 @@ const handleViewPatient = () => {
             <S.Subtitle>3 pacientes cadastrados</S.Subtitle>
           </div>
         </S.HeaderLeft>
-        <Button onClick={console.log} size="lg">
+        <Button onClick={handleNewPatient} size="lg">
           <UserPlus />
           Novo Paciente
         </Button>
@@ -54,7 +70,7 @@ const handleViewPatient = () => {
         
           <S.PatientCard 
             key= "1"
-            onClick={handleViewPatient}
+            onClick={() => handleViewPatient(patientCode)}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -87,7 +103,7 @@ const handleViewPatient = () => {
 
           <S.PatientCard 
             key= "1"
-            onClick={handleViewPatient}
+            onClick={() => handleViewPatient(patientCode)}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -119,7 +135,7 @@ const handleViewPatient = () => {
 
           <S.PatientCard 
             key= "1"
-            onClick={handleViewPatient}
+            onClick={() => handleViewPatient(1)}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -154,9 +170,14 @@ const handleViewPatient = () => {
       <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        onEdit={true}
+        onEdit={handleEditPatient}
+        patientCode={patientCode}
+      />
 
-
+       <PatientForm
+        patientCode={patientCode}
+        open={formOpen}
+        onOpenChange={setFormOpen}
       />
     
     </S.Container>
