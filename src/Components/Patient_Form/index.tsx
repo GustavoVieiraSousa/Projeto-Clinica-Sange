@@ -17,7 +17,7 @@ interface PatientFormProps {
 const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
   const [formData, setFormData] = useState({
     // Dados Pessoais
-    name: "",
+    name:  "",
     email: "",
     phone: "",
     cpf: "",
@@ -90,7 +90,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
         cpf:  "",
         birthDate:"",
         cardNumber:  "",
-        age: "",
+        age:  "",
         gender:  "masculino",
         maritalStatus:  "",
         weight: "",

@@ -70,7 +70,7 @@ const handleViewPatient = (patientCode: number) => {
         
           <S.PatientCard 
             key= "1"
-            onClick={() => handleViewPatient(patientCode)}
+            onClick={() => handleViewPatient(3)}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -103,7 +103,7 @@ const handleViewPatient = (patientCode: number) => {
 
           <S.PatientCard 
             key= "1"
-            onClick={() => handleViewPatient(patientCode)}
+            onClick={() => handleViewPatient(2)}
           >
             <StyledCard>
               <StyledCardHeader>

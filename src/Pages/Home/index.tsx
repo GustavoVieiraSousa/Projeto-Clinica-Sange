@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper} from "../../Components/ui/card";
+import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper, MarginCont} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
 import PatientDialog from "../../Components/Patient_Dialog";
 import { Badge } from "../../Components/ui/badge";
@@ -162,6 +162,7 @@ export function Home(){
       <div className="grid gap-4">
         
         {patientData.map((patient, idx) => (
+        <MarginCont>
           <StyledCard key={idx} className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
             <StyledCardHeader className="pb-3">
               <ContentWrapper className="flex items-center justify-between">
@@ -216,6 +217,8 @@ export function Home(){
               </ButtonWrapper>
             </StyledCardContent>
           </StyledCard>
+        </MarginCont>
+
         ))}
       </div>
 
