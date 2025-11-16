@@ -2,10 +2,12 @@
     // ini_set('display_errors', 1);
     // ini_set('display_startup_errors', 1);
     // error_reporting(E_ALL);
-    
+
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     require_once 'connection.php';
+
+    date_default_timezone_set(	'America/Sao_Paulo');
 
     $timeFilter = isset($_GET['timeFilter']) ? $_GET['timeFilter'] : 'all';
     $currentDay = date('Y-m-d');
@@ -23,21 +25,23 @@
         exit();
     }
 
-    //SELECT from diaHoraAgendado
-
+    //Set all prepares
     $getDiaHoraAgendadoStmt = $conn->prepare("SELECT * FROM diaHoraAgendado WHERE diaCodigo = ?");
     $getSessaoStmt = $conn->prepare("SELECT * FROM sessao WHERE sesCodigo = ?");
     $getPacienteStmt = $conn->prepare("SELECT * FROM paciente WHERE pacCodigo = ?");
 
     try{
+        //get everything from diaHoraAgendado
         foreach($getConsulta as $gC){
             $getDiaHoraAgendadoStmt->execute([$gC['conDiaCodigo']]);
             $getDiaHoraAgendado = $getDiaHoraAgendadoStmt->fetchAll(PDO::FETCH_ASSOC);
             
+            //get everything from sessao
             foreach($getDiaHoraAgendado as $gD){
                 $getSessaoStmt->execute([$gD['diaSesCodigo']]);
                 $getSessao = $getSessaoStmt->fetchAll(PDO::FETCH_ASSOC);
 
+                //get everything from paciente
                 foreach($getSessao as $gS){
                     $patientFk = $gS['sesPacCodigo'] ?? null;
                     if (!$patientFk) continue;
@@ -45,15 +49,34 @@
                     $getPacienteStmt->execute([$patientFk]);
                     $getPaciente = $getPacienteStmt->fetchAll(PDO::FETCH_ASSOC);
 
+                    //adjust infos into an array
                     foreach($getPaciente as $gP){
+                        //format hour into HH:MM
+                        $timeFormatted = $gD['diaHorario'] ?? null;
+                        if ($timeFormatted) {
+                            $timeParts = explode(':', $timeFormatted);
+                            $timeFormatted = $timeParts[0] . ':' . $timeParts[1]; // HH:MM
+                        }
+
+                        //format display info
+                        $superior = ($gS['sesParteSuperior'] === 1) ? "Superior" : null;
+                        $inferior = ($gS['sesParteInferior'] === 1) ? "Inferior" : null;
+                        $back = ($gS['sesColuna'] === 1) ? "Coluna" : null;
+                        if($superior !== null && $inferior !== null){ $superior = $superior.', '; }
+                        if($superior !== null && $back !== null){ $superior = $superior.', '; }
+                        if($inferior !== null && $back !== null){ $inferior = $inferior.', '; }
+
+                        //array
                         $dataObject = [
-                            'patientCode' => $gC['conCodigo'] ?? 0,
+                            'consultaCode' => $gC['conCodigo'] ?? 0,
+                            'patientCode' => $gP['pacCodigo'] ?? 0,
+                            'patientLevel' => $gP['pacNivelImportancia'] ?? 0,
                             'day' => $gC['conDiaAgendado'] ?? null,
                             'dayStatus' => $gC['conStatusDiaAgendado'] ?? null, //If patient was present on that day
-                            'time' => $gD['diaHorario'] ?? null,
-                            'superior' => $gS['sesParteSuperior'] ?? 0,
-                            'inferior' => $gS['sesParteInferior'] ?? 0,
-                            'back' => $gS['sesColuna'] ?? 0,
+                            'time' => $timeFormatted,
+                            'superior' => $superior,
+                            'inferior' => $inferior,
+                            'back' => $back,
                             'name' => $gP['pacNome'] ?? null
                         ];
                         $filteredDataObject[] = $dataObject;
@@ -67,6 +90,7 @@
         exit();
     }
 
+    //filter by hour
     if ($timeFilter !== 'all') {
         $filtered = [];
         foreach ($filteredDataObject as $fDO) {
@@ -80,12 +104,11 @@
         $filteredDataObject = $filtered;
     }
 
+    //sort by hour from early to later
     usort($filteredDataObject, function($a, $b){
         $ta = isset($a['time']) ? strtotime($a['time']) : PHP_INT_MAX;
         $tb = isset($b['time']) ? strtotime($b['time']) : PHP_INT_MAX;
         return $ta <=> $tb;
     });
-
-    // var_dump($getDiaHoraAgendado);
 
     echo json_encode(['status' => 'success', 'data' => $filteredDataObject]);

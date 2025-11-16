@@ -15,11 +15,7 @@ export function Home(){
     const [patientData, setPatientData] = useState<any[]>([]);
     const [patientStatus, setPatientStatus] = useState<{ [key: number]: PatientStatus }>({});
     const [dialogOpen, setDialogOpen] = useState(false);
-
-
-
-
-   
+    const [patientCode, setPatientCode] = useState<number>(0);
 
     const getStatusBadge = (status: PatientStatus) => {
     switch (status) {
@@ -40,6 +36,15 @@ export function Home(){
       return "pending";
     };
 
+    // retorna a variável CSS para fill/color do Bookmark conforme pacNivelImportancia
+    const getBookmarkVar = (patient: any) => {
+      const level = patient.patientLevel ? patient.patientLevel : null;
+
+      if (level === 1) return "var(--bookmark-special)";
+      if (level === 2) return "var(--bookmark-avaliation)";
+      return "var(--bookmark-default)"; // inclui 0 e qualquer outro inválido
+    };
+
     //get pacient data from PHP (when timeFilter changes)
     useEffect(() => {
       (async () => {
@@ -52,10 +57,8 @@ export function Home(){
 
           if (json && Array.isArray(json.data)) {
             setPatientData(json.data);
-            // ← MUDE AQUI: usar dayStatus do banco de dados
             const initialStatus: { [key: number]: PatientStatus } = {};
             json.data.forEach((patient: any, idx: number) => {
-              // Converter o status do banco para PatientStatus
               initialStatus[idx] = convertPatientStatus(patient.dayStatus);
             });
             setPatientStatus(initialStatus);
@@ -80,14 +83,14 @@ export function Home(){
       (async () => {
         try {
           const patient = patientData[idx];
-          const patientCode = patient.patientCode; // ← USE patientCode, não patientCode
+          const consultaCode = patient.consultaCode; // ← USE consultaCode, não consultaCode
 
-          if (!patientCode) {
-            console.error('patientCode not found in patient data');
+          if (!consultaCode) {
+            console.error('consultaCode not found in patient data');
             return;
           }
 
-          const url = `http://localhost/Projeto-Clinica-Sange/src/php/setPatientStatus.php?patientCode=${patientCode}&patientStatus=${newStatus}`;
+          const url = `http://localhost/Projeto-Clinica-Sange/src/php/setPatientStatus.php?consultaCode=${consultaCode}&patientStatus=${newStatus}`;
           console.log('Sending request to:', url);
           
           const res = await fetch(url);
@@ -106,11 +109,10 @@ export function Home(){
       })();
     };
 
-    const handleViewPatient = () => {
-    const patient = "2";
-    if (patient) {
-      
+    const handleViewPatient = (patientCode: number) => {
+    if (patientCode !== 0) {
       setDialogOpen(true);
+      setPatientCode(patientCode);
     }
   };
 
@@ -170,12 +172,16 @@ export function Home(){
                   <PatientDetails>
                     <StyledCardTitle className="text-xl text-card-foreground">{patient.name}</StyledCardTitle>
                     <StyledCardDescription className="mt-1 text-muted-foreground">
-                      Superior: {patient.superior} | Inferior: {patient.inferior} | Coluna: {patient.back}  
+                      Partes afetadas: {patient.superior} {patient.inferior} {patient.back}  
                     </StyledCardDescription>
                   </PatientDetails>
                 </PatientRow>
                 <div>
-                  <Bookmark className="h-10 w-10 text-purple-600 mb-1" fill="hsl(262 83% 58%)" color="hsl(262 83% 58%)"/>
+                  <Bookmark
+                    className="h-10 w-10 mb-1"
+                    fill={getBookmarkVar(patient)}
+                    color={getBookmarkVar(patient)}
+                  />
                   {getStatusBadge(patientStatus[idx] || "pending")}
                 </div>
               </ContentWrapper>
@@ -201,7 +207,7 @@ export function Home(){
                 </Button>
               
                 <Button
-                  onClick={() => handleViewPatient()}
+                  onClick={() => handleViewPatient(patient.patientCode)}
                   variant="outline"
                   size="icon"
                 >
@@ -216,7 +222,7 @@ export function Home(){
        <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-       
+        patientCode={patientCode}
       />
 
     </S.Container>

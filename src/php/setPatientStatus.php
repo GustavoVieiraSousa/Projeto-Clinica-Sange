@@ -7,11 +7,11 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 require_once 'connection.php';
 
-$patientCode = isset($_GET['patientCode']) ? $_GET['patientCode'] : 'unknown';
+$consultaCode = isset($_GET['consultaCode']) ? $_GET['consultaCode'] : 'unknown';
 $patientStatus = isset($_GET['patientStatus']) ? $_GET['patientStatus'] : 'unknown';
 
-if($patientCode === 'unknown' || $patientStatus === 'unknown'){
-    echo json_encode(['status' => 'error', 'message' => 'patientData or patientStatus without any data', $patientCode, $patientStatus]);
+if($consultaCode === 'unknown' || $patientStatus === 'unknown'){
+    echo json_encode(['status' => 'error', 'message' => 'patientData or patientStatus without any data', $consultaCode, $patientStatus]);
     exit();
 }
 
@@ -33,7 +33,7 @@ switch($patientStatus){
     
 try{
     $setPatientStatusStmt = $conn->prepare("UPDATE consulta SET conStatusDiaAgendado = ? WHERE conCodigo = ?");
-    $setPatientStatusStmt->execute([$status, $patientCode]);
+    $setPatientStatusStmt->execute([$status, $consultaCode]);
     $setPatientStatus = $setPatientStatusStmt->fetch(PDO::FETCH_ASSOC);
 }
 catch(PDOException $e){

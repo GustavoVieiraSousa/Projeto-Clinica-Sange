@@ -5,492 +5,554 @@ import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer } from "lucide-r
 import BodyDiagram from "../../Components/Body-Diagram";
 import type { Patient } from "../../@types/patient";
 import * as S from "./styles";
+import { useEffect, useState } from "react";
 
 interface PatientDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onEdit?: (patient: Patient) => void;
+  patientCode: number;
 }
 
-const PatientDialog = ({ open, onOpenChange, onEdit }: PatientDialogProps) => {
+const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
+  const [patientInfo, setPatientInfo] = useState<any[]>([]);
   
+  useEffect(() => {
+    // debug rápido: ver se o prop está chegando
+    console.log('PatientDialog mounted, patientCode=', patientCode);
 
-  
+    (async () => {
+      // se não tiver patientCode válido, limpa e sai
+      if (!patientCode) {
+        console.warn('PatientDialog: no patientCode provided (falsy).');
+        setPatientInfo([]);
+        return;
+      }
 
+      try {
+        const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientDescription.php?patientCode=${patientCode}`;
+        console.log('PatientDialog fetching URL:', url);
+
+        const res = await fetch(url);
+        const text = await res.text();
+        console.log('PatientDialog response text (first 400 chars):', text.slice(0,400));
+
+        // tenta parse seguro
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch (err) {
+          console.error('PatientDialog: response is not JSON:', err);
+          setPatientInfo([]);
+          return;
+        }
+
+        // normalmente API retorna { status, data: [...] }
+        if (json && Array.isArray(json.data)) {
+          setPatientInfo(json.data);
+        } else if (json && json.data && typeof json.data === 'object') {
+          // caso retorne objeto único
+          setPatientInfo([json.data]);
+        } else {
+          setPatientInfo([]);
+          console.warn('PatientDialog: unexpected JSON shape', json);
+        }
+      } catch (err) {
+        console.error('Error getting Patient Infos:', err);
+        setPatientInfo([]);
+      }
+
+      
+    })();
+  }, [patientCode]);
+
+  const patient = patientInfo[0] ?? {};
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <S.StyledDialogTitle>
-            <DialogTitle>Gugas palitos</DialogTitle>
-          </S.StyledDialogTitle>
-        </DialogHeader>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent>
+            <DialogHeader>
+              <S.StyledDialogTitle>
+                <DialogTitle>{patient?.patientName ?? "-"}</DialogTitle>
+              </S.StyledDialogTitle>
+            </DialogHeader>
 
-        <S.Content>
-          <S.Section>
-            <S.SectionTitle>Informações de Contato</S.SectionTitle>
-            <S.InfoGrid>
-              <S.InfoItem>
-                <S.CorIcon>
-                  <Mail className="h-4 w-4 text-primary" />
-                </S.CorIcon>
-                <div>
-                  <S.InfoLabel>Email</S.InfoLabel>
-                  <S.InfoValue>gusgus@gmail.com</S.InfoValue>
-                </div>
-              </S.InfoItem>
-              
-              <S.InfoItem>
-                <S.CorIcon>
-                  <Phone className="h-4 w-4 text-primary" />
-                </S.CorIcon>
-                <div>
-                  <S.InfoLabel>Telefone</S.InfoLabel>
-                  <S.InfoValue>(19)9167233</S.InfoValue>
-                </div>
-              </S.InfoItem>
-            </S.InfoGrid>
-          </S.Section>
+            <S.Content>
+              <S.Section>
+                <S.SectionTitle>Informações de Contato</S.SectionTitle>
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Mail className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Email</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientEmail ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Phone className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Telefone</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientNumber ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
+              </S.Section>
 
-          <Separator />
+              <Separator />
 
-          <S.Section>
-            <S.SectionTitle>Dados Pessoais</S.SectionTitle>
-            <S.InfoGrid>
-              <S.InfoItem>
-                <S.CorIcon>
-                  <FileText className="h-4 w-4 text-primary" />
-                </S.CorIcon>
-                <div>
-                  <S.InfoLabel>CPF</S.InfoLabel>
-                  <S.InfoValue>123.456.789-00</S.InfoValue>
-                </div>
-              </S.InfoItem>
-              
-              <S.InfoItem>
-                <S.CorIcon>
-                  <Calendar className="h-4 w-4 text-primary" />
-                </S.CorIcon>
-                <div>
-                  <S.InfoLabel>Data de Nascimento</S.InfoLabel>
-                  <S.InfoValue>
-                    20/08/1998
-                  </S.InfoValue>
-                </div>
-              </S.InfoItem>
-            </S.InfoGrid>
+              <S.Section>
+                <S.SectionTitle>Dados Pessoais</S.SectionTitle>
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <FileText className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>CPF</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientCPF ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Calendar className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Data de Nascimento</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientBirthDate ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
 
-            <S.InfoItem>
-              <S.CorIcon>
-                <MapPin className="h-4 w-4 text-primary" />
-              </S.CorIcon>
-              <div>
-                <S.InfoLabel>Endereço</S.InfoLabel>
-                <S.InfoValue>Rua das arvores verdes,1090</S.InfoValue>
-              </div>
-            </S.InfoItem>
-          </S.Section>
-
-          <Separator />
-          
-          <S.Section>
-            <S.SectionTitle>Informações Adicionais</S.SectionTitle>
-            <S.InfoGrid>
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Número da Carteirinha</S.InfoLabel>
-                    <S.InfoValue>3213124</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-             
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Convênio</S.InfoLabel>
-                    <S.InfoValue>Unip</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <Calendar className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Idade</S.InfoLabel>
-                    <S.InfoValue>58</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Gênero</S.InfoLabel>
-                    <S.InfoValue>Masculino</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Estado Civil</S.InfoLabel>
-                    <S.InfoValue>Solteiro</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Peso</S.InfoLabel>
-                    <S.InfoValue>75kg</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Altura</S.InfoLabel>
-                    <S.InfoValue>1.70</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-             
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Profissão</S.InfoLabel>
-                    <S.InfoValue>Desenvolvedor</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-              
                 <S.InfoItem>
                   <S.CorIcon>
                     <MapPin className="h-4 w-4 text-primary" />
                   </S.CorIcon>
                   <div>
-                    <S.InfoLabel>Cidade</S.InfoLabel>
-                    <S.InfoValue>Americana</S.InfoValue>
+                    <S.InfoLabel>Endereço</S.InfoLabel>
+                    <S.InfoValue>Rua {patient?.addressStreet ?? "-"}, {patient?.addressNeighborhood ?? "-"} - nº {patient?.addressNumber ?? "-"} ({patient?.addressComplement ?? ""}) | CEP: {patient?.addressCEP ?? "-"}</S.InfoValue>
                   </div>
                 </S.InfoItem>
-             
-              
-                <S.InfoItem>
-                  <S.CorIcon>
-                    <FileText className="h-4 w-4 text-primary" />
-                  </S.CorIcon>
-                  <div>
-                    <S.InfoLabel>Fumante</S.InfoLabel>
-                    <S.InfoValue>Sim</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-            </S.InfoGrid>
-          </S.Section>
+              </S.Section>
 
-          
-            <>
               <Separator />
-              <S.Section>
-                <S.SectionTitle>Áreas Afetadas</S.SectionTitle>
-                <BodyDiagram />
-                
               
-                  <S.ProblemCard>
-                    <S.ProblemTitle>Parte Superior</S.ProblemTitle>
-                    <S.ProblemDescription>dor intensa no ombros</S.ProblemDescription>
-                    <S.SeverityBadge $severity="low">
-                    </S.SeverityBadge>
-                  </S.ProblemCard>
+              <S.Section>
+                <S.SectionTitle>Informações Adicionais</S.SectionTitle>
+                <S.InfoGrid>
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Número da Carteirinha</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientCardNum ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                 
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Convênio</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientTypeAgreement ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <Calendar className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Idade</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientAge ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Gênero</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientGender ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Estado Civil</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientMatiralStatus ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Peso</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientWeight ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Altura</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientHeight ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                 
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Profissão</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientProfession ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <MapPin className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Cidade</S.InfoLabel>
+                        <S.InfoValue>{patient?.addressCity ?? "-"} - {patient?.addressState ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <S.CorIcon>
+                        <FileText className="h-4 w-4 text-primary" />
+                      </S.CorIcon>
+                      <div>
+                        <S.InfoLabel>Fumante</S.InfoLabel>
+                        <S.InfoValue>{patient?.patientSmoker ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                </S.InfoGrid>
+              </S.Section>
+
+              
+                <>
+                  <Separator />
+                  <S.Section>
+                    <S.SectionTitle>Áreas Afetadas</S.SectionTitle>
+                    <BodyDiagram />
+                    
+                  
+                      <S.ProblemCard>
+                        <S.ProblemTitle>Parte Superior</S.ProblemTitle>
+                        <S.ProblemDescription>{patient?.sessionSuperiorDesc ?? "-"}</S.ProblemDescription>
+                        <S.SeverityBadge $severity="low">
+                        </S.SeverityBadge>
+                      </S.ProblemCard>
+                   
+
+                    
+                      <S.ProblemCard>
+                        <S.ProblemTitle>Parte Inferior</S.ProblemTitle>
+                        <S.ProblemDescription>{patient?.sessionInferiorDesc ?? "-"}</S.ProblemDescription>
+                        <S.SeverityBadge $severity="high">
+                        </S.SeverityBadge>
+                      </S.ProblemCard>
+                   
+
+                    
+                      <S.ProblemCard>
+                        <S.ProblemTitle>Costas</S.ProblemTitle>
+                        <S.ProblemDescription>{patient?.sessionBackDesc ?? "-"}</S.ProblemDescription>
+                        <S.SeverityBadge $severity="medium">
+                        </S.SeverityBadge>
+                      </S.ProblemCard>
+                 
+                  </S.Section>
+                </>
+
+                <Separator />
+              
+              <>
+                <S.Section>
+                  <S.SectionTitle>Observações</S.SectionTitle>
+                  <S.ObservationsText>{patient?.sessionDescription ?? "-"}</S.ObservationsText>
+                </S.Section>
+              </>
+
+                <Separator />
+
+              <S.Section>
+                <S.SectionTitle>Dados da Patologia</S.SectionTitle>
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Diagnóstico Clínico</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyDiagnostic ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+              
+                
+                  <S.DataItem>
+                    <S.InfoLabel>HMA</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyHMA ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Antecedentes Pessoais</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyPersonalBackground ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Patologia Associada</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyAssociatedPatology ?? "-"}</S.InfoValue>
+                  </S.DataItem>
                
-
                 
-                  <S.ProblemCard>
-                    <S.ProblemTitle>Parte Inferior</S.ProblemTitle>
-                    <S.ProblemDescription>dor nas pernas leve</S.ProblemDescription>
-                    <S.SeverityBadge $severity="high">
-                    </S.SeverityBadge>
-                  </S.ProblemCard>
+                  <S.DataItem>
+                    <S.InfoLabel>Medicação em Uso</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyTakeMeds ?? "-"}</S.InfoValue>
+                  </S.DataItem>
                
-
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Início da Dor</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyWhenStarted ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
                 
-                  <S.ProblemCard>
-                    <S.ProblemTitle>Costas</S.ProblemTitle>
-                    <S.ProblemDescription>mauricio</S.ProblemDescription>
-                    <S.SeverityBadge $severity="medium">
-                    </S.SeverityBadge>
-                  </S.ProblemCard>
-             
+                  <S.DataItem>
+                    <S.InfoLabel>Posição da Dor</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyMoreIntensePosition ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Posição de Trabalho</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyWorkPosition ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Cirurgia</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyHadSurgery ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Data da Cirurgia</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyDateSurgery ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Exames Complementares</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyComplementaryExams ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Comprometimento AVS</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyAVS ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Limitação Funcional</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyFunctionalLimitation ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Comprometimento da Marcha</S.InfoLabel>
+                    <S.InfoValue>{patient?.patologyMarcha ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
               </S.Section>
-            </>
 
-            <Separator />
-          
-          <S.Section>
-            <S.SectionTitle>Dados da Patologia</S.SectionTitle>
-            
-              <S.DataItem>
-                <S.InfoLabel>Diagnóstico Clínico</S.InfoLabel>
-                <S.InfoValue>Lesão ligamentar no joelho direito</S.InfoValue>
-              </S.DataItem>
-          
-            
-              <S.DataItem>
-                <S.InfoLabel>HMA</S.InfoLabel>
-                <S.InfoValue>Paciente refere dor intensa no joelho após queda há 3 meses</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Antecedentes Pessoais</S.InfoLabel>
-                <S.InfoValue>nenhum</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Patologia Associada</S.InfoLabel>
-                <S.InfoValue>desmenbramento do joelho obtuso</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Medicação em Uso</S.InfoLabel>
-                <S.InfoValue>oxidrolona</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>Início da Dor</S.InfoLabel>
-                <S.InfoValue>há 3 mesês</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Posição da Dor</S.InfoLabel>
-                <S.InfoValue>Jão</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Posição de Trabalho</S.InfoLabel>
-                <S.InfoValue>macanista de dados</S.InfoValue>
-              </S.DataItem>
-            
-           
-              <S.DataItem>
-                <S.InfoLabel>Cirurgia</S.InfoLabel>
-                <S.InfoValue>Fez uma cirurgia na pelve esquerda há 3 anos</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Data da Cirurgia</S.InfoLabel>
-                <S.InfoValue>03/02/2025</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Exames Complementares</S.InfoLabel>
-                <S.InfoValue>nenhum</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Comprometimento AVS</S.InfoLabel>
-                <S.InfoValue>Sim</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>Limitação Funcional</S.InfoLabel>
-                <S.InfoValue>Muito Burro</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Comprometimento da Marcha</S.InfoLabel>
-                <S.InfoValue>n sei o q é isso nem para zuar</S.InfoValue>
-              </S.DataItem>
-            
-          </S.Section>
-
-           <Separator />
-          
-          <S.Section>
-            <S.SectionTitle>Exame Físico</S.SectionTitle>
-            <S.InfoGrid>
+               <Separator />
               
-                <S.InfoItem>
-                  <FileText className="h-4 w-4 text-primary" />
-                  <div>
-                    <S.InfoLabel>Pressão Arterial</S.InfoLabel>
-                    <S.InfoValue>Alta 16 po 9</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-             
-              
-                <S.InfoItem>
-                  <FileText className="h-4 w-4 text-primary" />
-                  <div>
-                    <S.InfoLabel>Frequência Respiratória</S.InfoLabel>
-                    <S.InfoValue>20 po 20</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-             
-                <S.InfoItem>
-                  <FileText className="h-4 w-4 text-primary" />
-                  <div>
-                    <S.InfoLabel>Frequência Cardíaca</S.InfoLabel>
-                    <S.InfoValue>180 por mim</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              
-            </S.InfoGrid>
-            
-              <S.DataItem>
-                <S.InfoLabel>Inspeção</S.InfoLabel>
-                <S.InfoValue>sla n sei</S.InfoValue>
-              </S.DataItem>
-            
-           
-              <S.DataItem>
-                <S.InfoLabel>Palpação</S.InfoLabel>
-                <S.InfoValue>as vezes</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>Dor à Palpação</S.InfoLabel>
-                <S.InfoValue>não</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Edema</S.InfoLabel>
-                <S.InfoValue>Sim</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>Testes Específicos</S.InfoLabel>
-                <S.InfoValue>prosopopéia</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>ADM</S.InfoLabel>
-                <S.InfoValue>administrador?</S.InfoValue>
-              </S.DataItem>
-            
-            
-              <S.DataItem>
-                <S.InfoLabel>FM</S.InfoLabel>
-                <S.InfoValue>Fly away</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>Tônus Muscular</S.InfoLabel>
-                <S.InfoValue>nos jojos dos elhos</S.InfoValue>
-              </S.DataItem>
-            
-           
-              <S.DataItem>
-                <S.InfoLabel>Movimento</S.InfoLabel>
-                <S.InfoValue>movimentação livre e sem dor aparente</S.InfoValue>
-              </S.DataItem>
-           
-           
-              <S.DataItem>
-                <S.InfoLabel>Uso de Órtese</S.InfoLabel>
-                <S.InfoValue>Sim</S.InfoValue>
-              </S.DataItem>
-            
-           
-              <S.DataItem>
-                <S.InfoLabel>Tipo de Órtese</S.InfoLabel>
-                <S.InfoValue>binocular aeólica</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Desvios Posturais</S.InfoLabel>
-                <S.InfoValue>Sim</S.InfoValue>
-              </S.DataItem>
-           
-            
-              <S.DataItem>
-                <S.InfoLabel>Descrição dos Desvios Posturais</S.InfoLabel>
-                <S.InfoValue>Coluna tipo C</S.InfoValue>
-              </S.DataItem>
-          
-          </S.Section>
-       
-
-        
-            <>
-              <Separator />
               <S.Section>
-                <S.SectionTitle>Observações</S.SectionTitle>
-                <S.ObservationsText>dar a bunda n é bom</S.ObservationsText>
+                <S.SectionTitle>Exame Físico</S.SectionTitle>
+                <S.InfoGrid>
+                  
+                    <S.InfoItem>
+                      <FileText className="h-4 w-4 text-primary" />
+                      <div>
+                        <S.InfoLabel>Pressão Arterial</S.InfoLabel>
+                        <S.InfoValue>{patient?.examPA ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                 
+                  
+                    <S.InfoItem>
+                      <FileText className="h-4 w-4 text-primary" />
+                      <div>
+                        <S.InfoLabel>Frequência Respiratória</S.InfoLabel>
+                        <S.InfoValue>{patient?.examFR ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                 
+                    <S.InfoItem>
+                      <FileText className="h-4 w-4 text-primary" />
+                      <div>
+                        <S.InfoLabel>Frequência Cardíaca</S.InfoLabel>
+                        <S.InfoValue>{patient?.examFC ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  
+                </S.InfoGrid>
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Inspeção</S.InfoLabel>
+                    <S.InfoValue>{patient?.examInspection ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Palpação</S.InfoLabel>
+                    <S.InfoValue>{patient?.examPalpation ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Dor à Palpação</S.InfoLabel>
+                    <S.InfoValue>{patient?.examPainPalpation ?? "-"}: {patient?.examPainPalpationDesc ?? ""}</S.InfoValue>
+                  </S.DataItem>
+               
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Edema</S.InfoLabel>
+                    <S.InfoValue>{patient?.examEdema ?? "-"}: {patient?.examEdemaDesc ?? ""}</S.InfoValue>
+                  </S.DataItem>
+               
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Testes Específicos</S.InfoLabel>
+                    <S.InfoValue>{patient?.examSpecificTests ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+               
+                  <S.DataItem>
+                    <S.InfoLabel>ADM</S.InfoLabel>
+                    <S.InfoValue>{patient?.examADM ?? "-"}: {patient?.examADMDesc ?? ""}</S.InfoValue>
+                  </S.DataItem>
+                
+                
+                  <S.DataItem>
+                    <S.InfoLabel>FM</S.InfoLabel>
+                    <S.InfoValue>{patient?.examFM ?? "-"}: {patient?.examFMDesc ?? ""}</S.InfoValue>
+                  </S.DataItem>
+               
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Tônus Muscular</S.InfoLabel>
+                    <S.InfoValue>{patient?.examMuscularTonus ?? "-"}: {patient?.examMuscularTonusDesc ?? ""}</S.InfoValue>
+                  </S.DataItem>
+                
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Movimento</S.InfoLabel>
+                    <S.InfoValue>{patient?.examMovement ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Uso de Órtese</S.InfoLabel>
+                    <S.InfoValue>{patient?.examOrtese ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+                
+               
+                  <S.DataItem>
+                    <S.InfoLabel>Tipo de Órtese</S.InfoLabel>
+                    <S.InfoValue>{patient?.examOrteseDesc ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Desvios Posturais</S.InfoLabel>
+                    <S.InfoValue>{patient?.examPosturalDeviations ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+               
+                
+                  <S.DataItem>
+                    <S.InfoLabel>Descrição dos Desvios Posturais</S.InfoLabel>
+                    <S.InfoValue>{patient?.examPosturalDeviationsDesc ?? "-"}</S.InfoValue>
+                  </S.DataItem>
+              
               </S.Section>
-            </>
-
-             <>
+           
               <Separator />
-              <S.Section>
-                <S.InfoItem>
-                  <FileText className="h-4 w-4 text-primary" />
-                  <div>
-                    <S.InfoLabel>Última Edição Por</S.InfoLabel>
-                    <S.InfoValue>Angela</S.InfoValue>
-                  </div>
-                </S.InfoItem>
-              </S.Section>
-            </>
-         
 
-          <>
-            <Separator />
-            <S.ButtonContainer>
-              <Button  variant="outline">
-                <Printer />
-                Imprimir PDF
-              </Button>
-              {onEdit && (
-                <Button onClick={console.log}>
-                  <Edit />
-                  Editar Paciente
-                </Button>
-              )}
-            </S.ButtonContainer>
-          </>
-        </S.Content>
-      </DialogContent>
-    </Dialog>
+              <S.Section>
+                <S.SectionTitle>Exame Físico</S.SectionTitle>
+                    <S.DataItem>
+                        <S.InfoLabel>Tratamento Proposto</S.InfoLabel>
+                        <S.InfoValue>{patient?.traProposedTreatment ?? "-"}</S.InfoValue>
+                    </S.DataItem>
+
+                    <S.DataItem>
+                        <S.InfoLabel>Objetivo do Tratamento</S.InfoLabel>
+                        <S.InfoValue>{patient?.traTreatmentObjective ?? "-"}</S.InfoValue>
+                    </S.DataItem>
+              </S.Section>
+
+                 <>
+                  <Separator />
+                  <S.Section>
+                    <S.InfoItem>
+                      <FileText className="h-4 w-4 text-primary" />
+                      <div>
+                        <S.InfoLabel>Última Edição Por</S.InfoLabel>
+                        <S.InfoValue>{patient?.sessionLastEdit ?? "-"}</S.InfoValue>
+                      </div>
+                    </S.InfoItem>
+                  </S.Section>
+                </>
+             
+
+              <>
+                <Separator />
+                <S.ButtonContainer>
+                  <Button  variant="outline">
+                    <Printer />
+                    Imprimir PDF
+                  </Button>
+                  {onEdit && (
+                    <Button onClick={console.log}>
+                      <Edit />
+                      Editar Paciente
+                    </Button>
+                  )}
+                </S.ButtonContainer>
+              </>
+            </S.Content>
+          </DialogContent>
+        </Dialog>
   );
 };
 
