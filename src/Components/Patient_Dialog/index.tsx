@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog.tsx";
 import { Button } from "../../Components/ui/button";
 import { Separator } from "../../Components/ui/separator";
-import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck} from "lucide-react";
 import BodyDiagram from "../../Components/Body-Diagram";
 import * as S from "./styles";
 import { useEffect, useState } from "react";
@@ -106,6 +106,29 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     </div>
                   </S.InfoItem>
                 </S.InfoGrid>
+
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Mail className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Email</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientEmail ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Phone className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Telefone</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientNumber ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
+                
               </S.Section>
 
               <Separator />
@@ -155,7 +178,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       <FileText className="h-4 w-4 text-primary" />
                     </S.CorIcon>
                     <div>
-                      <S.InfoLabel>CPF</S.InfoLabel>
+                      <S.InfoLabel>Horário das sessões</S.InfoLabel>
                       <S.InfoValue>{patient?.patientHour ?? "-"}</S.InfoValue>
                     </div>
                   </S.InfoItem>
@@ -165,8 +188,8 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       <Calendar className="h-4 w-4 text-primary" />
                     </S.CorIcon>
                     <div>
-                      <S.InfoLabel>Data de Nascimento</S.InfoLabel>
-                      <S.InfoValue>{patient?.patientBirthDate ?? "-"}</S.InfoValue>
+                      <S.InfoLabel>Data de inicio</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientInitialDate?? "-"}</S.InfoValue>
                     </div>
                   </S.InfoItem>
                 </S.InfoGrid>
@@ -176,11 +199,61 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     <MapPin className="h-4 w-4 text-primary" />
                   </S.CorIcon>
                   <div>
-                    <S.InfoLabel>Endereço</S.InfoLabel>
-                    <S.InfoValue>Rua {patient?.addressStreet ?? "-"}, {patient?.addressNeighborhood ?? "-"} - nº {patient?.addressNumber ?? "-"} ({patient?.addressComplement ?? ""}) | CEP: {patient?.addressCEP ?? "-"}</S.InfoValue>
+                    <S.InfoLabel>Número de sessões</S.InfoLabel>
+                    <S.InfoValue>{patient?.patientSessions ?? "-"}</S.InfoValue>
                   </div>
                 </S.InfoItem>
               </S.Section>
+
+              <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Segunda-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayMonday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Terça-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayTuesday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                    <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Quarta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayWednesday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Quinta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayThrusday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Sexta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayFriday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
 
               <Separator />
               
