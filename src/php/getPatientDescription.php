@@ -1,7 +1,7 @@
 <?php 
-    // ini_set('display_errors', 1);
-    // ini_set('display_startup_errors', 1);
-    // error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -9,8 +9,10 @@
 
     date_default_timezone_set(	'America/Sao_Paulo');
 
-    $patientInfo = isset($_GET['patientCode']) ? $_GET['patientCode'] : 0;
-    if($patientInfo === 0){
+    $patientInfo = isset($_GET['patientCode']) ? $_GET['patientCode'] : 'unknown';
+
+    // var_dump($patientInfo);
+    if($patientInfo === 'unknown'){
         echo json_encode(['status' => 'error']);
         exit();
     }
@@ -51,7 +53,11 @@
     }
 
     //code from session
-    $sessionCode = $gS['sesCodigo'];
+    $sessionCode = $gS['sesCodigo'] ?? null;
+    // if($sessionCode === null){
+    //     echo json_encode(['status' => 'error', 'message' => 'Error, No Sessions Found']);
+    //     exit();
+    // }
 
     //SELECT DiaHoraAgendado
     try{
@@ -104,7 +110,7 @@
         $timeFormatted = $timeParts[0] . ':' . $timeParts[1]; // HH:MM
     }
 
-    $varBirthday = $gP['pacDtNascimento'];
+    $varBirthday = $gP['pacDtNascimento'] ?? null;
 
     //age calculator
     if(!isset($varBirthday)){ $varBirthday = date('Y-m-d'); }
@@ -117,7 +123,7 @@
     $birthday = $day."/".$month."/".$year;
 
     //formated gender
-    switch($gP['pacSexo']){
+    switch($gP['pacSexo'] ?? null){
         case 'm':
             $gender = "Masculino";
             break;
@@ -130,7 +136,7 @@
     }
 
     //formated smoker
-    switch($gP['pacFumante']){
+    switch($gP['pacFumante'] ?? null){
         case 0:
             $smoker = "Não";
             break;
@@ -181,6 +187,7 @@
         'sessionBackDesc'              => $gS['sesGravidadeColuna'] ?? null,
         'sessionDescription'           => $gS['sesDescricao'] ?? null,
         'sessionLastEdit'              => $gS['sesUltimaEdicao'] ?? null,
+        'sessionAvaliationDate'        => $gS['sesDtAvaliacao'] ?? null,
           
         //diaHoraAgendado  
         'dayMonday'                    => $gD['diaSegunda'] ?? null,

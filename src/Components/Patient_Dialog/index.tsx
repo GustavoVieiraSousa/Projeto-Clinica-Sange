@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 interface PatientDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onEdit?: (patient: Patient) => void;
+  onEdit?: boolean;
   patientCode: number;
 }
 

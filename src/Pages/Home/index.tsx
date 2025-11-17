@@ -83,7 +83,7 @@ export function Home(){
       (async () => {
         try {
           const patient = patientData[idx];
-          const consultaCode = patient.consultaCode; // ← USE consultaCode, não consultaCode
+          const consultaCode = patient.consultaCode;
 
           if (!consultaCode) {
             console.error('consultaCode not found in patient data');
