@@ -1,0 +1,199 @@
+<?php 
+
+    header("Access-Control-Allow-Origin: *");   
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Content-Type: application/json; charset=UTF-8");
+    require_once 'connection.php';
+
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+    $allInfo = $data['data'];
+
+    if ($allInfo === null || !isset($allInfo)) {
+        echo json_encode(['error' => 'Invalid data received']);
+        exit();
+    }
+
+    try{
+        // -------------------- PACIENTE --------------------
+        $addPacienteStmt = $conn->prepare('
+            INSERT INTO paciente (
+                pacNumCarteirinha, pacTipoConvenio, pacDesativado, pacDtDesativado,
+                pacNome, pacDtNascimento, pacSexo, pacEstadoCivil, pacPeso, pacAltura,
+                pacFumante, pacNivelImportancia, pacEmail, pacTelefone, pacCpf
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addPacienteStmt->execute([
+            $allInfo['cardNumber'],
+            111, // pacTipoConvenio (se não tiver no form)
+            0,    // pacDesativado default
+            null, // pacDtDesativado
+            $allInfo['name'],
+            $allInfo['birthDate'],
+            $allInfo['gender'],
+            $allInfo['maritalStatus'],
+            $allInfo['weight'],
+            $allInfo['height'],
+            $allInfo['smoker'] ? 1 : 0,
+            null, // pacNivelImportancia
+            $allInfo['email'],
+            $allInfo['phone'],
+            $allInfo['cpf']
+        ]);
+
+
+        $patientId = $conn->lastInsertId();
+
+        // -------------------- ENDEREÇO --------------------
+        $addEnderecoStmt = $conn->prepare('
+            INSERT INTO endereco (
+                endPacCodigo, endCEP, endRua, endBairro, endCidade, endUF, endNumero, endComplemento
+            ) VALUES (?,?,?,?,?,?,?,?)
+        ');
+
+        $addEnderecoStmt->execute([
+            $patientId,
+            $allInfo['addressCEP'],
+            $allInfo['addressStreet'],
+            $allInfo['addressNeighborhood'],
+            $allInfo['city'],
+            null, // endUF se não tiver
+            $allInfo['addressNumber'],
+            $allInfo['addressComplement']
+        ]);
+
+        // -------------------- SESSÃO --------------------
+        $addSessaoStmt = $conn->prepare('
+            INSERT INTO sessao (
+                sesPacCodigo, sesParteSuperior, sesParteInferior, sesColuna,
+                sesGravidadePSuperior, sesGravidadePInferior, sesGravidadeColuna,
+                sesDescricao, sesUltimaEdicao, sesDtAvaliacao
+            ) VALUES (?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addSessaoStmt->execute([
+            $patientId,
+            $allInfo['upperPain'],
+            $allInfo['lowerPain'],
+            $allInfo['backPain'],
+            $allInfo['upperPainDesc'],
+            $allInfo['lowerPainDesc'],
+            $allInfo['backPainDesc'],
+            $allInfo['observations'],
+            $allInfo['lastEditedBy'],
+            $allInfo['avaliationDay']
+        ]);
+
+
+        $sessionId = $conn->lastInsertId();
+
+        // -------------------- DIA/HORA AGENDADO --------------------
+        $addDiaHoraStmt = $conn->prepare('
+            INSERT INTO diahoraagendado (
+                diaSesCodigo, diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
+                diaQtdSessao, diaTotalSessao, diaHorario, diaDtInicioSessao, diaDtFimSessao
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addDiaHoraStmt->execute([
+            $patientId,
+            $allInfo['segundaFeira'] ? 1 : 0,
+            $allInfo['tercaFeira'] ? 1 : 0,
+            $allInfo['quartaFeira'] ? 1 : 0,
+            $allInfo['quintaFeira'] ? 1 : 0,
+            $allInfo['sextaFeira'] ? 1 : 0,
+            $allInfo['QTDsessao'],
+            null, // diaTotalSessao
+            $allInfo['horarioSessao'],
+            $allInfo['dayStartTreatment'],
+            null // diaDtFimSessao
+        ]);
+
+        // -------------------- PATOLOGIA --------------------
+        $addPatologiaStmt = $conn->prepare('
+            INSERT INTO patologia (
+                patSesCodigo, patDiagnosticoClinico, patHMA, patAntecedentesPessoais,
+                patPatologiaAssociada, patTomaMedicamento, patQuandoDorComecou,
+                patQualPosicaoDorMaisIntensa, patQualPosicaoTrabalho, patFezCirurgia,
+                patDataCirurgia, patExamesComplementares, patHaComprometimentoAVS,
+                patLimitacaoFuncional, patComprometimentoMarcha
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addPatologiaStmt->execute([
+            $patientId,
+            $allInfo['clinicalDiagnosis'],
+            $allInfo['hma'],
+            $allInfo['personalHistory'],
+            $allInfo['associatedPathology'],
+            $allInfo['medication'],
+            $allInfo['painStart'],
+            $allInfo['painPosition'],
+            $allInfo['workPosition'],
+            $allInfo['surgery'],
+            $allInfo['surgeryDate'],
+            $allInfo['complementaryExams'],
+            $allInfo['avsCompromise'],
+            $allInfo['functionalLimitation'],
+            $allInfo['gaitCompromise']
+        ]);
+
+        // -------------------- EXAME FÍSICO --------------------
+        $addExameStmt = $conn->prepare('
+            INSERT INTO examefisico (
+                exaSesCodigo, exaPA, exaFR, exaFC, exaInspecao, exaPalpacao,
+                exaDorPalpacao, exaDorPalpacaoDesc, exaEdema, exaEdemaDesc,
+                exaTestesEspecificos, exaADM, exaADMDesc, exaFM, exaFMDesc,
+                exaTonusMuscular, exaTonusMuscularDesc, exaMovimento,
+                exaFazUsoOrtese, exaFazUsoOrteseDesc, exaDesviosPosturais, exaDesviosPosturaisDesc
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addExameStmt->execute([
+            $patientId,
+            $allInfo['bloodPressure'],
+            $allInfo['respiratoryRate'],
+            $allInfo['heartRate'],
+            $allInfo['inspection'],
+            $allInfo['palpation'],
+            $allInfo['palpationPain'] ? 1 : 0,
+            $allInfo['palpationPain'] ? $allInfo['palpation'] : null,
+            $allInfo['edema'] ? 1 : 0,
+            $allInfo['edema'] ? $allInfo['edemaDesc'] : null,
+            $allInfo['specificTests'],
+            $allInfo['adm'],
+            $allInfo['admDesc'] ?? null,
+            $allInfo['fm'],
+            $allInfo['fmDesc'] ?? null,
+            $allInfo['muscleTone'],
+            $allInfo['muscleToneDesc'] ?? null,
+            $allInfo['movement'],
+            $allInfo['orthesisUse'] ? 1 : 0,
+            $allInfo['orthesisType'],
+            $allInfo['posturalDeviations'] ? 1 : 0,
+            $allInfo['posturalDeviationsDescription']
+        ]);
+
+        // -------------------- TRATAMENTO FISIOTERÁPICO --------------------
+        $addTratamentoStmt = $conn->prepare('
+            INSERT INTO tratamentofisioterapico (
+                traSesCodigo, traObjetivoTratamento, traTratamentoProposto
+            ) VALUES (?,?,?)
+        ');
+
+        $addTratamentoStmt->execute([
+            $patientId,
+            $allInfo['treatmentObjectives'],
+            $allInfo['proposedTreatment']
+        ]);
+
+    }
+    catch(PDOException $e){
+        echo json_encode(['status' => 'error', $e]);
+        exit();
+    }
+    
+
+    echo json_encode(['status' => 'success', 'data' => $allInfo]);

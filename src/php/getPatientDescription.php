@@ -1,6 +1,6 @@
 <?php 
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
+    ini_set('display_errors', 0);
+    ini_set('log_errors', 1);
     error_reporting(E_ALL);
 
     header("Access-Control-Allow-Origin: *");
@@ -12,6 +12,7 @@
     $patientInfo = isset($_GET['patientCode']) ? $_GET['patientCode'] : 'unknown';
 
     // var_dump($patientInfo);
+
     if($patientInfo === 'unknown'){
         echo json_encode(['status' => 'error']);
         exit();
@@ -248,3 +249,6 @@
     $filteredPatientInfo[] = $dataObject;
 
     echo json_encode(['status' => 'success', 'data' => $filteredPatientInfo]);
+
+    //ta vendo o erro na linha em baixo? esse é o Alvin, da oi pra ele quando passar aqui :D
+    // Alvin -> 

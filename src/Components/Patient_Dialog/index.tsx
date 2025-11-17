@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog.tsx";
 import { Button } from "../../Components/ui/button";
 import { Separator } from "../../Components/ui/separator";
-import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck, BookmarkCheck } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck, BookmarkCheck, ArrowDown } from "lucide-react";
 import BodyDiagram from "../../Components/Body-Diagram";
 import * as S from "./styles";
 import { useEffect, useState } from "react";
@@ -75,6 +75,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
 
   return (
         <Dialog open={open} onOpenChange={onOpenChange}>
+          
           <DialogContent>
             <DialogHeader>
               <S.StyledDialogTitle>
@@ -85,27 +86,6 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
             <S.Content>
               <S.Section>
                 <S.SectionTitle>Informações de Contato</S.SectionTitle>
-                <S.InfoGrid>
-                  <S.InfoItem>
-                    <S.CorIcon>
-                      <Mail className="h-4 w-4 text-primary" />
-                    </S.CorIcon>
-                    <div>
-                      <S.InfoLabel>Email</S.InfoLabel>
-                      <S.InfoValue>{patient?.patientEmail ?? "-"}</S.InfoValue>
-                    </div>
-                  </S.InfoItem>
-                  
-                  <S.InfoItem>
-                    <S.CorIcon>
-                      <Phone className="h-4 w-4 text-primary" />
-                    </S.CorIcon>
-                    <div>
-                      <S.InfoLabel>Telefone</S.InfoLabel>
-                      <S.InfoValue>{patient?.patientNumber ?? "-"}</S.InfoValue>
-                    </div>
-                  </S.InfoItem>
-                </S.InfoGrid>
 
                 <S.InfoGrid>
                   <S.InfoItem>

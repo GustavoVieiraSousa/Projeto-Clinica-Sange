@@ -165,8 +165,8 @@ export function Home(){
       <div className="grid gap-4">
         
         {patientData.map((patient, idx) => (
-        <MarginCont>
-          <StyledCard key={idx} className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
+        <MarginCont key={idx}>
+          <StyledCard className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
             <StyledCardHeader className="pb-3">
               <ContentWrapper className="flex items-center justify-between">
                 <PatientRow>

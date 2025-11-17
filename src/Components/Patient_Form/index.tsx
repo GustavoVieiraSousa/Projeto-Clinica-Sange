@@ -35,8 +35,6 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     addressComplement: "",
     addressCEP:"",
 
-
-
     city: "",
     smoker: false,
     
@@ -178,12 +176,40 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     }
   }, [patientCode]);
 
+  const sendToDatabase = async () => {
+    try{
+      fetch(`http://localhost/Projeto-Clinica-Sange/src/php/addPatientData.php?patientCode`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: formData })
+      })
+      .then(async (response) => {
+        const text = await response.text();
+        try {
+          const json = JSON.parse(text);
+          console.log("JSON recebido:", json);
+        } catch (err) {
+          console.error("Resposta não é JSON. Conteúdo bruto:", text);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+      });
+    } catch (err){
+      console.error('Error sending data to database:', err);
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (patientCode) {
+
       toast.success("Dados do paciente atualizados!");
     } else {
+      sendToDatabase();
       toast.success("Novo paciente cadastrado!");
     }
     onOpenChange(false);
