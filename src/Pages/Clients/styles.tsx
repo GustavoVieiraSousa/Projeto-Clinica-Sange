@@ -84,7 +84,9 @@ export const PatientCard = styled.div`
   cursor: pointer;
   transition: box-shadow 0.2s;
   
+  
   &:hover {
+    border-radius: var(--radius);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
   
@@ -92,6 +94,7 @@ export const PatientCard = styled.div`
     font-size: 1.125rem;
   }
 `;
+
 
 export const ContactInfo = styled.div`
   display: flex;

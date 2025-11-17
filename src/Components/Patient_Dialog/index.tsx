@@ -1,20 +1,20 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog.tsx";
 import { Button } from "../../Components/ui/button";
 import { Separator } from "../../Components/ui/separator";
-import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck} from "lucide-react";
 import BodyDiagram from "../../Components/Body-Diagram";
-import type { Patient } from "../../@types/patient";
 import * as S from "./styles";
 import { useEffect, useState } from "react";
 
 interface PatientDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onEdit?: boolean;
+  onEdit?: (patientCode: number) => void;
   patientCode: number;
 }
 
 const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
   
   useEffect(() => {
@@ -65,6 +65,11 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
       
     })();
   }, [patientCode]);
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(patient);
+    }
+  };
 
   const patient = patientInfo[0] ?? {};
 
@@ -101,6 +106,29 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     </div>
                   </S.InfoItem>
                 </S.InfoGrid>
+
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Mail className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Email</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientEmail ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Phone className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Telefone</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientNumber ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
+                
               </S.Section>
 
               <Separator />
@@ -139,6 +167,93 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                   </div>
                 </S.InfoItem>
               </S.Section>
+
+              <Separator />
+
+               <S.Section>
+                <S.SectionTitle>Dados da consulta</S.SectionTitle>
+                <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <FileText className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Horário das sessões</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientHour ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <Calendar className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Data de inicio</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientInitialDate?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
+
+                <S.InfoItem>
+                  <S.CorIcon>
+                    <MapPin className="h-4 w-4 text-primary" />
+                  </S.CorIcon>
+                  <div>
+                    <S.InfoLabel>Número de sessões</S.InfoLabel>
+                    <S.InfoValue>{patient?.patientSessions ?? "-"}</S.InfoValue>
+                  </div>
+                </S.InfoItem>
+              </S.Section>
+
+              <S.InfoGrid>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Segunda-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayMonday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Terça-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayTuesday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                    <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Quarta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayWednesday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Quinta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayThrusday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                  <S.InfoItem>
+                    <S.CorIcon>
+                      <TicketCheck className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Sexta-Feira</S.InfoLabel>
+                      <S.InfoValue>{patient?.dayFriday ?? "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
+                </S.InfoGrid>
 
               <Separator />
               
@@ -543,7 +658,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     Imprimir PDF
                   </Button>
                   {onEdit && (
-                    <Button onClick={console.log}>
+                    <Button onClick={handleEdit}>
                       <Edit />
                       Editar Paciente
                     </Button>

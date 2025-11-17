@@ -5,13 +5,14 @@ import { Input } from "../../Components/ui/input";
 import { Search, UserPlus, Users as UsersIcon, Mail, Phone } from "lucide-react";
 import * as S from "./styles";
 import PatientDialog from "../../Components/Patient_Dialog";
+import PatientForm from "../../Components/Patient_Form";
 
 export function Clients(){
 const [searchTerm, setSearchTerm] = useState("");
 const [dialogOpen, setDialogOpen] = useState(false);
 const [patientCode, setPatientCode] = useState<number>(0);
 const [patientData, setPatientData] = useState<any[]>([]);
-const [patientArray, setPatientArray] = useState<any[]>([]);
+const [formOpen, setFormOpen] = useState(false);
 
 const handleViewPatient = (patientCode: number) => {
   if (patientCode !== 0) {
@@ -19,6 +20,17 @@ const handleViewPatient = (patientCode: number) => {
     setPatientCode(patientCode);
   }
 };
+
+const handleNewPatient = () => {
+    setPatientCode(0);
+    setFormOpen(true);
+  };
+
+   const handleEditPatient = (patientCode: number) => {
+    setPatientCode(patientCode);
+    setDialogOpen(false);
+    setFormOpen(true);
+  };
 
 useEffect(() => {
   (async () => {
@@ -44,30 +56,6 @@ useEffect(() => {
   })();
 }, []);
 
-useEffect(() => {
-  (async () => {
-    try {
-      const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientDescription.php?patientCode=${patientCode}`;
-      const res = await fetch(url);
-      console.log('fetch status', res.status, res.statusText);
-      const json = await res.json();
-      console.log('response json:', json);
-
-      if (json && Array.isArray(json.data)) {
-        setPatientData(json.data);
-      } else if (Array.isArray(json)) {
-        setPatientData(json);
-      } else {
-        setPatientData([]);
-        console.warn('Unexpected Error', json);
-      }
-
-    } catch (err) {
-      console.error('Error getting data (when timeFilter changed):', err);
-    }
-  })();
-}, [patientArray]);
-
     return(
          <S.Container>
       <S.Header>
@@ -78,7 +66,7 @@ useEffect(() => {
             <S.Subtitle>3 pacientes cadastrados</S.Subtitle>
           </div>
         </S.HeaderLeft>
-        <Button onClick={console.log} size="lg">
+        <Button onClick={handleNewPatient} size="lg">
           <UserPlus />
           Novo Paciente
         </Button>
@@ -128,16 +116,22 @@ useEffect(() => {
             </StyledCard>
           </S.PatientCard>
 
-          /*final do bang doido*/
-          ))}
+      ))}
+
       </S.PatientGrid>
       
       
       <PatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        onEdit={true}
+        onEdit={handleEditPatient}
         patientCode={patientCode}
+      />
+
+      <PatientForm
+        patientCode={patientCode}
+        open={formOpen}
+        onOpenChange={setFormOpen}
       />
     
     </S.Container>

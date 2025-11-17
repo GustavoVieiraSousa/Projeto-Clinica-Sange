@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper} from "../../Components/ui/card";
+import { StyledCard,StyledCardContent,StyledCardHeader,StyledCardDescription,StyledCardTitle, TimePill, PatientDetails, PatientRow, ContentWrapper, ButtonWrapper, MarginCont} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
 import PatientDialog from "../../Components/Patient_Dialog";
 import { Badge } from "../../Components/ui/badge";
@@ -27,6 +27,7 @@ export function Home(){
         return <Badge variant="secondary">Pendente</Badge>;
     }};
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const convertPatientStatus = (dayStatus: any): PatientStatus => {
       if (dayStatus === true || dayStatus === 1 || dayStatus === "1") {
         return "confirmed";
@@ -37,6 +38,7 @@ export function Home(){
     };
 
     // retorna a variável CSS para fill/color do Bookmark conforme pacNivelImportancia
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getBookmarkVar = (patient: any) => {
       const level = patient.patientLevel ? patient.patientLevel : null;
 
@@ -58,6 +60,7 @@ export function Home(){
           if (json && Array.isArray(json.data)) {
             setPatientData(json.data);
             const initialStatus: { [key: number]: PatientStatus } = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             json.data.forEach((patient: any, idx: number) => {
               initialStatus[idx] = convertPatientStatus(patient.dayStatus);
             });
@@ -162,6 +165,7 @@ export function Home(){
       <div className="grid gap-4">
         
         {patientData.map((patient, idx) => (
+        <MarginCont>
           <StyledCard key={idx} className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">
             <StyledCardHeader className="pb-3">
               <ContentWrapper className="flex items-center justify-between">
@@ -216,6 +220,8 @@ export function Home(){
               </ButtonWrapper>
             </StyledCardContent>
           </StyledCard>
+        </MarginCont>
+
         ))}
       </div>
 
