@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog.tsx";
 import { Button } from "../../Components/ui/button";
 import { Separator } from "../../Components/ui/separator";
-import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck, BookmarkCheck, ArrowDown } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck, BookmarkCheck } from "lucide-react";
 import BodyDiagram from "../../Components/Body-Diagram";
 import * as S from "./styles";
 import { useEffect, useState } from "react";

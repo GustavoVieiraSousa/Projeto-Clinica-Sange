@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyledCard, StyledCardContent, StyledCardHeader, StyledCalendarCardDay, StyledCalendarCardDayNumber,StyledCalendarCardBadge } from "../../Components/ui/card";
+import { StyledCard, StyledCardContent, StyledCardHeader} from "../../Components/ui/card";
 import { Button } from "../../Components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
 import * as S from "./styles";
@@ -25,7 +25,8 @@ export function Calendar(){
   };
 
   const getAppointmentsForDate = (day: number) => {
-    //const date = new Date(year, month, day).toISOString().split('T')[0];
+    const date = new Date(year, month, day).toISOString().split('T')[0];
+    console.log(date);
     return mockAppointments;
   };
 
