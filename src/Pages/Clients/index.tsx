@@ -101,16 +101,16 @@ useEffect(() => {
                   <S.ContactInfo>
                     <S.ContactItem>
                       <Mail />
-                      <S.ContactText>gustavo.sousa12@mail.com</S.ContactText>
+                      <S.ContactText>{patient.patientEmail}</S.ContactText>
                     </S.ContactItem>
                     <S.ContactItem>
                       <Phone />
-                      <S.ContactText>"(11) 91547-0828"</S.ContactText>
+                      <S.ContactText>{patient.patientNumber}</S.ContactText>
                     </S.ContactItem>
                   </S.ContactInfo>
                 </StyledCardDescription>
                 <S.CPFText>
-                  CPF: 123.456.789-00
+                  CPF: {patient.patientCPF} 
                 </S.CPFText>
               </StyledCardContent>
             </StyledCard>

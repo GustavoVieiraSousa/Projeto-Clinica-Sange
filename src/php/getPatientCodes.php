@@ -104,7 +104,7 @@
                 'dayMonday'                    => $gD['diaSegunda'] ?? null,
                 'dayTuesday'                   => $gD['diaTerca'] ?? null,
                 'dayWednesday'                 => $gD['diaQuarta'] ?? null,
-                'dayThrusday'                  => $gD['diaQuinta'] ?? null,
+                'dayThursday'                  => $gD['diaQuinta'] ?? null,
                 'dayFriday'                    => $gD['diaSexta'] ?? null,
                 'dayQuantitySession'           => $gD['diaQtdSessao'] ?? null,
                 'dayTotalSession'              => $gD['diaTotalSessao'] ?? null,

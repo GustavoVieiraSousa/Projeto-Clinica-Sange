@@ -27,7 +27,7 @@
 
         $addPacienteStmt->execute([
             $allInfo['cardNumber'],
-            111, // pacTipoConvenio (se não tiver no form)
+            $allInfo['agreement'],
             0,    // pacDesativado default
             null, // pacDtDesativado
             $allInfo['name'],
