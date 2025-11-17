@@ -23,6 +23,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     cpf: "",
     birthDate: "",
     cardNumber: "",
+    agreement:"",
     age: "",
     gender: "masculino" as "masculino" | "feminino" | "outro",
     maritalStatus: "",
@@ -107,6 +108,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
         cpf:  "",
         birthDate:"",
         cardNumber:  "",
+        agreement:"",
         age:   "",
         gender:  "masculino",
         maritalStatus:  "",
@@ -246,6 +248,15 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                   id="cardNumber"
                   value={formData.cardNumber}
                   onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
+                />
+              </S.FormField>
+
+              <S.FormField>
+                <Label htmlFor="agreement">Convênio</Label>
+                <Input
+                  id="agreement"
+                  value={formData.agreement}
+                  onChange={(e) => setFormData({ ...formData, agreement: e.target.value })}
                 />
               </S.FormField>
 

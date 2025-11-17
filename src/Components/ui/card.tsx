@@ -84,3 +84,4 @@ gap: 1rem;
 export const MarginCont = styled.div`
 margin-bottom:1.5rem;
 `
+
