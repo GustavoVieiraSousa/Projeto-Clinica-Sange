@@ -17,7 +17,7 @@ interface PatientFormProps {
 const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
   const [formData, setFormData] = useState({
     // Dados Pessoais
-    name:  "",
+    name:"",
     email: "",
     phone: "",
     cpf: "",
@@ -35,6 +35,8 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     addressComplement: "",
     addressCEP:"",
 
+
+
     city: "",
     smoker: false,
     
@@ -46,12 +48,21 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     medication: "",
     painStart: "",
     painPosition: "",
-    backPain:"",
+    backPain:"Leve" as "Leve"|"Média"|"Alta" | "Nenhuma",
     backPainDesc:"",
-    upperPain:"",
+    upperPain:"Leve" as "Leve"|"Média"|"Alta"| "Nenhuma",
     upperPainDesc:"",
-    lowerPain:"",
+    lowerPain:"Leve" as "Leve"|"Média"|"Alta"|"Nenhuma",
     lowerPainDesc:"",
+    horarioSessao:"",
+    dayStartTreatment:"",
+    avaliationDay:"",
+    QTDsessao:"",
+    segundaFeira:false,
+    tercaFeira:false,
+    quartaFeira:false,
+    quintaFeira:false,
+    sextaFeira:false,
 
     workPosition: "",
     surgery: "",
@@ -119,12 +130,22 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
         painStart:  "",
         painPosition:  "",
 
-        backPain:"",
+        backPain:"Nenhuma",
         backPainDesc:"",
-        upperPain:"",
+        upperPain:"Nenhuma",
         upperPainDesc:"",
-        lowerPain:"",
+        lowerPain:"Nenhuma",
         lowerPainDesc:"",
+        horarioSessao:"",
+        dayStartTreatment:"",
+        avaliationDay:"",
+        QTDsessao:"0",
+        segundaFeira:false,
+        tercaFeira:false,
+        quartaFeira:false,
+        quintaFeira:false,
+        sextaFeira:false,
+
 
         workPosition:"",
         surgery: "",
@@ -331,7 +352,39 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
             </S.FormGrid>
 
             <S.FormField>
-              <Label htmlFor="address">Endereço Completo</Label>
+              <Label htmlFor="address">Rua</Label>
+              <Input
+                id="address"
+                value={formData.addressStreet}
+                onChange={(e) => setFormData({ ...formData, addressStreet: e.target.value })}
+              />
+            </S.FormField>
+            <S.FormField>
+              <Label htmlFor="address">Número</Label>
+              <Input
+                id="address"
+                value={formData.addressNumber}
+                onChange={(e) => setFormData({ ...formData, addressNumber: e.target.value })}
+              />
+            </S.FormField>
+            <S.FormField>
+              <Label htmlFor="address">Bairro</Label>
+              <Input
+                id="address"
+                value={formData.addressNeighborhood}
+                onChange={(e) => setFormData({ ...formData, addressNeighborhood: e.target.value })}
+              />
+            </S.FormField>
+            <S.FormField>
+              <Label htmlFor="address">Complemento</Label>
+              <Input
+                id="address"
+                value={formData.addressComplement}
+                onChange={(e) => setFormData({ ...formData, addressComplement: e.target.value })}
+              />
+            </S.FormField>
+            <S.FormField>
+              <Label htmlFor="address">CEP</Label>
               <Input
                 id="address"
                 value={formData.addressCEP}
@@ -340,7 +393,126 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
             </S.FormField>
           </S.Section>
 
-          {/* Dados da Patologia */}
+          {/* Dados da Consulta (sessão) */}
+          <S.Section>
+            <S.SectionTitle>Dados da Sessão</S.SectionTitle>
+
+            <S.FormField>
+              <Label htmlFor="avaliationDay">Data da Avaliação</Label>
+              <Input
+                  id="avaliationDay"
+                  type="date"
+                  value={formData.avaliationDay}
+                  onChange={(e) => setFormData({ ...formData, avaliationDay: e.target.value })}
+                />
+            </S.FormField>
+
+            <S.FormField>
+              <Label htmlFor="dayStartTreatment">Data inicio do tratamento</Label>
+              <Input
+                  id="dayStartTreatment"
+                  type="date"
+                  value={formData.dayStartTreatment}
+                  onChange={(e) => setFormData({ ...formData, dayStartTreatment: e.target.value })}
+                />
+            </S.FormField>
+
+            <S.FormField>
+              <Label htmlFor="personalHistory">Quantidade de sessões</Label>
+              <Input
+                  id="age"
+                  value={formData.QTDsessao}
+                  onChange={(e) => setFormData({ ...formData, QTDsessao: e.target.value })}
+                />
+            </S.FormField>
+
+           
+            <S.FormGrid>
+             <S.FormField>
+                <Label htmlFor="Monday">Vai Segunda-Feira?</Label>
+                <Select
+                  value={formData.segundaFeira ? "sim" : "nao"}
+                  onValueChange={(value) => setFormData({ ...formData, segundaFeira: value === "sim" })}
+                >
+                  <SelectTrigger id="Monday">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sim">Sim</SelectItem>
+                    <SelectItem value="nao">Não</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
+
+               <S.FormField>
+                <Label htmlFor="Tuesday">Vai Terça-Feira?</Label>
+                <Select
+                  value={formData.tercaFeira ? "sim" : "nao"}
+                  onValueChange={(value) => setFormData({ ...formData, tercaFeira: value === "sim" })}
+                >
+                  <SelectTrigger id="Tuesday">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sim">Sim</SelectItem>
+                    <SelectItem value="nao">Não</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
+
+            <S.FormField>
+                <Label htmlFor="Wednesday">Vai Quarta-Feira?</Label>
+                <Select
+                  value={formData.quartaFeira ? "sim" : "nao"}
+                  onValueChange={(value) => setFormData({ ...formData, quartaFeira: value === "sim" })}
+                >
+                  <SelectTrigger id="Wednesday">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sim">Sim</SelectItem>
+                    <SelectItem value="nao">Não</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
+
+               <S.FormField>
+                <Label htmlFor="Thrusday">Vai Quinta-Feira?</Label>
+                <Select
+                  value={formData.quartaFeira ? "sim" : "nao"}
+                  onValueChange={(value) => setFormData({ ...formData, quintaFeira: value === "sim" })}
+                >
+                  <SelectTrigger id="Thrusday">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sim">Sim</SelectItem>
+                    <SelectItem value="nao">Não</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
+
+                <S.FormField>
+                <Label htmlFor="Friday">Vai Sexta-Feira?</Label>
+                <Select
+                  value={formData.sextaFeira ? "sim" : "nao"}
+                  onValueChange={(value) => setFormData({ ...formData, sextaFeira: value === "sim" })}
+                >
+                  <SelectTrigger id="Friday">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sim">Sim</SelectItem>
+                    <SelectItem value="nao">Não</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
+            </S.FormGrid>
+
+            
+
+          </S.Section>
+
           <S.Section>
             <S.SectionTitle>Dados da Patologia</S.SectionTitle>
 
@@ -489,7 +661,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onValueChange={(value) => setFormData({ ...formData, backPain: value as any })}
                 >
-                  <SelectTrigger id="muscleTone">
+                  <SelectTrigger id="backPain">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
