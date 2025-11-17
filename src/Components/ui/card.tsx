@@ -84,3 +84,49 @@ gap: 1rem;
 export const MarginCont = styled.div`
 margin-bottom:1.5rem;
 `
+// Calendar-specific card components
+export const StyledCalendarCardDay = styled.div<{ $isToday?: boolean }>`
+  aspect-ratio: 1;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  
+  ${props => props.$isToday && `
+    background: hsl(var(--primary) / 0.1);
+    border-color: hsl(var(--primary));
+  `}
+
+  &:hover {
+    box-shadow: 0 4px 12px hsl(var(--foreground) / 0.1);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+  }
+`;
+
+export const StyledCalendarCardDayNumber = styled.div`
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+`;
+
+export const StyledCalendarCardBadge = styled.div`
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  font-size: 0.625rem;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-weight: 500;
+  margin-top: auto;
+
+  @media (max-width: 768px) {
+    font-size: 0.5rem;
+  }
+`;
