@@ -348,7 +348,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       </S.CorIcon>
                       <div>
                         <S.InfoLabel>Cidade</S.InfoLabel>
-                        <S.InfoValue>{patient?.addressCity ?? "-"} - {patient?.addressState ?? "-"}</S.InfoValue>
+                        <S.InfoValue>{patient?.addressCity ?? "-"}</S.InfoValue>
                       </div>
                     </S.InfoItem>
                  

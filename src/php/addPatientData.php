@@ -37,7 +37,7 @@
             $allInfo['weight'],
             $allInfo['height'],
             $allInfo['smoker'] ? 1 : 0,
-            null, // pacNivelImportancia
+            2,
             $allInfo['email'],
             $allInfo['phone'],
             $allInfo['cpf']
@@ -49,8 +49,8 @@
         // -------------------- ENDEREÇO --------------------
         $addEnderecoStmt = $conn->prepare('
             INSERT INTO endereco (
-                endPacCodigo, endCEP, endRua, endBairro, endCidade, endUF, endNumero, endComplemento
-            ) VALUES (?,?,?,?,?,?,?,?)
+                endPacCodigo, endCEP, endRua, endBairro, endCidade, endNumero, endComplemento
+            ) VALUES (?,?,?,?,?,?,?)
         ');
 
         $addEnderecoStmt->execute([
@@ -59,7 +59,6 @@
             $allInfo['addressStreet'],
             $allInfo['addressNeighborhood'],
             $allInfo['city'],
-            null, // endUF se não tiver
             $allInfo['addressNumber'],
             $allInfo['addressComplement']
         ]);
@@ -93,8 +92,8 @@
         $addDiaHoraStmt = $conn->prepare('
             INSERT INTO diahoraagendado (
                 diaSesCodigo, diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
-                diaQtdSessao, diaTotalSessao, diaHorario, diaDtInicioSessao, diaDtFimSessao
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+                diaQtdSessao, diaTotalSessao, diaHorario, diaDtInicioSessao
+            ) VALUES (?,?,?,?,?,?,?,?,?,?)
         ');
 
         $addDiaHoraStmt->execute([
@@ -105,10 +104,9 @@
             $allInfo['quintaFeira'] ? 1 : 0,
             $allInfo['sextaFeira'] ? 1 : 0,
             $allInfo['QTDsessao'],
-            null, // diaTotalSessao
+            $allInfo['QTDsessao'], // diaTotalSessao
             $allInfo['horarioSessao'],
             $allInfo['dayStartTreatment'],
-            null // diaDtFimSessao
         ]);
 
         // -------------------- PATOLOGIA --------------------
