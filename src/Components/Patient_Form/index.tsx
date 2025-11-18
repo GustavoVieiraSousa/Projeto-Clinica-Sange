@@ -43,6 +43,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     addressNumber: "",
     addressComplement: "",
     addressCEP:"",
+    PatientLevel:"",
 
     city: "",
     smoker: false,
@@ -86,11 +87,16 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     inspection: "",
     palpation: "",
     palpationPain: false,
+    palpationPainDesc:"",
     edema: false,
+    edemaDesc:"",
     specificTests: "",
     adm: "normal" as "normal" | "diminuida",
+    ADMDesc:"",
     fm: "normal" as "normal" | "diminuida",
+    FMDesc:"",
     muscleTone: "normal" as "normal" | "hipotonico" | "hipertonico",
+    tonusMuscDesc:"",
     movement: "ativo" as "ativo" | "passivo" | "ativo-assistido",
     orthesisUse: false,
     orthesisType: "",
@@ -139,6 +145,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 height: patientData[0].patientHeight || "",
                 profession: patientData[0].patientProfession || "",
                 smoker: patientData[0].patientSmoker || false,
+                PatientLevel: patientData[0].patientLevel || "0",
 
                 //endereco
                 addressStreet: patientData[0].addressStreet || "",
@@ -192,19 +199,24 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 inspection: patientData[0].examInspection || "",
                 palpation: patientData[0].examPalpation || "",
                 palpationPain: patientData[0].examPalpationPain || false,
+                palpationPainDesc: patientData[0].examPainPalpationDesc || "",
                 //TODO: adicionar palpationPainDesc
                 // palpationPainDesc: patientData[0].examPalpationPainDesc || "",
                 edema: patientData[0].examEdema || false,
+                edemaDesc: patientData[0].examEdemaDesc || "",
                 //TODO: adicionar edemaDesc
                 // edemaDesc: patientData[0].examEdemaDesc || "",
                 specificTests: patientData[0].examSpecificTests || "",
                 adm: patientData[0].examADM || "normal",
+                ADMDesc: patientData[0].examADMDesc || "",
                 //TODO: adicionar admDesc
                 //admDesc: patientData[0].examADMDesc || "",
                 fm: patientData[0].examFM || "normal",
+                FMDesc: patientData[0].examFMDesc || "",
                 //TODO: adicionar fmDesc
                 //fmDesc: patientData[0].examFMDesc || "",
                 muscleTone: patientData[0].examMuscularTonus || "normal",
+                tonusMuscDesc: patientData[0].examMuscularTonusDesc || "",
                 //TODO: adicionar MuscularDesc
                 //muscleToneDesc: patientData[0].examMuscularTonusDesc || "",
                 movement: patientData[0].examMovement || "ativo",
@@ -251,6 +263,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         addressNumber: "",
         addressComplement: "",
         addressCEP:"",
+        PatientLevel:"0",
 
         city: "",
         smoker: false,
@@ -294,11 +307,16 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         inspection: "",
         palpation: "",
         palpationPain: false,
+        palpationPainDesc:"",
         edema: false,
+        edemaDesc:"",
         specificTests: "",
         adm: "normal",
+        ADMDesc: "",
         fm: "normal",
+        FMDesc:"",
         muscleTone: "normal",
+        tonusMuscDesc:"",
         movement: "ativo",
         orthesisUse: false,
         orthesisType: "",
@@ -411,9 +429,10 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
             <S.FormField>
                 <Label htmlFor="typePatient">Qual o tipo do Paciente?</Label>
                 <Select
-                  value={formData.gender}
+                  value={formData.PatientLevel}
+                  required
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  onValueChange={(value) => setFormData({ ...formData, gender: value as any })}
+                  onValueChange={(value) => setFormData({ ...formData, PatientLevel: value as any })}
                 >
                   <SelectTrigger id="typePatient">
                     <SelectValue />
@@ -425,6 +444,17 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
+
+              <S.FormField>
+              <Label htmlFor="avaliationDay">Data da Avaliação</Label>
+              <Input
+                  id="avaliationDay"
+                  required
+                  type="date"
+                  value={formData.avaliationDay}
+                  onChange={(e) => setFormData({ ...formData, avaliationDay: e.target.value })}
+                />
+            </S.FormField>
 
             <S.FormGrid>
               <S.FormField>
@@ -619,15 +649,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
           <S.Section>
             <S.SectionTitle>Dados da Sessão</S.SectionTitle>
 
-            <S.FormField>
-              <Label htmlFor="avaliationDay">Data da Avaliação</Label>
-              <Input
-                  id="avaliationDay"
-                  type="date"
-                  value={formData.avaliationDay}
-                  onChange={(e) => setFormData({ ...formData, avaliationDay: e.target.value })}
-                />
-            </S.FormField>
+            
 
             <S.FormField>
               <Label htmlFor="dayStartTreatment">Data inicio do tratamento</Label>
@@ -1009,7 +1031,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
               />
             </S.FormField>
 
-            <S.FormGrid>
+            
               <S.FormField>
                 <Label htmlFor="palpationPain">Dor à palpação</Label>
                 <Select
@@ -1025,6 +1047,17 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
+         {formData.palpationPain && (
+              <S.FormField>
+              <Label htmlFor="examPainPalpationDesc">Descrição da dor à palpação</Label>
+              <Textarea
+                id="examPainPalpationDesc"
+                value={formData.palpationPainDesc}
+                onChange={(e) => setFormData({ ...formData, palpationPainDesc: e.target.value })}
+                rows={3}
+              />
+            </S.FormField>
+         )}
 
               <S.FormField>
                 <Label htmlFor="edema">Edema</Label>
@@ -1041,6 +1074,17 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
+      {formData.edema && (
+              <S.FormField>
+              <Label htmlFor="edemaDesc">Descrição do Edema</Label>
+              <Textarea
+                id="edemaDesc"
+                value={formData.edemaDesc}
+                onChange={(e) => setFormData({ ...formData, edemaDesc: e.target.value })}
+                rows={3}
+              />
+            </S.FormField>
+      )}
 
               <S.FormField>
                 <Label htmlFor="adm">ADM (Amplitude de Movimento)</Label>
@@ -1058,6 +1102,16 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
+
+               <S.FormField>
+              <Label htmlFor="ADMDesc">Descrição ADM</Label>
+              <Textarea
+                id="ADMDesc"
+                value={formData.ADMDesc}
+                onChange={(e) => setFormData({ ...formData, ADMDesc: e.target.value })}
+                rows={3}
+              />
+            </S.FormField>
 
               <S.FormField>
                 <Label htmlFor="fm">FM (Força Muscular)</Label>
@@ -1077,6 +1131,16 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
               </S.FormField>
 
               <S.FormField>
+              <Label htmlFor="FMDesc">Descrição FM</Label>
+              <Textarea
+                id="FMDesc"
+                value={formData.FMDesc}
+                onChange={(e) => setFormData({ ...formData, FMDesc: e.target.value })}
+                rows={3}
+              />
+            </S.FormField>
+
+              <S.FormField>
                 <Label htmlFor="muscleTone">Tônus Muscular</Label>
                 <Select
                   value={formData.muscleTone}
@@ -1093,6 +1157,17 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
+
+              <S.FormField>
+              <Label htmlFor="tonusMuscDesc">Descrição Tônus Muscular</Label>
+              <Textarea
+                id="tonusMuscDesc"
+                value={formData.tonusMuscDesc}
+                onChange={(e) => setFormData({ ...formData, tonusMuscDesc: e.target.value })}
+                rows={3}
+              />
+            </S.FormField>
+
 
               <S.FormField>
                 <Label htmlFor="movement">Movimento</Label>
@@ -1154,7 +1229,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                   </SelectContent>
                 </Select>
               </S.FormField>
-            </S.FormGrid>
+            
 
             {formData.posturalDeviations && (
               <S.FormField>
