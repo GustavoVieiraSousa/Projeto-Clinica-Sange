@@ -5,7 +5,9 @@ export const Container = styled.div`
   min-height: 3.5rem;
   background: hsl(var(--background));
   border-bottom: 1px solid #D57FD8;
-
+  position:fixed;
+  width:100%;
+  top:0;
 `;
 
 export const Img = styled.img`

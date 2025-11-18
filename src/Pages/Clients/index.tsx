@@ -35,7 +35,7 @@ const handleNewPatient = () => {
 useEffect(() => {
   (async () => {
     try {
-      const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientCodes.php`;
+      const url = `http://localhost/Clinica SANGE/Peojeto Clinica SANGE/src/php/getPatientCodes.php`;
       const res = await fetch(url);
       console.log('fetch status', res.status, res.statusText);
       const json = await res.json();

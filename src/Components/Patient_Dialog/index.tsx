@@ -5,6 +5,9 @@ import { Mail, Phone, MapPin, Calendar, FileText, Edit, Printer, TicketCheck, Bo
 import BodyDiagram from "../../Components/Body-Diagram";
 import * as S from "./styles";
 import { useEffect, useState } from "react";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import FichaAvaliacaoPrint  from "../../Components/Patient_Pdf";
 
 interface PatientDialogProps {
   open: boolean;
@@ -16,6 +19,7 @@ interface PatientDialogProps {
 const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
+   const printRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // debug rápido: ver se o prop está chegando
@@ -30,7 +34,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
       }
 
       try {
-        const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientDescription.php?patientCode=${patientCode}`;
+        const url = `http://localhost/Clinica SANGE/Peojeto Clinica SANGE/src/php/getPatientDescription.php?patientCode=${patientCode}`;
         console.log('PatientDialog fetching URL:', url);
 
         const res = await fetch(url);
@@ -72,6 +76,11 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
   };
 
   const patient = patientInfo[0] ?? {};
+
+   const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: `Ficha_${patient?.patientName ?? "Paciente"}`,
+  });
 
   return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -617,7 +626,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
               <Separator />
 
               <S.Section>
-                <S.SectionTitle>Exame Físico</S.SectionTitle>
+                <S.SectionTitle>Exame Fisioterápeutico</S.SectionTitle>
                     <S.DataItem>
                         <S.InfoLabel>Tratamento Proposto</S.InfoLabel>
                         <S.InfoValue>{patient?.traProposedTreatment ?? "-"}</S.InfoValue>
@@ -646,7 +655,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
               <>
                 <Separator />
                 <S.ButtonContainer>
-                  <Button  variant="outline">
+                  <Button  variant="outline" onClick={handlePrint}>
                     <Printer />
                     Imprimir PDF
                   </Button>
@@ -665,7 +674,9 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
               </>
             </S.Content>
           </DialogContent>
+          <FichaAvaliacaoPrint ref={printRef} patient={patient}></FichaAvaliacaoPrint>
         </Dialog>
+        
   );
 };
 
