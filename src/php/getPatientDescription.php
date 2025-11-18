@@ -181,6 +181,7 @@
         'addressComplement'            => $gA['endComplemento'] ?? null,
   
         //sessao  
+        'sessionCode'                  => $gS['sesCodigo'] ?? null,
         'sessionSuperior'              => $gS['ParteSuperior'] ?? null,
         'sessionInferior'              => $gS['sesParteInferior'] ?? null,
         'sessionBack'                  => $gS['sesColuna'] ?? null,
@@ -248,7 +249,7 @@
 
         //extra
         'birthDateRaw'                 => $gP['pacDtNascimento'] ?? null,
-
+        
     ];
     $filteredPatientInfo[] = $dataObject;
 

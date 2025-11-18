@@ -44,7 +44,7 @@ export function Home(){
 
       if (level === 1) return "var(--bookmark-special)";
       if (level === 2) return "var(--bookmark-avaliation)";
-      return "var(--bookmark-default)"; // inclui 0 e qualquer outro inválido
+      return "var(--bookmark-default)";
     };
 
     //get pacient data from PHP (when timeFilter changes)

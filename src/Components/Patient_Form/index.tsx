@@ -14,10 +14,10 @@ interface PatientFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
-
 const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
 
   const [patientData, setPatientData] = useState<any[]>([]);  
+  const [sessionCode, setSessionCode] = useState<number>(0);
 
   const [formData, setFormData] = useState({
     // Dados Pessoais
@@ -113,6 +113,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
 
             if (json && Array.isArray(json.data)) {
               setPatientData(json.data);
+              setSessionCode(json.data[0].sessionCode || 0);
               setFormData({
                 //paciente
                 name: patientData[0].patientName || "",
@@ -307,7 +308,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
 
   const addToDatabase = async () => {
     try{
-      fetch(`http://localhost/Projeto-Clinica-Sange/src/php/addPatientData.php?patientCode`, {
+      fetch(`http://localhost/Projeto-Clinica-Sange/src/php/addPatientData.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -333,7 +334,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
 
   const editToDatabase = async () => {
     try{
-      fetch(`http://localhost/Projeto-Clinica-Sange/src/php/editPatientData.php?patientCode=${patientCode}`, {
+      fetch(`http://localhost/Projeto-Clinica-Sange/src/php/editPatientData.php?patientCode=${patientCode}&sessionCode=${sessionCode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

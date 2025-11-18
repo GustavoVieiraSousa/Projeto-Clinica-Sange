@@ -15,6 +15,10 @@
         exit();
     }
 
+    function normalizeFloat($value) {
+        return (float) str_replace(',', '.', $value);
+    }
+
     try{
         // -------------------- PACIENTE --------------------
         $addPacienteStmt = $conn->prepare('
@@ -25,6 +29,9 @@
             ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ');
 
+        $weight = normalizeFloat($allInfo['weight']);
+        $height = normalizeFloat($allInfo['height']);
+
         $addPacienteStmt->execute([
             $allInfo['cardNumber'],
             $allInfo['agreement'],
@@ -34,10 +41,10 @@
             $allInfo['birthDate'],
             $allInfo['gender'],
             $allInfo['maritalStatus'],
-            $allInfo['weight'],
-            $allInfo['height'],
+            $weight,
+            $height,
             $allInfo['smoker'] ? 1 : 0,
-            2,
+            2, // sempre criar usuario como Avaliacao
             $allInfo['email'],
             $allInfo['phone'],
             $allInfo['cpf']
@@ -88,27 +95,6 @@
 
         $sessionId = $conn->lastInsertId();
 
-        // -------------------- DIA/HORA AGENDADO --------------------
-        $addDiaHoraStmt = $conn->prepare('
-            INSERT INTO diahoraagendado (
-                diaSesCodigo, diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
-                diaQtdSessao, diaTotalSessao, diaHorario, diaDtInicioSessao
-            ) VALUES (?,?,?,?,?,?,?,?,?,?)
-        ');
-
-        $addDiaHoraStmt->execute([
-            $patientId,
-            $allInfo['segundaFeira'] ? 1 : 0,
-            $allInfo['tercaFeira'] ? 1 : 0,
-            $allInfo['quartaFeira'] ? 1 : 0,
-            $allInfo['quintaFeira'] ? 1 : 0,
-            $allInfo['sextaFeira'] ? 1 : 0,
-            $allInfo['QTDsessao'],
-            $allInfo['QTDsessao'], // diaTotalSessao
-            $allInfo['horarioSessao'],
-            $allInfo['dayStartTreatment'],
-        ]);
-
         // -------------------- PATOLOGIA --------------------
         $addPatologiaStmt = $conn->prepare('
             INSERT INTO patologia (
@@ -121,7 +107,7 @@
         ');
 
         $addPatologiaStmt->execute([
-            $patientId,
+            $sessionId,
             $allInfo['clinicalDiagnosis'],
             $allInfo['hma'],
             $allInfo['personalHistory'],
@@ -150,7 +136,7 @@
         ');
 
         $addExameStmt->execute([
-            $patientId,
+            $sessionId,
             $allInfo['bloodPressure'],
             $allInfo['respiratoryRate'],
             $allInfo['heartRate'],
@@ -182,11 +168,74 @@
         ');
 
         $addTratamentoStmt->execute([
-            $patientId,
+            $sessionId,
             $allInfo['treatmentObjectives'],
             $allInfo['proposedTreatment']
         ]);
 
+
+        // -------------------- DIA/HORA AGENDADO PRECISA FICAR ANTES DE CONSULTA -------------------------
+
+        // -------------------- DIA/HORA AGENDADO --------------------
+        $addDiaHoraStmt = $conn->prepare('
+            INSERT INTO diahoraagendado (
+                diaSesCodigo, diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
+                diaQtdSessao, diaTotalSessao, diaHorario, diaDtInicioSessao
+            ) VALUES (?,?,?,?,?,?,?,?,?,?)
+        ');
+
+        $addDiaHoraStmt->execute([
+            $sessionId,
+            $allInfo['segundaFeira'] ? 1 : 0,
+            $allInfo['tercaFeira'] ? 1 : 0,
+            $allInfo['quartaFeira'] ? 1 : 0,
+            $allInfo['quintaFeira'] ? 1 : 0,
+            $allInfo['sextaFeira'] ? 1 : 0,
+            $allInfo['QTDsessao'],
+            $allInfo['QTDsessao'], // diaTotalSessao
+            $allInfo['horarioSessao'],
+            $allInfo['dayStartTreatment'],
+        ]);
+
+        $dayId = $conn->lastInsertId();
+
+        //--------------------- CRIAR CONSULTAS --------------------
+        $startDate   = new DateTime($allInfo['dayStartTreatment']); 
+        $totalSessao = (int)$allInfo['QTDsessao'];
+
+        $daysSelected = [
+            'Monday'    => !empty($allInfo['segundaFeira']),
+            'Tuesday'   => !empty($allInfo['tercaFeira']),
+            'Wednesday' => !empty($allInfo['quartaFeira']),
+            'Thursday'  => !empty($allInfo['quintaFeira']),
+            'Friday'    => !empty($allInfo['sextaFeira']),
+        ];
+
+        $resultDates = [];
+        $currentDate = clone $startDate;
+
+        $addConsultaStmt = $conn->prepare('
+            INSERT INTO consulta (
+                conDiaCodigo, conDiaAgendado
+            ) VALUES (?,?)
+        ');
+
+        while (count($resultDates) < $totalSessao) {
+            $dayName = $currentDate->format('l'); // "Monday", "Tuesday" etc.
+
+            if (!empty($daysSelected[$dayName])) {
+                $rDate = $currentDate->format('Y-m-d');
+                $resultDates[] = $rDate;
+
+                $addConsultaStmt->execute([
+                    $dayId,
+                    $rDate
+                ]);
+            }
+
+            // advance 1 day
+            $currentDate->modify('+1 day');
+        }
     }
     catch(PDOException $e){
         echo json_encode(['status' => 'error', $e]);
