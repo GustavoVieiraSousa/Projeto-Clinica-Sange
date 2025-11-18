@@ -16,15 +16,16 @@ interface PatientFormProps {
   onUpdated?: () => void; // novo callback
 }
 
+
 const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientFormProps) => {
 
+
+  console.log("PatientForm: ", patientCode);
   const [patientData, setPatientData] = useState<any[]>([]);  
   const [sessionCode, setSessionCode] = useState<number>(0);
 
   const [formData, setFormData] = useState({
     // Dados Pessoais
-    patientCode: 0,
-
     name: "",
     email: "",
     phone: "",
@@ -112,12 +113,13 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     lastEditedBy: "",
   });
 
-  console.log("patientCode dentro do PatientForm:", patientCode, typeof patientCode);
-
   useEffect(() => {
-    if (patientCode != 0) {
+  console.log("Antes: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    
+    if (patientCode !== 0) {
         (async () => {
           try {
+            console.log("useEffect:", patientCode);
             const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientDescription.php?patientCode=${patientCode}`;
             const res = await fetch(url);
             console.log('fetch status', res.status, res.statusText);
@@ -125,109 +127,108 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
 
             if (json && Array.isArray(json.data)) {
               console.log("json.data[0]:", json.data);
+              const p = json.data[0]; // objeto do paciente
               setPatientData(json.data);
-              setSessionCode(json.data[0].sessionCode || 0);
+              setSessionCode(p.sessionCode || 0);
               setFormData({
                 //paciente
-                patientCode: patientCode || 0,
-
-                name: patientData[0].patientName || "",
-                email: patientData[0].patientEmail || "",
-                phone: patientData[0].patientNumber || "",
-                cpf: patientData[0].patientCPF || "",
-                birthDate: patientData[0].birthDateRaw || "",
-                cardNumber: patientData[0].patientCardNum || "",
-                agreement: patientData[0].patientTypeAgreement || "",
-                age: patientData[0].patientAge || "",
-                gender: patientData[0].patientGender || "Masculino",
-                maritalStatus: patientData[0].patientMaritalStatus || "",
-                weight: patientData[0].patientWeight || "",
-                height: patientData[0].patientHeight || "",
-                profession: patientData[0].patientProfession || "",
-                smoker: patientData[0].patientSmoker || false,
-                PatientLevel: patientData[0].patientLevel || "0",
+                name: p.patientName || "",
+                email: p.patientEmail || "",
+                phone: p.patientNumber || "",
+                cpf: p.patientCPF || "",
+                birthDate: p.birthDateRaw || "",
+                cardNumber: p.patientCardNum || "",
+                agreement: p.patientTypeAgreement || "",
+                age: p.patientAge || "",
+                gender: p.patientGender || "Masculino",
+                maritalStatus: p.patientMaritalStatus || "",
+                weight: p.patientWeight || "",
+                height: p.patientHeight || "",
+                profession: p.patientProfession || "",
+                smoker: p.patientSmoker || false,
+                PatientLevel: p.patientLevel || "0",
 
                 //endereco
-                addressStreet: patientData[0].addressStreet || "",
-                addressNeighborhood: patientData[0].addressNeighborhood || "",
-                addressNumber: patientData[0].addressNumber || "",
-                addressComplement: patientData[0].addressComplement || "",
-                addressCEP: patientData[0].addressCEP || "",
-                city: patientData[0].addressCity || "",
+                addressStreet: p.addressStreet || "",
+                addressNeighborhood: p.addressNeighborhood || "",
+                addressNumber: p.addressNumber || "",
+                addressComplement: p.addressComplement || "",
+                addressCEP: p.addressCEP || "",
+                city: p.addressCity || "",
                 
                 //sessao
-                backPain: patientData[0].sessionBack || "Nenhuma",
-                backPainDesc: patientData[0].sessionBackDesc || "",
-                upperPain: patientData[0].sessionSuperior || "Nenhuma",
-                upperPainDesc: patientData[0].sessionSuperiorDesc || "",
-                lowerPain: patientData[0].sessionInferior || "Nenhuma",
-                lowerPainDesc: patientData[0].sessionInferiorDesc || "",
-                avaliationDay: patientData[0].sessionAvaliationDate || "",
-                observations: patientData[0].sessionDescription || "",
-                lastEditedBy: patientData[0].sessionLastEdit || "",
+                backPain: p.sessionBack || "Nenhuma",
+                backPainDesc: p.sessionBackDesc || "",
+                upperPain: p.sessionSuperior || "Nenhuma",
+                upperPainDesc: p.sessionSuperiorDesc || "",
+                lowerPain: p.sessionInferior || "Nenhuma",
+                lowerPainDesc: p.sessionInferiorDesc || "",
+                avaliationDay: p.sessionAvaliationDate || "",
+                observations: p.sessionDescription || "",
+                lastEditedBy: p.sessionLastEdit || "",
 
                 //patologia
-                clinicalDiagnosis: patientData[0].pathologyDiagnostic || "",
-                hma: patientData[0].pathologyHMA || "",
-                personalHistory: patientData[0].pathologyPersonalHBackground || "",
-                associatedPathology: patientData[0].pathologyAssociated || "",
-                medication: patientData[0].pathologyTakeMeds || "",
-                painStart: patientData[0].pathologyWhenStarted || "",
-                painPosition: patientData[0].pathologyMoreIntensePosition || "",
-                workPosition:  patientData[0].pathologyWorkPosition || "",
-                surgery: patientData[0].pathologyHadSurgery || "",
-                surgeryDate:  patientData[0].pathologyDateSurgery || "",
-                complementaryExams:  patientData[0].pathologyComplementaryExams || "",
+                clinicalDiagnosis: p.pathologyDiagnostic || "",
+                hma: p.pathologyHMA || "",
+                personalHistory: p.pathologyPersonalHBackground || "",
+                associatedPathology: p.pathologyAssociated || "",
+                medication: p.pathologyTakeMeds || "",
+                painStart: p.pathologyWhenStarted || "",
+                painPosition: p.pathologyMoreIntensePosition || "",
+                workPosition:  p.pathologyWorkPosition || "",
+                surgery: p.pathologyHadSurgery || "",
+                surgeryDate:  p.pathologyDateSurgery || "",
+                complementaryExams:  p.pathologyComplementaryExams || "",
                 
                 //diaHoraAgendado
-                horarioSessao: patientData[0].dayTime || "",
-                dayStartTreatment: patientData[0].dayDateStartSession || "",
-                QTDsessao: patientData[0].dayQuantitySession || "0",
-                segundaFeira: patientData[0].dayMonday || false,
-                tercaFeira: patientData[0].dayTuesday || false,
-                quartaFeira: patientData[0].dayWednesday || false,
-                quintaFeira: patientData[0].dayThursday || false,
-                sextaFeira: patientData[0].dayFriday || false,
+                horarioSessao: p.dayTime || "",
+                dayStartTreatment: p.dayDateStartSession || "",
+                QTDsessao: p.dayQuantitySession || "0",
+                segundaFeira: p.dayMonday || false,
+                tercaFeira: p.dayTuesday || false,
+                quartaFeira: p.dayWednesday || false,
+                quintaFeira: p.dayThursday || false,
+                sextaFeira: p.dayFriday || false,
                 
                 //exameFisico
-                avsCompromise: patientData[0].pathologyAVS || "",
-                functionalLimitation: patientData[0].pathologyFunctionalLimitation || "",
-                gaitCompromise: patientData[0].pathologyMarcha || "",
-                bloodPressure: patientData[0].examPA || "",
-                respiratoryRate: patientData[0].examFR || "",
-                heartRate: patientData[0].examFC || "",
-                inspection: patientData[0].examInspection || "",
-                palpation: patientData[0].examPalpation || "",
-                palpationPain: patientData[0].examPalpationPain || false,
-                palpationPainDesc: patientData[0].examPainPalpationDesc || "",
+                avsCompromise: p.pathologyAVS || "",
+                functionalLimitation: p.pathologyFunctionalLimitation || "",
+                gaitCompromise: p.pathologyMarcha || "",
+                bloodPressure: p.examPA || "",
+                respiratoryRate: p.examFR || "",
+                heartRate: p.examFC || "",
+                inspection: p.examInspection || "",
+                palpation: p.examPalpation || "",
+                palpationPain: p.examPalpationPain || false,
+                palpationPainDesc: p.examPainPalpationDesc || "",
                 //TODO: adicionar palpationPainDesc
-                // palpationPainDesc: patientData[0].examPalpationPainDesc || "",
-                edema: patientData[0].examEdema || false,
-                edemaDesc: patientData[0].examEdemaDesc || "",
+                // palpationPainDesc: p.examPalpationPainDesc || "",
+                edema: p.examEdema || false,
+                edemaDesc: p.examEdemaDesc || "",
                 //TODO: adicionar edemaDesc
-                // edemaDesc: patientData[0].examEdemaDesc || "",
-                specificTests: patientData[0].examSpecificTests || "",
-                adm: patientData[0].examADM || "normal",
-                ADMDesc: patientData[0].examADMDesc || "",
+                // edemaDesc: p.examEdemaDesc || "",
+                specificTests: p.examSpecificTests || "",
+                adm: p.examADM || "normal",
+                ADMDesc: p.examADMDesc || "",
                 //TODO: adicionar admDesc
-                //admDesc: patientData[0].examADMDesc || "",
-                fm: patientData[0].examFM || "normal",
-                FMDesc: patientData[0].examFMDesc || "",
+                //admDesc: p.examADMDesc || "",
+                fm: p.examFM || "normal",
+                FMDesc: p.examFMDesc || "",
                 //TODO: adicionar fmDesc
-                //fmDesc: patientData[0].examFMDesc || "",
-                muscleTone: patientData[0].examMuscularTonus || "normal",
-                tonusMuscDesc: patientData[0].examMuscularTonusDesc || "",
+                //fmDesc: p.examFMDesc || "",
+                muscleTone: p.examMuscularTonus || "normal",
+                tonusMuscDesc: p.examMuscularTonusDesc || "",
                 //TODO: adicionar MuscularDesc
-                //muscleToneDesc: patientData[0].examMuscularTonusDesc || "",
-                movement: patientData[0].examMovement || "ativo",
-                orthesisUse: patientData[0].examOrtese || false,
-                orthesisType: patientData[0].examOrteseDesc || "",
-                posturalDeviations: patientData[0].examPosturalDeviations || false,
-                posturalDeviationsDescription: patientData[0].examPosturalDeviationsDesc || "",
+                //muscleToneDesc: p.examMuscularTonusDesc || "",
+                movement: p.examMovement || "ativo",
+                orthesisUse: p.examOrtese || false,
+                orthesisType: p.examOrteseDesc || "",
+                posturalDeviations: p.examPosturalDeviations || false,
+                posturalDeviationsDescription: p.examPosturalDeviationsDesc || "",
                 
                 //tratamento
-                treatmentObjectives: patientData[0].traTreatmentObjective || "",
-                proposedTreatment: patientData[0].traProposedTreatment || "",
+                treatmentObjectives: p.traTreatmentObjective || "",
+                proposedTreatment: p.traProposedTreatment || "",
               });
 
             } else {
@@ -236,7 +237,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
             }
 
           } catch (err) {
-            console.error('Error getting data (when timeFilter changed):', err);
+            console.error('Error getting data (when patientCode changed):', err);
           }
         })();
       
@@ -244,7 +245,6 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     else{
       setFormData({
         // Dados Pessoais
-        patientCode: 0,
         name: "",
         email: "",
         phone: "",
@@ -362,6 +362,8 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
 
   const editToDatabase = async () => {
     try{
+      console.log("editToDatabase:", patientCode);
+
       fetch(`http://localhost/Projeto-Clinica-Sange/src/php/editPatientData.php?patientCode=${patientCode}&sessionCode=${sessionCode}`, {
         method: 'POST',
         headers: {
@@ -389,6 +391,8 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("handleSubmit:", patientCode);
+
     if (patientCode !== 0) {
       await editToDatabase();
       toast.success("Dados do paciente atualizados!");
@@ -397,9 +401,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
       toast.success("Novo paciente cadastrado!");
     }
 
-    // dispara atualização no pai
     if (onUpdated) onUpdated();
-    
     onOpenChange(false);
   };
 
@@ -408,7 +410,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {(patientCode != 0) ? "Editar Ficha de Avaliação" : "Nova Ficha de Avaliação"}
+            {(patientCode !== 0) ? "Editar Ficha de Avaliação" : "Nova Ficha de Avaliação"}
           </DialogTitle>
         </DialogHeader>
 
@@ -1309,7 +1311,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
               Cancelar
             </Button>
             <Button type="submit">
-              {(patientCode != 0) ? "Salvar Alterações" : "Cadastrar Paciente"}
+              {(patientCode !== 0) ? "Salvar Alterações" : "Cadastrar Paciente"}
             </Button>
           </S.ButtonContainer>
         </S.Form>

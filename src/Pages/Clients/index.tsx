@@ -18,6 +18,7 @@ const handleViewPatient = (patientCode: number) => {
   if (patientCode !== 0) {
     setDialogOpen(true);
     setPatientCode(patientCode);
+    console.log("patient Clients:", patientCode);
   }
 };
 
@@ -94,7 +95,7 @@ useEffect(() => {
       {patientData.map((patient, idx) => (
           <S.PatientCard 
             key= {idx}
-            onClick={() => {console.log("patient:", patient); handleViewPatient(patient.patientCode)}}
+            onClick={() => {handleViewPatient(patient.patientCode)}}
           >
             <StyledCard>
               <StyledCardHeader>

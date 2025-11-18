@@ -10,7 +10,7 @@
 
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    $patientCode = (int)$data['data']['patientCode'];
+    $patientCode = isset($_GET['patientCode']) ? $_GET['patientCode'] : 'unknown';
     $sessionCode = isset($_GET['sessionCode']) ? $_GET['sessionCode'] : 'unknown';
     $allInfo = $data['data'];
 

@@ -39,7 +39,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
 
         const res = await fetch(url);
         const text = await res.text();
-        console.log('PatientDialog response text (first 400 chars):', text.slice(0,400));
+        // console.log('PatientDialog response text (first 400 chars):', text.slice(0,400));
 
         // tenta parse seguro
         let json;
@@ -71,7 +71,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
   }, [patientCode]);
   const handleEdit = () => {
     if (onEdit) {
-      onEdit(patient);
+      onEdit(patient.patientCode);
     }
   };
 
