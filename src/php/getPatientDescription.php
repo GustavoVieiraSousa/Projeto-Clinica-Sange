@@ -132,7 +132,7 @@
             $gender = "Feminino";
             break;
         default:
-            $gender = "-";
+            $gender = "Outro";
             break;
     }
 
@@ -169,6 +169,7 @@
         'patientEmail'                 => $gP['pacEmail'] ?? null,
         'patientNumber'                => $gP['pacTelefone'] ?? null,
         'patientCPF'                   => $gP['pacCpf'] ?? null,
+        'patientProfession'            => $gP['pacProfissao' ?? null],
   
         //endereco  
         'addressCEP'                   => $gA['endCEP'] ?? null,
@@ -194,7 +195,7 @@
         'dayMonday'                    => $gD['diaSegunda'] ?? null,
         'dayTuesday'                   => $gD['diaTerca'] ?? null,
         'dayWednesday'                 => $gD['diaQuarta'] ?? null,
-        'dayThrusday'                  => $gD['diaQuinta'] ?? null,
+        'dayThursday'                  => $gD['diaQuinta'] ?? null,
         'dayFriday'                    => $gD['diaSexta'] ?? null,
         'dayQuantitySession'           => $gD['diaQtdSessao'] ?? null,
         'dayTotalSession'              => $gD['diaTotalSessao'] ?? null,
@@ -203,20 +204,20 @@
         'dayDateFinishSession'         => $gD['diaDtFimSessao'] ?? null,
   
         //patologia  
-        'patologyDiagnostic'           => $gPat['patDiagnosticoClinico'] ?? null,
-        'patologyHMA'                  => $gPat['patHMA'] ?? null,
-        'patologyPersonalBackground'   => $gPat['patAntecedentesPessoais'] ?? null,
-        'patologyAssociatedPatology'   => $gPat['patPatologiaAssociada'] ?? null,
-        'patologyTakeMeds'             => $gPat['patTomaMedicamento'] ?? null,
-        'patologyWhenStarted'          => $gPat['patQuandoDorComecou'] ?? null,
-        'patologyMoreIntensePosition ' => $gPat['patQualPosicaoDorMaisIntensa'] ?? null,
-        'patologyWorkPosition'         => $gPat['patQualPosicaoTrabalho'] ?? null,
-        'patologyHadSurgery'           => $gPat['patFezCirurgia'] ?? null,
-        'patologyDateSurgery'          => $gPat['patDataCirurgia'] ?? null,
-        'patologyComplementaryExams'   => $gPat['patExamesComplementares'] ?? null,
-        'patologyAVS'                  => $gPat['patHaComprometimentoAVS'] ?? null,
-        'patologyFunctionalLimitation' => $gPat['patLimitacaoFuncional'] ?? null,
-        'patologyMarcha'               => $gPat['patComprometimentoMarcha'] ?? null,
+        'pathologyDiagnostic'          => $gPat['patDiagnosticoClinico'] ?? null,
+        'pathologyHMA'                 => $gPat['patHMA'] ?? null,
+        'pathologyPersonalBackground'  => $gPat['patAntecedentesPessoais'] ?? null,
+        'pathologyAssociatedpathology' => $gPat['patPatologiaAssociada'] ?? null,
+        'pathologyTakeMeds'            => $gPat['patTomaMedicamento'] ?? null,
+        'pathologyWhenStarted'         => $gPat['patQuandoDorComecou'] ?? null,
+        'pathologyMoreIntensePosition' => $gPat['patQualPosicaoDorMaisIntensa'] ?? null,
+        'pathologyWorkPosition'        => $gPat['patQualPosicaoTrabalho'] ?? null,
+        'pathologyHadSurgery'          => $gPat['patFezCirurgia'] ?? null,
+        'pathologyDateSurgery'         => $gPat['patDataCirurgia'] ?? null,
+        'pathologyComplementaryExams'  => $gPat['patExamesComplementares'] ?? null,
+        'pathologyAVS'                 => $gPat['patHaComprometimentoAVS'] ?? null,
+        'pathologyFunctionalLimitation'=> $gPat['patLimitacaoFuncional'] ?? null,
+        'pathologyMarcha'              => $gPat['patComprometimentoMarcha'] ?? null,
 
         //exameFisico
         'examPA'                       => $gExa['exaPA'] ?? null,
@@ -244,6 +245,9 @@
         //tratamentoFisioterapico
         'traTreatmentObjective'        => $gTra['traObjetivoTratamento'] ?? null,
         'traProposedTreatment'         => $gTra['traTratamentoProposto'] ?? null,
+
+        //extra
+        'birthDateRaw'                 => $gP['pacDtNascimento'] ?? null,
 
     ];
     $filteredPatientInfo[] = $dataObject;

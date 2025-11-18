@@ -243,7 +243,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                     </S.CorIcon>
                     <div>
                       <S.InfoLabel>Quinta-Feira</S.InfoLabel>
-                      <S.InfoValue>{patient?.dayThrusday ?? "-"}</S.InfoValue>
+                      <S.InfoValue>{patient?.dayThursday ?? "-"}</S.InfoValue>
                     </div>
                   </S.InfoItem>
                   <S.InfoItem>
@@ -357,7 +357,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       </S.CorIcon>
                       <div>
                         <S.InfoLabel>Cidade</S.InfoLabel>
-                        <S.InfoValue>{patient?.addressCity ?? "-"} - {patient?.addressState ?? "-"}</S.InfoValue>
+                        <S.InfoValue>{patient?.addressCity ?? "-"}</S.InfoValue>
                       </div>
                     </S.InfoItem>
                  
@@ -427,85 +427,85 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                 
                   <S.DataItem>
                     <S.InfoLabel>Diagnóstico Clínico</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyDiagnostic ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyDiagnostic ?? "-"}</S.InfoValue>
                   </S.DataItem>
               
                 
                   <S.DataItem>
                     <S.InfoLabel>HMA</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyHMA ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyHMA ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Antecedentes Pessoais</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyPersonalBackground ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyPersonalBackground ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Patologia Associada</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyAssociatedPatology ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyAssociatedpathology ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Medicação em Uso</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyTakeMeds ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyTakeMeds ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                
                   <S.DataItem>
                     <S.InfoLabel>Início da Dor</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyWhenStarted ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyWhenStarted ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Posição da Dor</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyMoreIntensePosition ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyMoreIntensePosition ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Posição de Trabalho</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyWorkPosition ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyWorkPosition ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Cirurgia</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyHadSurgery ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyHadSurgery ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Data da Cirurgia</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyDateSurgery ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyDateSurgery ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Exames Complementares</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyComplementaryExams ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyComplementaryExams ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Comprometimento AVS</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyAVS ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyAVS ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>Limitação Funcional</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyFunctionalLimitation ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyFunctionalLimitation ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Comprometimento da Marcha</S.InfoLabel>
-                    <S.InfoValue>{patient?.patologyMarcha ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyMarcha ?? "-"}</S.InfoValue>
                   </S.DataItem>
                 
               </S.Section>
