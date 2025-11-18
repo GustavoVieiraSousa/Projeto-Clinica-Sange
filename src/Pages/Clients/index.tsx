@@ -21,6 +21,12 @@ const handleViewPatient = (patientCode: number) => {
   }
 };
 
+const refreshPatients = async () => {
+  const res = await fetch("http://localhost/Projeto-Clinica-Sange/src/php/getPatientCodes.php");
+  const json = await res.json();
+  setPatientData(json.data);
+};
+
 const handleNewPatient = () => {
     setPatientCode(0);
     setFormOpen(true);
@@ -35,7 +41,7 @@ const handleNewPatient = () => {
 useEffect(() => {
   (async () => {
     try {
-      const url = `http://localhost/Clinica SANGE/Peojeto Clinica SANGE/src/php/getPatientCodes.php`;
+      const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientCodes.php`;
       const res = await fetch(url);
       console.log('fetch status', res.status, res.statusText);
       const json = await res.json();
@@ -88,7 +94,7 @@ useEffect(() => {
       {patientData.map((patient, idx) => (
           <S.PatientCard 
             key= {idx}
-            onClick={() => handleViewPatient(patient.patientCode)}
+            onClick={() => {console.log("patient:", patient); handleViewPatient(patient.patientCode)}}
           >
             <StyledCard>
               <StyledCardHeader>
@@ -132,6 +138,10 @@ useEffect(() => {
         patientCode={patientCode}
         open={formOpen}
         onOpenChange={setFormOpen}
+        onUpdated={() => {
+          // refaz o fetch ou atualiza o estado
+          refreshPatients();
+        }}
       />
     
     </S.Container>

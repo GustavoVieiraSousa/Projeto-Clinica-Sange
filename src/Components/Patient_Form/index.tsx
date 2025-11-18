@@ -13,15 +13,18 @@ interface PatientFormProps {
   patientCode: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onUpdated?: () => void; // novo callback
 }
 
-const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
+const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientFormProps) => {
 
   const [patientData, setPatientData] = useState<any[]>([]);  
   const [sessionCode, setSessionCode] = useState<number>(0);
 
   const [formData, setFormData] = useState({
     // Dados Pessoais
+    patientCode: 0,
+
     name: "",
     email: "",
     phone: "",
@@ -103,6 +106,8 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     lastEditedBy: "",
   });
 
+  console.log("patientCode dentro do PatientForm:", patientCode, typeof patientCode);
+
   useEffect(() => {
     if (patientCode != 0) {
         (async () => {
@@ -113,10 +118,13 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
             const json = await res.json();
 
             if (json && Array.isArray(json.data)) {
+              console.log("json.data[0]:", json.data);
               setPatientData(json.data);
               setSessionCode(json.data[0].sessionCode || 0);
               setFormData({
                 //paciente
+                patientCode: patientCode || 0,
+
                 name: patientData[0].patientName || "",
                 email: patientData[0].patientEmail || "",
                 phone: patientData[0].patientNumber || "",
@@ -224,6 +232,7 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     else{
       setFormData({
         // Dados Pessoais
+        patientCode: 0,
         name: "",
         email: "",
         phone: "",
@@ -359,16 +368,20 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (patientCode != 0) {
-      editToDatabase();
+    if (patientCode !== 0) {
+      await editToDatabase();
       toast.success("Dados do paciente atualizados!");
     } else {
-      addToDatabase();
+      await addToDatabase();
       toast.success("Novo paciente cadastrado!");
     }
+
+    // dispara atualização no pai
+    if (onUpdated) onUpdated();
+    
     onOpenChange(false);
   };
 

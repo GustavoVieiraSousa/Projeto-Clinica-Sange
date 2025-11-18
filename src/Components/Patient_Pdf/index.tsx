@@ -123,7 +123,7 @@ const yesNo = (val: any) => {
   return val ?? "-";
 };
 
-const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient, logoSrc = `http://localhost/Clinica SANGE/Peojeto Clinica SANGE/src/assets/Logo_pdf.png` }, ref) => {
+const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient, logoSrc = `http://localhost/Projeto-Clinica-Sange/src/assets/Logo_pdf.png` }, ref) => {
   return (
     <HiddenWrapper ref={ref}>
      

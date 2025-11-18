@@ -6,9 +6,11 @@
     header("Content-Type: application/json; charset=UTF-8");
     require_once 'connection.php';
 
+    $a = "patientCode recebido via GET: " . var_export($_GET['patientCode'], true);
+
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    $patientCode = isset($_GET['patientCode']) ? $_GET['patientCode'] : 'unknown';
+    $patientCode = (int)$data['data']['patientCode'];
     $sessionCode = isset($_GET['sessionCode']) ? $_GET['sessionCode'] : 'unknown';
     $allInfo = $data['data'];
 
@@ -357,4 +359,4 @@
         exit();
     }
     
-    echo json_encode(['status' => 'success', 'data' => $allInfo]);
+    echo json_encode(['status' => 'success', 'data' => $data]);

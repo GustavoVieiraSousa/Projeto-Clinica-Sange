@@ -34,7 +34,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
       }
 
       try {
-        const url = `http://localhost/Clinica SANGE/Peojeto Clinica SANGE/src/php/getPatientDescription.php?patientCode=${patientCode}`;
+        const url = `http://localhost/Projeto-Clinica-Sange/src/php/getPatientDescription.php?patientCode=${patientCode}`;
         console.log('PatientDialog fetching URL:', url);
 
         const res = await fetch(url);
