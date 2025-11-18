@@ -39,6 +39,7 @@ const handleNewPatient = () => {
     setFormOpen(true);
   };
 
+
 useEffect(() => {
   (async () => {
     try {
@@ -70,7 +71,7 @@ useEffect(() => {
           <UsersIcon />
           <div>
             <S.Title>Pacientes</S.Title>
-            <S.Subtitle>3 pacientes cadastrados</S.Subtitle>
+            <S.Subtitle>{patientData.length} pacientes cadastrados</S.Subtitle>
           </div>
         </S.HeaderLeft>
         <Button onClick={handleNewPatient} size="lg">
@@ -84,15 +85,23 @@ useEffect(() => {
         <Search />
       </S.SearchIcon>
       <Input
-        placeholder="Buscar paciente por nome, email ou telefone..."
+        placeholder="Buscar paciente por Nome, Convênio ou CPF"
         value={searchTerm}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
       />
     </S.SearchContainer>
-/* aqui será o sistema de repetição de cards de pacientes dentro da grid pelo amor de deus*/
 
       <S.PatientGrid>
-      {patientData.map((patient, idx) => (
+      {patientData
+        .filter((patient) => {
+          const term = searchTerm.toLowerCase();
+          return (
+            patient.patientName.toLowerCase().startsWith(term) ||
+            patient.patientTypeAgreement.toLowerCase().startsWith(term) ||
+            patient.patientCPF.toLowerCase().startsWith(term)
+          );
+        })
+        .map((patient, idx) => (
           <S.PatientCard 
             key= {idx}
             onClick={() => {handleViewPatient(patient.patientCode)}}

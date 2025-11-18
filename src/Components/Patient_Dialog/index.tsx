@@ -17,6 +17,9 @@ interface PatientDialogProps {
 }
 
 const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
+
+    console.log('TA vindo??????: ', patientCode);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
    const printRef = useRef<HTMLDivElement>(null);
@@ -69,9 +72,10 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
       
     })();
   }, [patientCode]);
+
   const handleEdit = () => {
     if (onEdit) {
-      onEdit(patient.patientCode);
+      onEdit(patientCode); //esse .patientCode me custou 2 dias acordado, odeio o Gustavo
     }
   };
 

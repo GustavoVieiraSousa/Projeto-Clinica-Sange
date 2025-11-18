@@ -38,8 +38,6 @@
             UPDATE paciente SET
                 pacNumCarteirinha = ?,
                 pacTipoConvenio = ?,
-                pacDesativado = ?,
-                pacDtDesativado = ?,
                 pacNome = ?,
                 pacDtNascimento = ?,
                 pacSexo = ?,
@@ -57,8 +55,6 @@
             $updatePacienteStmt->execute([
                 $allInfo['cardNumber'],
                 $allInfo['agreement'],
-                0,
-                null,
                 $allInfo['name'],
                 $allInfo['birthDate'],
                 $allInfo['gender'],
@@ -66,7 +62,7 @@
                 $weight,
                 $height,
                 $allInfo['smoker'] ? 1 : 0,
-                2,
+                $allInfo['PatientLevel'],
                 $allInfo['email'],
                 $allInfo['phone'],
                 $allInfo['cpf'],
@@ -234,6 +230,28 @@
 
         // -------------------- DIA/HORA AGENDADO PRECISA FICAR ANTES DE CONSULTA -------------------------
 
+
+        // 1. Buscar dados atuais do banco
+        $getDiaHoraStmt = $conn->prepare('
+            SELECT diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
+                diaQtdSessao, diaDtInicioSessao
+            FROM diahoraagendado
+            WHERE diaSesCodigo = ?
+        ');
+        $getDiaHoraStmt->execute([$sessionCode]);
+        $dbDiaHora = $getDiaHoraStmt->fetch(PDO::FETCH_ASSOC);
+
+        $dbDays = [
+            'Monday'    => (int)$dbDiaHora['diaSegunda'],
+            'Tuesday'   => (int)$dbDiaHora['diaTerca'],
+            'Wednesday' => (int)$dbDiaHora['diaQuarta'],
+            'Thursday'  => (int)$dbDiaHora['diaQuinta'],
+            'Friday'    => (int)$dbDiaHora['diaSexta'],
+        ];
+
+        $dbQtd = (int)$dbDiaHora['diaQtdSessao'];
+
+
         // -------------------- DIA/HORA AGENDADO --------------------
         $updateDiaHoraStmt = $conn->prepare('
             UPDATE diahoraagendado SET
@@ -267,16 +285,7 @@
         $dayCode = $getDayCodeStmt->fetch(PDO::FETCH_ASSOC);
 
         //--------------------- CRIAR CONSULTAS --------------------
-        // 1. Buscar dados atuais do banco
-        $getDiaHoraStmt = $conn->prepare('
-            SELECT diaSegunda, diaTerca, diaQuarta, diaQuinta, diaSexta,
-                diaQtdSessao, diaDtInicioSessao
-            FROM diahoraagendado
-            WHERE diaSesCodigo = ?
-        ');
-        $getDiaHoraStmt->execute([$sessionCode]);
-        $dbDiaHora = $getDiaHoraStmt->fetch(PDO::FETCH_ASSOC);
-
+        
         if ($dbDiaHora) {
             // 2. Normalizar valores do formulário
             $formDays = [
@@ -287,19 +296,14 @@
                 'Friday'    => $allInfo['sextaFeira'] ? 1 : 0,
             ];
 
-            $dbDays = [
-                'Monday'    => (int)$dbDiaHora['diaSegunda'],
-                'Tuesday'   => (int)$dbDiaHora['diaTerca'],
-                'Wednesday' => (int)$dbDiaHora['diaQuarta'],
-                'Thursday'  => (int)$dbDiaHora['diaQuinta'],
-                'Friday'    => (int)$dbDiaHora['diaSexta'],
-            ];
-
             $formQtd = (int)$allInfo['QTDsessao']; // quantidade nova
-            $dbQtd   = (int)$dbDiaHora['diaQtdSessao'];
+
+            // var_dump($formDays, $formQtd);
+            // var_dump($dbDays, $dbQtd);
 
             // 3. Verificar se houve mudança
             if ($formDays != $dbDays || $formQtd != $dbQtd) {
+
                 // 4. Recalcular novas datas
                 $startDate   = new DateTime($allInfo['avaliationDay']); // dia da avaliação
                 $totalSessao = $formQtd;
@@ -328,6 +332,7 @@
                 $consultas = $getConsultasStmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach ($consultas as $consulta) {
+
                     if (!in_array($consulta['conDiaAgendado'], $newDates)) {
                         $delStmt = $conn->prepare('DELETE FROM consulta WHERE conCodigo = ?');
                         $delStmt->execute([$consulta['conCodigo']]);
@@ -359,4 +364,4 @@
         exit();
     }
     
-    echo json_encode(['status' => 'success', 'data' => $data]);
+    echo json_encode(['status' => 'success', 'data' => $data ]);

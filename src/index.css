@@ -8,9 +8,9 @@
     --background: 250 100% 98%;
     --foreground: 260 20% 15%;
 
-    --bookmark-default: oklch(64.5% 0.246 16.439);
+    --bookmark-default: oklch(55.3% 0.013 58.071);
     --bookmark-special: oklch(70.7% 0.165 254.624);
-    --bookmark-avaliation: oklch(55.3% 0.013 58.071);
+    --bookmark-avaliation: oklch(64.5% 0.246 16.439);
 
     --card: 0 0% 100%;
     --card-foreground: 260 20% 15%;
