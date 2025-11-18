@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import * as S from "./styles";
 import { toast } from "sonner";
 
+
 interface PatientFormProps {
   patientCode: number;
   open: boolean;
@@ -240,6 +241,23 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                 required
               />
             </S.FormField>
+            <S.FormField>
+                <Label htmlFor="typePatient">Qual o tipo do Paciente?</Label>
+                <Select
+                  value={formData.gender}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  onValueChange={(value) => setFormData({ ...formData, gender: value as any })}
+                >
+                  <SelectTrigger id="typePatient">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">Avaliação</SelectItem>
+                    <SelectItem value="1">Especial</SelectItem>
+                    <SelectItem value="2">Normal</SelectItem>
+                  </SelectContent>
+                </Select>
+              </S.FormField>
 
             <S.FormGrid>
               <S.FormField>
@@ -544,6 +562,8 @@ const PatientForm = ({ patientCode, open, onOpenChange }: PatientFormProps) => {
                   </SelectContent>
                 </Select>
               </S.FormField>
+
+                
             </S.FormGrid>
 
             

@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   padding: 0 4rem;
-  padding-top: 2rem;
+  padding-top: 7rem;
   background: hsl(var(--background));
 `
 
@@ -35,6 +35,7 @@ export const FilterContainer = styled.div`
 export const FilterButton = styled.button<{ $active: boolean }>`
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s;
