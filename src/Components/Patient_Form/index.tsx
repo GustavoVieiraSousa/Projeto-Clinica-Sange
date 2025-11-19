@@ -199,7 +199,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 heartRate: p.examFC || "",
                 inspection: p.examInspection || "",
                 palpation: p.examPalpation || "",
-                palpationPain: p.examPalpationPain || false,
+                palpationPain: p.examPainPalpation|| false,
                 palpationPainDesc: p.examPainPalpationDesc || "",
                 //TODO: adicionar palpationPainDesc
                 // palpationPainDesc: p.examPalpationPainDesc || "",

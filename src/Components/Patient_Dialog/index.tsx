@@ -678,7 +678,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
               </>
             </S.Content>
           </DialogContent>
-          <FichaAvaliacaoPrint ref={printRef} patient={patient}></FichaAvaliacaoPrint>
+          <FichaAvaliacaoPrint ref={printRef} patient={patient}/>
         </Dialog>
         
   );
