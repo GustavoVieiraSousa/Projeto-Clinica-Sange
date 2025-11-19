@@ -171,7 +171,15 @@ export function Home(){
       </S.FilterContainer>
 
       <div className="grid gap-4">
-        
+      {patientData.length === 0 && 
+      <MarginCont>
+        <StyledCard>
+            <ContentWrapper>
+              <S.EmptyText>Nenhum agendamento Hoje</S.EmptyText>
+              <S.EmptyState></S.EmptyState>
+            </ContentWrapper>
+        </StyledCard>
+      </MarginCont>}
         {patientData.map((patient, idx) => (
         <MarginCont key={idx}>
           <StyledCard className="bg-card border border-border rounded-lg hover:shadow-lg transition-shadow">

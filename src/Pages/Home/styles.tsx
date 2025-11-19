@@ -56,3 +56,22 @@ export const FilterButton = styled.button<{ $active: boolean }>`
 
   cursor: pointer;
 `;
+export const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  
+  svg {
+    width: 3rem;
+    height: 3rem;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 1rem;
+  }
+`;
+export const EmptyText = styled.p`
+  font-size: 1.125rem;
+  align-self:center;
+  color: hsl(var(--muted-foreground));
+`;
