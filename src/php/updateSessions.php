@@ -123,16 +123,20 @@ try {
                 $col = $map[$dayName];
                 if (!empty($formDays[$col])) {
                     $extraDate = $currentDate->format('Y-m-d');
-                    $newDates[] = $extraDate;
+                    
+                    // só adiciona se não estiver já na lista
+                    if (!in_array($extraDate, $newDates, true)) {
+                        $newDates[] = $extraDate;
 
-                    // insere direto no banco
-                    $addStmt = $conn->prepare('
-                        INSERT INTO consulta (conDiaCodigo, conDiaAgendado) VALUES (?,?)
-                    ');
-                    $addStmt->execute([$dayCode, $extraDate]);
+                        // insere direto no banco
+                        $addStmt = $conn->prepare('
+                            INSERT INTO consulta (conDiaCodigo, conDiaAgendado) VALUES (?,?)
+                        ');
+                        $addStmt->execute([$dayCode, $extraDate]);
 
-                    error_log("ExtraDay inserido: $extraDate");
-                    break;
+                        error_log("ExtraDay inserido: $extraDate");
+                        break;
+                    }
                 }
                 $currentDate->modify('+1 day');
             }

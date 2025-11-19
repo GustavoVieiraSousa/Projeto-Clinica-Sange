@@ -17,6 +17,17 @@
 
     // var_dump($getPaciente);
 
+    $varBirthday = $gP['pacDtNascimento'] ?? null;
+    //age calculator
+    if(!isset($varBirthday)){ $varBirthday = date('Y-m-d'); }
+    list($year, $month, $day) = explode('-', $varBirthday);
+    $todayTime = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+    $birthdayTime = mktime( 0, 0, 0, $month, $day, $year);
+    $age = floor((((($todayTime - $birthdayTime) / 60) / 60) / 24) / 365.25);
+    
+    //formated birthday
+    $birthday = $day."/".$month."/".$year;
+
     //Set all prepares
     $getSessaoStmt = $conn->prepare("SELECT * FROM sessao WHERE sesPacCodigo = ?");
     $getDiaHoraAgendadoStmt = $conn->prepare("SELECT * FROM diaHoraAgendado WHERE diaSesCodigo = ?");
@@ -27,6 +38,108 @@
         foreach($getPaciente as $gP){
             $getSessaoStmt->execute([$gP['pacCodigo']]);
             $gS = $getSessaoStmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$gS){
+                $dataObject = [ 
+                //paciente 
+                'patientCode'                  => $gP['pacCodigo'] ?? null,
+                'patientCardNum'               => $gP['pacNumCarteirinha'] ?? null,
+                'patientTypeAgreement'         => $gP['pacTipoConvenio'] ?? null,
+                'patientDeactivated'           => $gP['pacDesativado'] ?? null,
+                'patientDateDeactivated'       => $gP['pacDtDesativado'] ?? null,
+                'patientName'                  => $gP['pacNome'] ?? null,
+                'patientBirthDate'             => $birthday ?? null,
+                'patientAge'                   => $age ?? null,
+                'patientGender'                => $gP['pacSexo'] ?? null,
+                'patientMaritalStatus'         => $gP['pacEstadoCivil'] ?? null,
+                'patientWeight'                => $gP['pacPeso'] ?? null,
+                'patientHeight'                => $gP['pacAltura'] ?? null,
+                'patientSmoker'                => $gP['pacFumante'] ?? null,
+                'patientLevel'                 => $gP['pacNivelImportancia'] ?? null,
+                'patientEmail'                 => $gP['pacEmail'] ?? null,
+                'patientNumber'                => $gP['pacTelefone'] ?? null,
+                'patientCPF'                   => $gP['pacCpf'] ?? null,
+        
+                //endereco  
+                'addressCEP'                   => null,
+                'addressStreet'                => null,
+                'addressNeighborhood'          => null,
+                'addressCity'                  => null,
+                'addressState'                 => null,
+                'addressNumber'                => null,
+                'addressComplement'            => null,
+        
+                //sessao  
+                'sessionSuperior'              => null,
+                'sessionInferior'              => null,
+                'sessionBack'                  => null,
+                'sessionSuperiorDesc'          => null,
+                'sessionInferiorDesc'          => null,
+                'sessionBackDesc'              => null,
+                'sessionDescription'           => null,
+                'sessionLastEdit'              => null,
+                'sessionAvaliationDate'        => null,
+                
+                //diaHoraAgendado  
+                'dayMonday'                    => null,
+                'dayTuesday'                   => null,
+                'dayWednesday'                 => null,
+                'dayThursday'                  => null,
+                'dayFriday'                    => null,
+                'dayQuantitySession'           => null,
+                'dayTotalSession'              => null,
+                'dayTime'                      => null,
+                'dayDateStartSession'          => null,
+                'dayDateFinishSession'         => null,
+        
+                //patologia  
+                'patologyDiagnostic'           => null,
+                'patologyHMA'                  => null,
+                'patologyPersonalBackground'   => null,
+                'patologyAssociatedPatology'   => null,
+                'patologyTakeMeds'             => null,
+                'patologyWhenStarted'          => null,
+                'patologyMoreIntensePosition ' => null,
+                'patologyWorkPosition'         => null,
+                'patologyHadSurgery'           => null,
+                'patologyDateSurgery'          => null,
+                'patologyComplementaryExams'   => null,
+                'patologyAVS'                  => null,
+                'patologyFunctionalLimitation' => null,
+                'patologyMarcha'               => null,
+
+                //exameFisico
+                'examPA'                       => null,
+                'examFR'                       => null,
+                'examFC'                       => null,
+                'examInspection'               => null,
+                'examPalpation'                => null,
+                'examPainPalpation'            => null,
+                'examPainPalpationDesc'        => null,
+                'examEdema'                    => null,
+                'examEdemaDesc'                => null,
+                'examSpecificTests'            => null,
+                'examADM'                      => null,
+                'examADMDesc'                  => null,
+                'examFM'                       => null,
+                'examFMDesc'                   => null,
+                'examMuscularTonus'            => null,
+                'examMuscularTonusDesc'        => null,
+                'examMovement'                 => null,
+                'examOrtese'                   => null,
+                'examOrteseDesc'               => null,
+                'examPosturalDeviations'       => null,
+                'examPosturalDeviationsDesc'   => null,
+
+                //tratamentoFisioterapico
+                'traTreatmentObjective'        => null,
+                'traProposedTreatment'         => null
+
+                ];
+                $filteredPatientInfo[] = $dataObject;
+
+                continue;
+            }
             
             //get everything from diaHoraAgendado
             $getDiaHoraAgendadoStmt->execute([$gS['sesCodigo']]);
@@ -46,18 +159,6 @@
                 $timeParts = explode(':', $timeFormatted);
                 $timeFormatted = $timeParts[0] . ':' . $timeParts[1]; // HH:MM
             }
-
-            $varBirthday = $gP['pacDtNascimento'] ?? null;
-
-            //age calculator
-            if(!isset($varBirthday)){ $varBirthday = date('Y-m-d'); }
-            list($year, $month, $day) = explode('-', $varBirthday);
-            $todayTime = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-            $birthdayTime = mktime( 0, 0, 0, $month, $day, $year);
-            $age = floor((((($todayTime - $birthdayTime) / 60) / 60) / 24) / 365.25);
-            
-            //formated birthday
-            $birthday = $day."/".$month."/".$year;
 
             //array
             $dataObject = [ 
@@ -158,9 +259,10 @@
             ];
             $filteredPatientInfo[] = $dataObject;
         }    
+        
     }
     catch(PDOException $e){
-        echo json_encode(['status' => 'error', 'message' => 'Error in SELECT from diaHoraAgendado (getPatientData)']);
+        echo json_encode(['status' => 'error', 'message' => 'Error in SELECT:'.$e->getMessage()]);
         exit();
     }
 
