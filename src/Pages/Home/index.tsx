@@ -79,38 +79,46 @@ export function Home(){
     }, [timeFilter]);
 
     const handleStatusChange = (idx: number, newStatus: PatientStatus) => {
+      const prevStatus = patientStatus[idx]; // status anterior
+
+      // Atualiza estado local
       setPatientStatus(prev => ({
         ...prev,
         [idx]: newStatus
       }));
+
       (async () => {
         try {
           const patient = patientData[idx];
           const consultaCode = patient.consultaCode;
 
           if (!consultaCode) {
-            console.error('consultaCode not found in patient data');
+            console.error("consultaCode not found in patient data");
             return;
           }
 
+          // Envia status para PHP
           const url = `http://localhost/Projeto-Clinica-Sange/src/php/setPatientStatus.php?consultaCode=${consultaCode}&patientStatus=${newStatus}`;
-          console.log('Sending request to:', url);
-          
-          const res = await fetch(url);
-          console.log('fetch status', res.status, res.statusText);
-          const json = await res.json();
-          console.log('response json:', json);
+          console.log("Sending request to:", url);
 
-          if (json.status === 'success') {
-            console.log('OK, PatientStatus sent for:', patient.name);
-          } else {
-            console.warn('Unexpected error, PHP Response:', json.message);
+          const res = await fetch(url);
+          console.log("fetch status", res.status, res.statusText);
+          const json = await res.json();
+          console.log("response json:", json);
+
+          if (json.status === "success") {
+            console.log("OK, PatientStatus sent for:", patient.name);
+
+            const sessionUrl = `http://localhost/Projeto-Clinica-Sange/src/php/updateSessions.php?patientCode=${patient.patientCode}&prevStatus=${prevStatus}&newStatus=${newStatus}`;
+            console.log("Updating sessions:", sessionUrl);
+            await fetch(sessionUrl);
           }
+
         } catch (err) {
-          console.error('Error sending status:', err);
+          console.error("Error sending status:", err);
         }
       })();
-    };
+    }
 
     const handleViewPatient = (patientCode: number) => {
     if (patientCode !== 0) {
