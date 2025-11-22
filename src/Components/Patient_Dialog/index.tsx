@@ -382,7 +382,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       </S.CorIcon>
                       <div>
                         <S.InfoLabel>Fumante</S.InfoLabel>
-                        <S.InfoValue>{patient?.patientSmoker === 0 ? "Não" : patient?.patientSmoker === 1 ? "Sim" : "-"}</S.InfoValue>
+                        <S.InfoValue> {patient?.patientSmoker === 0 ? "Não" : patient?.patientSmoker === 1 ? "Sim" : "-"} </S.InfoValue>
                       </div>
                     </S.InfoItem>
                   
@@ -572,13 +572,13 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                
                   <S.DataItem>
                     <S.InfoLabel>Dor à Palpação</S.InfoLabel>
-                    <S.InfoValue>{patient?.examPainPalpation === 0 ? "Não" : patient?.examPainPalpation === 1 ? "Sim" : "-"}: {patient?.examPainPalpationDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>({patient?.examPainPalpation === 0 ? "Não" : patient?.examPainPalpation === 1 ? "Sim" : "-"}) {patient?.examPainPalpationDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Edema</S.InfoLabel>
-                    <S.InfoValue>{patient?.examEdema === 0 ? "Não" : patient?.examEdema === 1 ? "Sim" : "-"}: {patient?.examEdemaDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>({patient?.examEdema === 0 ? "Não" : patient?.examEdema === 1 ? "Sim" : "-"})  {patient?.examEdemaDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                
