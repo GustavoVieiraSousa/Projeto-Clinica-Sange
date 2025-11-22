@@ -664,6 +664,16 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
             </S.FormField>
 
             <S.FormField>
+              <Label htmlFor="horarioSessao">Horário das sessões</Label>
+              <Input
+                  id="horarioSessao"
+                  type="time"
+                  value={formData.horarioSessao}
+                  onChange={(e) => setFormData({ ...formData, horarioSessao: e.target.value })}
+                />
+            </S.FormField>
+
+            <S.FormField>
               <Label htmlFor="personalHistory">Quantidade de sessões</Label>
               <Input
                   id="age"
