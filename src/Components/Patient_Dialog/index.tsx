@@ -459,7 +459,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                 
                   <S.DataItem>
                     <S.InfoLabel>Patologia Associada</S.InfoLabel>
-                    <S.InfoValue>{patient?.pathologyAssociatedpathology ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.pathologyAssociated ?? "-"}</S.InfoValue>
                   </S.DataItem>
                
                 
