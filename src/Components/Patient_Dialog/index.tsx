@@ -596,13 +596,13 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                 
                   <S.DataItem>
                     <S.InfoLabel>FM</S.InfoLabel>
-                    <S.InfoValue>{patient?.examFM === 0 ?"Normal" : patient?.examFM === 1 ? "Diminuída" : "-"}: {patient?.examFMDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examFM === 0 ?"Normal" : patient?.examFM === 1 ? "Diminuída" : "-"} : {patient?.examFMDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                
                   <S.DataItem>
                     <S.InfoLabel>Tônus Muscular</S.InfoLabel>
-                    <S.InfoValue>{patient?.examMuscularTonus === 0 ? "Normal" :patient?.examMuscularTonus === 1 ? "Hipotônico" : "-"}: {patient?.examMuscularTonusDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examMuscularTonus === 0 ? "Normal" :patient?.examMuscularTonus === 1 ? "Hipotônico" : patient?.examMuscularTonus === 2 ? "Hipertônico": "-"}: {patient?.examMuscularTonusDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                 
                
