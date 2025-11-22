@@ -450,10 +450,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>ADM:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="adm" value="normal" defaultChecked={patient?.examADM == "normal"} /> Normal
+              <Checkbox type="radio" name="adm" value="normal" defaultChecked={patient?.examADM === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="adm" value="diminuida" defaultChecked={patient?.examADM == "diminuida"} /> Diminuída
+              <Checkbox type="radio" name="adm" value="diminuida" defaultChecked={patient?.examADM === 1} /> Diminuída
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examADMDesc} />
@@ -462,10 +462,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>FM:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="fm" value="normal" defaultChecked={patient?.examFM == "normal"} /> Normal
+              <Checkbox type="radio" name="fm" value="normal" defaultChecked={patient?.examFM === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="fm" value="diminuida" defaultChecked={patient?.examFM == "diminuida"} /> Diminuída
+              <Checkbox type="radio" name="fm" value="diminuida" defaultChecked={patient?.examFM === 1} /> Diminuída
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examFMDesc} />
@@ -474,13 +474,13 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Tônus Muscular:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="normal" defaultChecked={patient?.examMuscularTonus == "normal"} /> Normal
+              <Checkbox type="radio" name="tonus" value="normal" defaultChecked={patient?.examMuscularTonus === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="hipotonico" defaultChecked={patient?.examMuscularTonus == "hipotonico"} /> Hipotônio
+              <Checkbox type="radio" name="tonus" value="hipotonico" defaultChecked={patient?.examMuscularTonus === 1} /> Hipotônio
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="hipertonico" defaultChecked={patient?.examMuscularTonus == "hipertonico"} /> Hipertônico
+              <Checkbox type="radio" name="tonus" value="hipertonico" defaultChecked={patient?.examMuscularTonus === 2} /> Hipertônico
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examMuscularTonusDesc} />
@@ -489,13 +489,13 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Movimento:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="ativo" defaultChecked={patient?.examMovement == "ativo"} /> Ativo
+              <Checkbox type="radio" name="movimento" value="ativo" defaultChecked={patient?.examMovement === 0} /> Ativo
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="passivo" defaultChecked={patient?.examMovement == "passivo"} /> Passivo
+              <Checkbox type="radio" name="movimento" value="passivo" defaultChecked={patient?.examMovement === 1} /> Passivo
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="ativo-assistido" defaultChecked={patient?.examMovement == "ativo-assistido"} /> Ativo-Assistido
+              <Checkbox type="radio" name="movimento" value="ativo-assistido" defaultChecked={patient?.examMovement === 2} /> Ativo-Assistido
             </CheckboxLabel>
           </CheckboxGroup>
         </Row>

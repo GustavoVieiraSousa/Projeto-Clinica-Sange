@@ -138,6 +138,16 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       <S.InfoValue>{patient?.patientCPF ?? "-"}</S.InfoValue>
                     </div>
                   </S.InfoItem>
+
+                    <S.InfoItem>
+                    <S.CorIcon>
+                      <FileText className="h-4 w-4 text-primary" />
+                    </S.CorIcon>
+                    <div>
+                      <S.InfoLabel>Tipo do paciente</S.InfoLabel>
+                      <S.InfoValue>{patient?.patientLevel === 0 ? "Avaliação" : patient?.patientLevel === 1 ? "Especial" : patient?.patientLevel === 2 ? "Normal" : "-"}</S.InfoValue>
+                    </div>
+                  </S.InfoItem>
                   
                   <S.InfoItem>
                     <S.CorIcon>
