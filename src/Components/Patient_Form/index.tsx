@@ -21,7 +21,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
 
 
   console.log("PatientForm: ", patientCode);
-  const [patientData, setPatientData] = useState<any[]>([]);  
+  const [patientData, setPatientData] = useState<any[]>([]);
   const [sessionCode, setSessionCode] = useState<number>(0);
 
   const [formData, setFormData] = useState({
@@ -140,7 +140,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 cardNumber: p.patientCardNum || "",
                 agreement: p.patientTypeAgreement || "",
                 age: p.patientAge || "",
-                gender: p.patientGender || "Masculino",
+                gender: p.patientGender || "Outro",
                 maritalStatus: p.patientMaritalStatus || "",
                 weight: p.patientWeight || "",
                 height: p.patientHeight || "",
@@ -253,7 +253,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         cardNumber: "",
         agreement:"",
         age: "",
-        gender: "Masculino",
+        gender: "Outro",
         maritalStatus: "",
         weight: "",
         height: "",
@@ -440,9 +440,9 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="0">Avaliação</SelectItem>
+                    <SelectItem value="2">Avaliação</SelectItem>
                     <SelectItem value="1">Especial</SelectItem>
-                    <SelectItem value="2">Normal</SelectItem>
+                    <SelectItem value="0">Normal</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
