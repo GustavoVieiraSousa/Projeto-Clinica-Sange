@@ -372,7 +372,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                       </S.CorIcon>
                       <div>
                         <S.InfoLabel>Fumante</S.InfoLabel>
-                        <S.InfoValue>{patient?.patientSmoker ?? "-"}</S.InfoValue>
+                        <S.InfoValue>{patient?.patientSmoker === 0 ? "Não" : patient?.patientSmoker === 1 ? "Sim" : "-"}</S.InfoValue>
                       </div>
                     </S.InfoItem>
                   
@@ -562,13 +562,13 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                
                   <S.DataItem>
                     <S.InfoLabel>Dor à Palpação</S.InfoLabel>
-                    <S.InfoValue>{patient?.examPainPalpation ?? "-"}: {patient?.examPainPalpationDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examPainPalpation === 0 ? "Não" : patient?.examPainPalpation === 1 ? "Sim" : "-"}: {patient?.examPainPalpationDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                 
                   <S.DataItem>
                     <S.InfoLabel>Edema</S.InfoLabel>
-                    <S.InfoValue>{patient?.examEdema ?? "-"}: {patient?.examEdemaDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examEdema === 0 ? "Não" : patient?.examEdema === 1 ? "Sim" : "-"}: {patient?.examEdemaDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                
@@ -580,31 +580,31 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                
                   <S.DataItem>
                     <S.InfoLabel>ADM</S.InfoLabel>
-                    <S.InfoValue>{patient?.examADM ?? "-"}: {patient?.examADMDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examADM === 0 ? "Normal" : patient?.examADM === 1 ? "Diminuída" : "-"}: {patient?.examADMDesc ?? ""}: {patient?.examADMDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                 
                 
                   <S.DataItem>
                     <S.InfoLabel>FM</S.InfoLabel>
-                    <S.InfoValue>{patient?.examFM ?? "-"}: {patient?.examFMDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examFM === 0 ?"Normal" : patient?.examFM === 1 ? "Diminuída" : "-"}: {patient?.examFMDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                
                
                   <S.DataItem>
                     <S.InfoLabel>Tônus Muscular</S.InfoLabel>
-                    <S.InfoValue>{patient?.examMuscularTonus ?? "-"}: {patient?.examMuscularTonusDesc ?? ""}</S.InfoValue>
+                    <S.InfoValue>{patient?.examMuscularTonus === 0 ? "Normal" :patient?.examMuscularTonus === 1 ? "Hipotônico" : "-"}: {patient?.examMuscularTonusDesc ?? ""}</S.InfoValue>
                   </S.DataItem>
                 
                
                   <S.DataItem>
                     <S.InfoLabel>Movimento</S.InfoLabel>
-                    <S.InfoValue>{patient?.examMovement ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.examMovement === 0 ? "Ativo" : patient?.examMovement === 1 ? "Passivo" : patient?.examMovement === 2 ? "Ativo-Assistido" : "-"}</S.InfoValue>
                   </S.DataItem>
                
                
                   <S.DataItem>
                     <S.InfoLabel>Uso de Órtese</S.InfoLabel>
-                    <S.InfoValue>{patient?.examOrtese ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.examOrtese === 0 ? "Não" : patient?.examOrtese === 1 ? "Sim":"-"}</S.InfoValue>
                   </S.DataItem>
                 
                
@@ -616,7 +616,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
                 
                   <S.DataItem>
                     <S.InfoLabel>Desvios Posturais</S.InfoLabel>
-                    <S.InfoValue>{patient?.examPosturalDeviations ?? "-"}</S.InfoValue>
+                    <S.InfoValue>{patient?.examPosturalDeviations === 0 ? "Não" : patient?.examPosturalDeviations === 1 ? "Sim" : "-"}</S.InfoValue>
                   </S.DataItem>
                
                 

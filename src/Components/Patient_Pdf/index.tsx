@@ -209,8 +209,8 @@ type Props = {
 };
 
 const yesNo = (val: any) => {
-  if (val === true || val === "Sim" || val === "sim" || val === "S" ) return "Sim";
-  if (val === false || val === "Não" || val === "Nâo" || val === "nao" || val === "não") return "Não";
+  if (val === true || val === "Sim" || val === "sim" || val === "S" || val === 1 ) return "Sim";
+  if (val === false || val === "Não" || val === "Nâo" || val === "nao" || val === "não" || val === 0) return "Não";
   return val ?? "-";
 };
 
