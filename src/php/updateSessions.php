@@ -31,18 +31,20 @@ try {
     $extraDay = false;
 
     if ($prevStatus === 'pending' && $newStatus === 'confirmed') {
-        $delta = -1;
+        $delta = -1; // confirmado direto → remove 1 sessão
         $recalcular = false;
     } elseif ($prevStatus === 'pending' && $newStatus === 'destructive') {
-        $delta = 0;
+        $delta = +1; // soma 1 sessão
         $recalcular = true;
-        $extraDay = true; // ausente hoje → pede 1 dia extra
+        $extraDay = true; // adiciona 1 dia extra
     } elseif ($prevStatus === 'destructive' && $newStatus === 'confirmed') {
-        $delta = -1;
+        $delta = -1; // remove a sessão que foi adicionada
         $recalcular = true;
+        $extraDay = false; // não precisa adicionar dia extra
     } elseif ($prevStatus === 'confirmed' && $newStatus === 'destructive') {
-        $delta = +1;
+        $delta = +1; // soma 1 sessão
         $recalcular = true;
+        $extraDay = true;
     }
 
     // 3. Atualizar quantidade de sessões se necessário

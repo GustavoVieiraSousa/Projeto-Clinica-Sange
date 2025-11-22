@@ -10,6 +10,7 @@ import PatientForm from "../../Components/Patient_Form";
 export function Clients(){
 const [searchTerm, setSearchTerm] = useState("");
 const [dialogOpen, setDialogOpen] = useState(false);
+const [updatePage, setUpdatePage] = useState(false);
 const [patientCode, setPatientCode] = useState<number>(0);
 const [patientData, setPatientData] = useState<any[]>([]);
 const [formOpen, setFormOpen] = useState(false);
@@ -23,9 +24,7 @@ const handleViewPatient = (patientCode: number) => {
 };
 
 const refreshPatients = async () => {
-  const res = await fetch("http://localhost/Projeto-Clinica-Sange/src/php/getPatientCodes.php");
-  const json = await res.json();
-  setPatientData(json.data);
+  setUpdatePage(!updatePage);
 };
 
 const handleNewPatient = () => {
@@ -62,7 +61,7 @@ useEffect(() => {
       console.error('Error getting data (when timeFilter changed):', err);
     }
   })();
-}, []);
+}, [updatePage]);
 
     return(
          <S.Container>

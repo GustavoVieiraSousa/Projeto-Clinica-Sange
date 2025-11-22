@@ -13,7 +13,7 @@ interface PatientFormProps {
   patientCode: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onUpdated?: () => void; // novo callback
+  onUpdated: () => void; // novo callback
 }
 
 
@@ -92,13 +92,13 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     edema: false,
     edemaDesc:"",
     specificTests: "",
-    adm: "0",
+    adm: "0" as "0" | "1" | "2",
     ADMDesc:"",
-    fm: "0",
+    fm: "0" as "0" | "1" | "2",
     FMDesc:"",
-    muscleTone: "0",
+    muscleTone: "0" as "0" | "1" | "2",
     tonusMuscDesc:"",
-    movement: "0",
+    movement: "0" as "0" | "1" | "2",
     orthesisUse: false,
     orthesisType: "",
     posturalDeviations: false,
@@ -146,7 +146,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 height: p.patientHeight || "",
                 profession: p.patientProfession || "",
                 smoker: p.patientSmoker || false,
-                PatientLevel: p.patientLevel || "0",
+                PatientLevel: p.patientLevel.toString() || "0",
 
                 //endereco
                 addressStreet: p.addressStreet || "",
@@ -208,19 +208,19 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 //TODO: adicionar edemaDesc
                 // edemaDesc: p.examEdemaDesc || "",
                 specificTests: p.examSpecificTests || "",
-                adm: p.examADM || "0",
+                adm: p.examADM.toString() || "0",
                 ADMDesc: p.examADMDesc || "",
                 //TODO: adicionar admDesc
                 //admDesc: p.examADMDesc || "",
-                fm: p.examFM || "0",
+                fm: p.examFM.toString() || "0",
                 FMDesc: p.examFMDesc || "",
                 //TODO: adicionar fmDesc
                 //fmDesc: p.examFMDesc || "",
-                muscleTone: p.examMuscularTonus || "0",
+                muscleTone: p.examMuscularTonus.toString() || "0",
                 tonusMuscDesc: p.examMuscularTonusDesc || "",
                 //TODO: adicionar MuscularDesc
                 //muscleToneDesc: p.examMuscularTonusDesc || "",
-                movement: p.examMovement || "0",
+                movement: p.examMovement.toString() || "0",
                 orthesisUse: p.examOrtese || false,
                 orthesisType: p.examOrteseDesc || "",
                 posturalDeviations: p.examPosturalDeviations || false,
@@ -1317,7 +1317,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
           </S.Section>
 
           <S.ButtonContainer>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={() => { onOpenChange(false); onUpdated(); }}>
               Cancelar
             </Button>
             <Button type="submit">
