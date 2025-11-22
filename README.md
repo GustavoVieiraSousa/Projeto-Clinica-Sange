@@ -1,11 +1,10 @@
-# React + TypeScript + Vite
+Antes de qualquer coisa, você precisará do npm ou pnpm para rodar o projeto em modo DEV.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Baixe o XAMPP, execute-o pela primeira vez e coloque a pasta do projeto dentro de htdocs, de modo que o caminho fique algo como:
+"..\..\htdocs\Projeto-Clinica-Sange".
 
-Currently, two official plugins are available:
+Abra o XAMPP novamente, inicie as portas do Apache e MySQL, e acesse a URL "http://localhost/dashboard/".
+Em seguida, entre no phpMyAdmin, crie o banco de dados chamado "sange" e importe o arquivo de banco de dados fornecido junto ao projeto.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-
-
+Com o banco importado e configurado, abra a aplicação em seu editor de código (preferencialmente o Visual Studio Code) e, no terminal, execute o comando "npm run dev" ou "pnpm run dev"
+A aplicação será iniciada em uma porta disponível, indicada no próprio terminal. Pronto — o programa estará em execução.
