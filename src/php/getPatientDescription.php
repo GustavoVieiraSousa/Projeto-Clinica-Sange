@@ -125,10 +125,10 @@
 
     //formated gender
     switch($gP['pacSexo'] ?? null){
-        case 'm':
+        case 'M':
             $gender = "Masculino";
             break;
-        case 'f':
+        case 'F':
             $gender = "Feminino";
             break;
         default:
@@ -208,7 +208,7 @@
         'pathologyDiagnostic'          => $gPat['patDiagnosticoClinico'] ?? null,
         'pathologyHMA'                 => $gPat['patHMA'] ?? null,
         'pathologyPersonalBackground'  => $gPat['patAntecedentesPessoais'] ?? null,
-        'pathologyAssociatedpathology' => $gPat['patPatologiaAssociada'] ?? null,
+        'pathologyAssociated'          => $gPat['patPatologiaAssociada'] ?? null,
         'pathologyTakeMeds'            => $gPat['patTomaMedicamento'] ?? null,
         'pathologyWhenStarted'         => $gPat['patQuandoDorComecou'] ?? null,
         'pathologyMoreIntensePosition' => $gPat['patQualPosicaoDorMaisIntensa'] ?? null,

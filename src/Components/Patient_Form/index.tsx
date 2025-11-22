@@ -44,7 +44,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     addressNumber: "",
     addressComplement: "",
     addressCEP:"",
-    PatientLevel:"",
+    PatientLevel:"0" as "0" | "1" | "2",
 
     city: "",
     smoker: false,
@@ -92,13 +92,13 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     edema: false,
     edemaDesc:"",
     specificTests: "",
-    adm: "normal" as "normal" | "diminuida",
+    adm: "0",
     ADMDesc:"",
-    fm: "normal" as "normal" | "diminuida",
+    fm: "0",
     FMDesc:"",
-    muscleTone: "normal" as "normal" | "hipotonico" | "hipertonico",
+    muscleTone: "0",
     tonusMuscDesc:"",
-    movement: "ativo" as "ativo" | "passivo" | "ativo-assistido",
+    movement: "0",
     orthesisUse: false,
     orthesisType: "",
     posturalDeviations: false,
@@ -170,7 +170,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 //patologia
                 clinicalDiagnosis: p.pathologyDiagnostic || "",
                 hma: p.pathologyHMA || "",
-                personalHistory: p.pathologyPersonalHBackground || "",
+                personalHistory: p.pathologyPersonalBackground || "",
                 associatedPathology: p.pathologyAssociated || "",
                 medication: p.pathologyTakeMeds || "",
                 painStart: p.pathologyWhenStarted || "",
@@ -208,19 +208,19 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 //TODO: adicionar edemaDesc
                 // edemaDesc: p.examEdemaDesc || "",
                 specificTests: p.examSpecificTests || "",
-                adm: p.examADM || "normal",
+                adm: p.examADM || "0",
                 ADMDesc: p.examADMDesc || "",
                 //TODO: adicionar admDesc
                 //admDesc: p.examADMDesc || "",
-                fm: p.examFM || "normal",
+                fm: p.examFM || "0",
                 FMDesc: p.examFMDesc || "",
                 //TODO: adicionar fmDesc
                 //fmDesc: p.examFMDesc || "",
-                muscleTone: p.examMuscularTonus || "normal",
+                muscleTone: p.examMuscularTonus || "0",
                 tonusMuscDesc: p.examMuscularTonusDesc || "",
                 //TODO: adicionar MuscularDesc
                 //muscleToneDesc: p.examMuscularTonusDesc || "",
-                movement: p.examMovement || "ativo",
+                movement: p.examMovement || "0",
                 orthesisUse: p.examOrtese || false,
                 orthesisType: p.examOrteseDesc || "",
                 posturalDeviations: p.examPosturalDeviations || false,
@@ -311,13 +311,13 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         edema: false,
         edemaDesc:"",
         specificTests: "",
-        adm: "normal",
+        adm: "0",
         ADMDesc: "",
-        fm: "normal",
+        fm: "0",
         FMDesc:"",
-        muscleTone: "normal",
+        muscleTone: "0",
         tonusMuscDesc:"",
-        movement: "ativo",
+        movement: "0",
         orthesisUse: false,
         orthesisType: "",
         posturalDeviations: false,
@@ -440,9 +440,9 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="2">Avaliação</SelectItem>
+                    <SelectItem value="0">Avaliação</SelectItem>
                     <SelectItem value="1">Especial</SelectItem>
-                    <SelectItem value="0">Normal</SelectItem>
+                    <SelectItem value="2">Normal</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
@@ -1109,8 +1109,8 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="diminuida">Diminuída</SelectItem>
+                    <SelectItem value="0">Normal</SelectItem>
+                    <SelectItem value="1">Diminuída</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
@@ -1136,8 +1136,8 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="diminuida">Diminuída</SelectItem>
+                    <SelectItem value="0">Normal</SelectItem>
+                    <SelectItem value="1">Diminuída</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
@@ -1163,9 +1163,9 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="hipotonico">Hipotônico</SelectItem>
-                    <SelectItem value="hipertonico">Hipertônico</SelectItem>
+                    <SelectItem value="0">Normal</SelectItem>
+                    <SelectItem value="1">Hipotônico</SelectItem>
+                    <SelectItem value="2">Hipertônico</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
@@ -1192,9 +1192,9 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ativo">Ativo</SelectItem>
-                    <SelectItem value="passivo">Passivo</SelectItem>
-                    <SelectItem value="ativo-assistido">Ativo-Assistido</SelectItem>
+                    <SelectItem value="0">Ativo</SelectItem>
+                    <SelectItem value="1">Passivo</SelectItem>
+                    <SelectItem value="2">Ativo-Assistido</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
