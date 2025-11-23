@@ -43,9 +43,11 @@ export function Home(){
       const level = patient.patientLevel ? patient.patientLevel : null;
 
       if (level === 1) return "var(--bookmark-special)";
-      if (level === 2) return "var(--bookmark-avaliation)";
+      if (level === 0) return "var(--bookmark-avaliation)";
       return "var(--bookmark-default)";
     };
+
+
 
     //get pacient data from PHP (when timeFilter changes)
     useEffect(() => {
@@ -207,6 +209,7 @@ export function Home(){
               </ContentWrapper>
             </StyledCardHeader>
             <StyledCardContent>
+              {patient.patientLevel !== 0 && (
               <ButtonWrapper>
                 <Button
                   onClick={() => handleStatusChange(idx, "confirmed")}
@@ -234,6 +237,7 @@ export function Home(){
                   <Eye className="h-4 w-4" />
                 </Button>
               </ButtonWrapper>
+              )}
             </StyledCardContent>
           </StyledCard>
         </MarginCont>
