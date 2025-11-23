@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23/11/2025 às 04:07
+-- Tempo de geração: 23/11/2025 às 18:27
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -179,7 +179,7 @@ CREATE TABLE `sessao` (
   `sesParteSuperior` tinyint(1) DEFAULT NULL,
   `sesParteInferior` tinyint(1) DEFAULT NULL,
   `sesColuna` tinyint(1) DEFAULT NULL,
-  `sesDtAvaliacao` date DEFAULT NULL,
+  `sesDtAvaliacao` datetime DEFAULT NULL,
   `sesDescricao` varchar(8191) DEFAULT NULL,
   `sesUltimaEdicao` varchar(255) DEFAULT NULL,
   `sesGravidadePSuperior` varchar(255) DEFAULT NULL,
