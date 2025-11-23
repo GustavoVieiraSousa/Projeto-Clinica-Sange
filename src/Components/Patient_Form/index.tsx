@@ -6,7 +6,8 @@ import { Textarea } from "../../Components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../Components/ui/select";
 import { useState, useEffect } from "react";
 import * as S from "./styles";
-import { toast } from "sonner";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface PatientFormProps {
@@ -1311,12 +1312,13 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
             <Button type="button" variant="outline" onClick={() => { onOpenChange(false); onUpdated(); }}>
               Cancelar
             </Button>
-            <Button type="submit">
+            <Button type="submit" onClick={handleSubmit}>
               {(patientCode !== 0) ? "Salvar Alterações" : "Cadastrar Paciente"}
             </Button>
           </S.ButtonContainer>
         </S.Form>
       </DialogContent>
+      <ToastContainer />
     </Dialog>
   );
 };
