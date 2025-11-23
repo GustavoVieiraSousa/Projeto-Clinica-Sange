@@ -38,7 +38,6 @@ const handleNewPatient = () => {
     setFormOpen(true);
   };
 
-
 useEffect(() => {
   (async () => {
     try {
