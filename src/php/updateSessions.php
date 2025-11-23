@@ -25,24 +25,25 @@ try {
 
     $sesCodigo = $getSession['sesCodigo'];
 
-    // 2. Determinar delta, recalcular e extraDay
+    // 2. Determinar delta, recalcular e extraDay/removeExtraDay
     $delta = 0;
     $recalcular = false;
     $extraDay = false;
+    $removeExtraDay = false;
 
     if ($prevStatus === 'pending' && $newStatus === 'confirmed') {
-        $delta = -1; // confirmado direto → remove 1 sessão
+        $delta = -1; 
         $recalcular = false;
     } elseif ($prevStatus === 'pending' && $newStatus === 'destructive') {
-        $delta = +1; // soma 1 sessão
+        $delta = +1; 
         $recalcular = true;
         $extraDay = true; // adiciona 1 dia extra
     } elseif ($prevStatus === 'destructive' && $newStatus === 'confirmed') {
-        $delta = -1; // remove a sessão que foi adicionada
+        $delta = -1; 
         $recalcular = true;
-        $extraDay = false; // não precisa adicionar dia extra
+        $removeExtraDay = true; // remove o dia extra
     } elseif ($prevStatus === 'confirmed' && $newStatus === 'destructive') {
-        $delta = +1; // soma 1 sessão
+        $delta = +1; 
         $recalcular = true;
         $extraDay = true;
     }
@@ -126,11 +127,9 @@ try {
                 if (!empty($formDays[$col])) {
                     $extraDate = $currentDate->format('Y-m-d');
                     
-                    // só adiciona se não estiver já na lista
                     if (!in_array($extraDate, $newDates, true)) {
                         $newDates[] = $extraDate;
 
-                        // insere direto no banco
                         $addStmt = $conn->prepare('
                             INSERT INTO consulta (conDiaCodigo, conDiaAgendado) VALUES (?,?)
                         ');
@@ -141,6 +140,25 @@ try {
                     }
                 }
                 $currentDate->modify('+1 day');
+            }
+        }
+
+        // Se precisa remover o dia extra (destructive -> confirmed)
+        if ($removeExtraDay) {
+            $lastExtraStmt = $conn->prepare('
+                SELECT conCodigo, conDiaAgendado
+                FROM consulta
+                WHERE conDiaCodigo = ?
+                ORDER BY conDiaAgendado DESC
+                LIMIT 1
+            ');
+            $lastExtraStmt->execute([$dayCode]);
+            $lastExtra = $lastExtraStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($lastExtra) {
+                $delStmt = $conn->prepare('DELETE FROM consulta WHERE conCodigo = ?');
+                $delStmt->execute([$lastExtra['conCodigo']]);
+                error_log("ExtraDay removido: " . $lastExtra['conDiaAgendado']);
             }
         }
 

@@ -210,7 +210,7 @@ type Props = {
 
 
 const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) => {
-  console.log(patient?.examPainPalpation);
+  console.log(patient);
   return (
 
     <HiddenWrapper ref={ref}>
@@ -290,7 +290,7 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Fumante:</Label>
           
             <CheckboxLabel>
-              <Input type="text" defaultValue={patient?.patientSmoker == 0 ? "Não" : patient?.patientSmoker == 1 ? "Sim" : "-"} />
+              <Input type="text" defaultValue={patient?.patientSmoker === 0 ? "Não" : patient?.patientSmoker === 1 ? "Sim" : "-"} />
             </CheckboxLabel>
             
         </Row>

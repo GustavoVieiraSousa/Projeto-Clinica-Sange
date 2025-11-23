@@ -136,19 +136,6 @@
             break;
     }
 
-    //formated smoker
-    switch($gP['pacFumante'] ?? null){
-        case 0:
-            $smoker = "Não";
-            break;
-        case 1:
-            $smoker = "Sim";
-            break;
-        default:
-            $smoker = "-";
-            break;
-    }
-
     //array
     $dataObject = [ 
         //paciente 
@@ -164,7 +151,7 @@
         'patientMaritalStatus'         => $gP['pacEstadoCivil'] ?? null,
         'patientWeight'                => $gP['pacPeso'] ?? null,
         'patientHeight'                => $gP['pacAltura'] ?? null,
-        'patientSmoker'                => $smoker ?? null,
+        'patientSmoker'                => $gP['pacFumante'] ?? null,
         'patientLevel'                 => $gP['pacNivelImportancia'] ?? null,
         'patientEmail'                 => $gP['pacEmail'] ?? null,
         'patientNumber'                => $gP['pacTelefone'] ?? null,
