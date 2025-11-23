@@ -478,15 +478,6 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
               </S.FormField>
 
               <S.FormField>
-                <Label htmlFor="age">Idade</Label>
-                <Input
-                  id="age"
-                  value={formData.age}
-                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                />
-              </S.FormField>
-
-              <S.FormField>
                 <Label htmlFor="gender">Sexo</Label>
                 <Select
                   value={formData.gender}
