@@ -45,7 +45,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
     addressNumber: "",
     addressComplement: "",
     addressCEP:"",
-    PatientLevel:"0" as "0" | "1" | "2",
+    PatientLevel:"2" as "0" | "1" | "2",
 
     city: "",
     smoker: false,
@@ -147,7 +147,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                 height: p.patientHeight || "",
                 profession: p.patientProfession || "",
                 smoker: p.patientSmoker || false,
-                PatientLevel: p.patientLevel.toString() || "0",
+                PatientLevel: p.patientLevel.toString() || "2",
 
                 //endereco
                 addressStreet: p.addressStreet || "",
@@ -264,7 +264,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         addressNumber: "",
         addressComplement: "",
         addressCEP:"",
-        PatientLevel:"0",
+        PatientLevel:"2",
 
         city: "",
         smoker: false,
@@ -349,6 +349,14 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
         try {
           const json = JSON.parse(text);
           console.log("JSON recebido:", json);
+
+          if(json.status === "error"){
+            toast.error("Erro ao cadastrar paciente: " + json.message);
+          }
+          else{
+            toast.success("Paciente cadastrado com sucesso!");
+          }
+
         } catch (err) {
           console.error("Resposta não é JSON. Conteúdo bruto:", text);
         }
@@ -399,7 +407,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
       toast.success("Dados do paciente atualizados!");
     } else {
       await addToDatabase();
-      toast.success("Novo paciente cadastrado!");
+      // toast.success("Novo paciente cadastrado!");
     }
 
     if (onUpdated) onUpdated();
@@ -1312,7 +1320,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
             <Button type="button" variant="outline" onClick={() => { onOpenChange(false); onUpdated(); }}>
               Cancelar
             </Button>
-            <Button type="submit" onClick={handleSubmit}>
+            <Button type="submit">
               {(patientCode !== 0) ? "Salvar Alterações" : "Cadastrar Paciente"}
             </Button>
           </S.ButtonContainer>
