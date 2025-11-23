@@ -20,7 +20,7 @@ const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialo
 
     console.log('TA vindo??????: ', patientCode);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
    const printRef = useRef<HTMLDivElement>(null);
   
