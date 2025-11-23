@@ -19,6 +19,27 @@
         return (float) str_replace(',', '.', $value);
     }
 
+    // ----------------------- TREATMENT ------------------------
+    $avaliationDay = $allInfo['avaliationDay'];
+    $formatedATime = (new DateTime($avaliationDay))->format('Y-m-d H:i:s');
+
+    //SEARCH 29 MINUTES BEHIND CURRENT TIME TO SEE IF THERE'S ANY AVALIATIONS, IF SO, DOES NOT ALLOW TO CREATE PATIENT.
+
+    try{
+        $getADayDBStmt = $conn->prepare("SELECT s.sesDtAvaliacao FROM sessao AS s WHERE s.sesDtAvaliacao >= CURDATE() AND s.sesDtAvaliacao < CURDATE() + INTERVAL 1 DAY AND s.sesDtAvaliacao BETWEEN DATE_SUB(?, INTERVAL 29 MINUTE) AND DATE_ADD(?, INTERVAL 29 MINUTE);");
+        $getADayDBStmt->execute([$formatedATime, $formatedATime]);
+        $getADayDB = $getADayDBStmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (!empty($getADayDB)) {
+            echo json_encode(['status' => 'error', 'message' => 'Data da avaliação não disponível']);
+            exit();
+        }
+    }
+    catch(PDOException $e){
+        echo json_encode(['error' => 'Something went wrong -> Treatment: ', $e]);
+        exit();
+    }
+
     try{
         // -------------------- PACIENTE --------------------
         $addPacienteStmt = $conn->prepare('

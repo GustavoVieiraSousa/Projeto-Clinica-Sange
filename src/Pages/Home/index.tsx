@@ -42,8 +42,10 @@ export function Home(){
     const getBookmarkVar = (patient: any) => {
       const level = patient.patientLevel ? patient.patientLevel : null;
 
+      if (level === 0) return "var(--bookmark-normal)";
       if (level === 1) return "var(--bookmark-special)";
-      if (level === 0) return "var(--bookmark-avaliation)";
+      if (level === 2) return "var(--bookmark-avaliation)";
+      
       return "var(--bookmark-default)";
     };
 
@@ -209,7 +211,7 @@ export function Home(){
               </ContentWrapper>
             </StyledCardHeader>
             <StyledCardContent>
-              {patient.patientLevel !== 0 && (
+              {patient.patientLevel !== 2 && (
               <ButtonWrapper>
                 <Button
                   onClick={() => handleStatusChange(idx, "confirmed")}

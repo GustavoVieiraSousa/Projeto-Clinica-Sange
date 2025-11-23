@@ -440,9 +440,9 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="0">Avaliação</SelectItem>
+                    <SelectItem value="2">Avaliação</SelectItem>
                     <SelectItem value="1">Especial</SelectItem>
-                    <SelectItem value="2">Normal</SelectItem>
+                    <SelectItem value="0">Normal</SelectItem>
                   </SelectContent>
                 </Select>
               </S.FormField>
