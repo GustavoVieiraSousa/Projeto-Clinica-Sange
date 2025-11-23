@@ -295,7 +295,9 @@
 
         //--------------------- CRIAR CONSULTAS --------------------
         
+        //--------------------- CRIAR CONSULTAS --------------------
         if ($dbDiaHora) {
+            // Mapear dias válidos (0/1) a partir do allInfo
             $formDays = [
                 'Monday'    => $allInfo['segundaFeira'] ? 1 : 0,
                 'Tuesday'   => $allInfo['tercaFeira'] ? 1 : 0,
@@ -304,81 +306,44 @@
                 'Friday'    => $allInfo['sextaFeira'] ? 1 : 0,
             ];
 
+            // Quantidade desejada de sessões (alvo)
             $formQtd = (int)$allInfo['QTDsessao'];
 
-            if ($formDays != $dbDays || $formQtd != $dbQtd) {
-                $startDate   = new DateTime($allInfo['avaliationDay']);
-                $totalSessao = $formQtd;
+            // Data inicial do tratamento
+            $startDate = new DateTime($allInfo['dayStartTreatment']);
 
-                $newDates = [];
-                $currentDate = clone $startDate;
+            // 1) Gerar datas-alvo obedecendo os dias válidos, até atingir formQtd
+            $targetDates = [];
+            $cursor = clone $startDate;
 
-                while (count($newDates) < $totalSessao) {
-                    $dayName = $currentDate->format('l');
-                    if (!empty($formDays[$dayName])) {
-                        $newDates[] = $currentDate->format('Y-m-d');
-                    }
-                    $currentDate->modify('+1 day');
+            while (count($targetDates) < $formQtd) {
+                $dayName = $cursor->format('l'); // 'Monday', 'Tuesday', ...
+                if (!empty($formDays[$dayName])) {
+                    $targetDates[] = $cursor->format('Y-m-d');
                 }
-
-                // excluir consultas que não batem
-                $today = (new DateTime())->format('Y-m-d');
-                $getConsultasStmt = $conn->prepare('
-                    SELECT conCodigo, conDiaAgendado
-                    FROM consulta
-                    WHERE conDiaCodigo = ? AND conDiaAgendado >= ?
-                ');
-                $getConsultasStmt->execute([$diaCodigo, $today]);
-                $consultas = $getConsultasStmt->fetchAll(PDO::FETCH_ASSOC);
-
-                foreach ($consultas as $consulta) {
-                    if (!in_array($consulta['conDiaAgendado'], $newDates)) {
-                        $delStmt = $conn->prepare('DELETE FROM consulta WHERE conCodigo = ?');
-                        $delStmt->execute([$consulta['conCodigo']]);
-                    }
-                }
-
-                // inserir consultas faltantes
-                foreach ($newDates as $date) {
-                    $checkStmt = $conn->prepare('
-                        SELECT COUNT(*) FROM consulta WHERE conDiaCodigo = ? AND conDiaAgendado = ?
-                    ');
-                    $checkStmt->execute([$diaCodigo, $date]);
-                    $exists = $checkStmt->fetchColumn();
-
-                    if (!$exists) {
-                        $addStmt = $conn->prepare('
-                            INSERT INTO consulta (conDiaCodigo, conDiaAgendado) VALUES (?,?)
-                        ');
-                        $addStmt->execute([$diaCodigo, $date]);
-                    }
-                }
+                $cursor->modify('+1 day');
             }
 
-            // garantir pelo menos uma consulta se não houver nenhuma
-            $checkAnyStmt = $conn->prepare('SELECT COUNT(*) FROM consulta WHERE conDiaCodigo = ?');
-            $checkAnyStmt->execute([$diaCodigo]);
-            $hasAny = (int)$checkAnyStmt->fetchColumn();
+            // 2) Consultas existentes a partir do início do tratamento
+            $existingStmt = $conn->prepare('
+                SELECT conDiaAgendado
+                FROM consulta
+                WHERE conDiaCodigo = ? AND conDiaAgendado >= ?
+                ORDER BY conDiaAgendado ASC
+            ');
+            $existingStmt->execute([$diaCodigo, $startDate->format('Y-m-d')]);
+            $existing = $existingStmt->fetchAll(PDO::FETCH_COLUMN);
 
-            if ($hasAny === 0) {
-                $startDate = new DateTime($allInfo['avaliationDay']);
-                $currentDate = clone $startDate;
-                $firstValidDate = null;
+            // Conjunto para busca rápida
+            $existingSet = array_flip($existing);
 
-                while (true) {
-                    $dayName = $currentDate->format('l');
-                    if (!empty($formDays[$dayName])) {
-                        $firstValidDate = $currentDate->format('Y-m-d');
-                        break;
-                    }
-                    $currentDate->modify('+1 day');
-                }
-
-                if ($firstValidDate) {
-                    $addFirstStmt = $conn->prepare('
+            // 3) Criar apenas as consultas faltantes para igualar a diaQtdSessao
+            foreach ($targetDates as $date) {
+                if (!isset($existingSet[$date])) {
+                    $addStmt = $conn->prepare('
                         INSERT INTO consulta (conDiaCodigo, conDiaAgendado) VALUES (?, ?)
                     ');
-                    $addFirstStmt->execute([$diaCodigo, $firstValidDate]);
+                    $addStmt->execute([$diaCodigo, $date]);
                 }
             }
         }
