@@ -452,7 +452,7 @@ const PatientForm = ({ patientCode, open, onOpenChange, onUpdated }: PatientForm
               <Input
                   id="avaliationDay"
                   required
-                  type="date"
+                  type="datetime-local"
                   value={formData.avaliationDay}
                   onChange={(e) => setFormData({ ...formData, avaliationDay: e.target.value })}
                 />

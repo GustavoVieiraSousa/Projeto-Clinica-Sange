@@ -104,6 +104,37 @@
         $filteredDataObject = $filtered;
     }
 
+    try{
+
+        $getAllTodaySessionsStmt = $conn->prepare("SELECT s.*, p.pacCodigo, p.pacNivelImportancia, p.pacNome FROM sessao AS s INNER JOIN paciente AS p ON s.sesPacCodigo = p.pacCodigo WHERE sesDtAvaliacao >= CURDATE() AND sesDtAvaliacao < CURDATE() + INTERVAL 1 DAY;");
+        $getAllTodaySessionsStmt->execute();
+        $getAllTodaySessions = $getAllTodaySessionsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($getAllTodaySessions as $session) {
+            $superior = ($session['sesParteSuperior'] == 1) ? "Superior" : null;
+            $inferior = ($session['sesParteInferior'] == 1) ? "Inferior" : null;
+            $back     = ($session['sesColuna'] == 1) ? "Coluna" : null;
+
+            $dataObject = [
+                'consultaCode' => null,
+                'patientCode' => $session['pacCodigo'] ?? 0,
+                'patientLevel' => $session['pacNivelImportancia'] ?? 0,
+                'day' => $session['sesDtAvaliacao'] ? (new DateTime($session['sesDtAvaliacao']))->format('Y-m-h') : $currentDay,
+                'dayStatus' => null,
+                'time' => $session['sesDtAvaliacao'] ? (new DateTime($session['sesDtAvaliacao']))->format('H:i') : null,
+                'superior' => $superior,
+                'inferior' => $inferior,
+                'back' => $back,
+                'name' => $session['pacNome'] ?? null,
+            ];
+            $filteredDataObject[] = $dataObject;
+        }
+
+    }catch(PDOException $e){
+        echo json_encode(['status' => 'error', 'message' => 'Error in SELECT from diaHoraAgendado (getPatientData)']);
+        exit();
+    }
+
     //sort by hour from early to later
     usort($filteredDataObject, function($a, $b){
         $ta = isset($a['time']) ? strtotime($a['time']) : PHP_INT_MAX;

@@ -18,14 +18,7 @@ interface PatientDialogProps {
 
 
 const PatientDialog = ({ open, onOpenChange, onEdit, patientCode }: PatientDialogProps) => {
-<<<<<<< HEAD
-
-    console.log('TA vindo??????: ', patientCode);
-
-  
-=======
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
->>>>>>> bd2e7e5acef9bef5ca8a10de0c564d923a59eea7
   const [patientInfo, setPatientInfo] = useState<any[]>([]);
   const printRef = useRef<HTMLDivElement>(null);
 
