@@ -90,20 +90,6 @@
         exit();
     }
 
-    //filter by hour
-    if ($timeFilter !== 'all') {
-        $filtered = [];
-        foreach ($filteredDataObject as $fDO) {
-            $parts = explode(':', $fDO['time']);
-            $hour = intval($parts[0] ?? 0);
-
-            if ($timeFilter === 'morning' && $hour >= 6 && $hour < 12) $filtered[] = $fDO;
-            elseif ($timeFilter === 'afternoon' && $hour >= 12 && $hour < 18) $filtered[] = $fDO;
-            elseif ($timeFilter === 'night' && $hour >= 18 && $hour < 24) $filtered[] = $fDO;
-        }
-        $filteredDataObject = $filtered;
-    }
-
     try{
 
         $getAllTodaySessionsStmt = $conn->prepare("SELECT s.*, p.pacCodigo, p.pacNivelImportancia, p.pacNome FROM sessao AS s INNER JOIN paciente AS p ON s.sesPacCodigo = p.pacCodigo WHERE sesDtAvaliacao >= CURDATE() AND sesDtAvaliacao < CURDATE() + INTERVAL 1 DAY;");
@@ -133,6 +119,20 @@
     }catch(PDOException $e){
         echo json_encode(['status' => 'error', 'message' => 'Error in SELECT from diaHoraAgendado (getPatientData)']);
         exit();
+    }
+
+    //filter by hour
+    if ($timeFilter !== 'all') {
+        $filtered = [];
+        foreach ($filteredDataObject as $fDO) {
+            $parts = explode(':', $fDO['time']);
+            $hour = intval($parts[0] ?? 0);
+
+            if ($timeFilter === 'morning' && $hour >= 6 && $hour < 12) $filtered[] = $fDO;
+            elseif ($timeFilter === 'afternoon' && $hour >= 12 && $hour < 18) $filtered[] = $fDO;
+            elseif ($timeFilter === 'night' && $hour >= 18 && $hour < 24) $filtered[] = $fDO;
+        }
+        $filteredDataObject = $filtered;
     }
 
     //sort by hour from early to later
