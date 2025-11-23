@@ -290,7 +290,7 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Fumante:</Label>
           
             <CheckboxLabel>
-              <Input type="text" defaultValue={patient?.patientSmoker == 0 ? "Não" : patient?.patientSmoker == 1 ? "Sim" : "-"} />
+              <Input type="text" defaultValue={patient?.patientSmoker === 0 ? "Não" : patient?.patientSmoker === 1 ? "Sim" : "-"} />
             </CheckboxLabel>
             
         </Row>
@@ -414,10 +414,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Dor a palpação:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="dorPalpacao1" value="sim" defaultChecked={patient?.examPainPalpation == 1} /> Sim
+              <Checkbox type="radio" name="dorPalpacao1" value="sim" checked={patient?.examPainPalpation === 1} /> Sim
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="dorPalpacao2" value="nao" defaultChecked={patient?.examPainPalpation == 0} /> Não
+              <Checkbox type="radio" name="dorPalpacao2" value="nao" checked={patient?.examPainPalpation === 0} /> Não
             </CheckboxLabel>
            
           </CheckboxGroup>
@@ -427,10 +427,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Edema:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="edema" value="sim" defaultChecked={patient?.examEdema == 1} /> Sim
+              <Checkbox type="radio" name="edema" value="sim" checked={patient?.examEdema == 1} /> Sim
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="edema" value="nao" defaultChecked={patient?.examEdema == 0} /> Não
+              <Checkbox type="radio" name="edema" value="nao" checked={patient?.examEdema == 0} /> Não
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examEdemaDesc} />
@@ -445,10 +445,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>ADM:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="adm" value="normal" defaultChecked={patient?.examADM === 0} /> Normal
+              <Checkbox type="radio" name="adm" value="normal" checked={patient?.examADM === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="adm" value="diminuida" defaultChecked={patient?.examADM === 1} /> Diminuída
+              <Checkbox type="radio" name="adm" value="diminuida" checked={patient?.examADM === 1} /> Diminuída
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examADMDesc} />
@@ -457,10 +457,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>FM:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="fm" value="normal" defaultChecked={patient?.examFM == 0} /> Normal
+              <Checkbox type="radio" name="fm" value="normal" checked={patient?.examFM === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="fm" value="diminuida" defaultChecked={patient?.examFM == 1} /> Diminuída
+              <Checkbox type="radio" name="fm" value="diminuida" checked={patient?.examFM === 1} /> Diminuída
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examFMDesc} />
@@ -469,13 +469,13 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Tônus Muscular:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="normal" defaultChecked={patient?.examMuscularTonus == 0} /> Normal
+              <Checkbox type="radio" name="tonus" value="normal" checked={patient?.examMuscularTonus === 0} /> Normal
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="hipotonico" defaultChecked={patient?.examMuscularTonus == 1} /> Hipotônio
+              <Checkbox type="radio" name="tonus" value="hipotonico" checked={patient?.examMuscularTonus === 1} /> Hipotônio
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="tonus" value="hipertonico" defaultChecked={patient?.examMuscularTonus == 2} /> Hipertônico
+              <Checkbox type="radio" name="tonus" value="hipertonico" checked={patient?.examMuscularTonus === 2} /> Hipertônico
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examMuscularTonusDesc} />
@@ -484,13 +484,13 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Movimento:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="ativo" defaultChecked={patient?.examMovement == 0} /> Ativo
+              <Checkbox type="radio" name="movimento" value="ativo" checked={patient?.examMovement === 0} /> Ativo
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="passivo" defaultChecked={patient?.examMovement == 1} /> Passivo
+              <Checkbox type="radio" name="movimento" value="passivo" checked={patient?.examMovement === 1} /> Passivo
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="movimento" value="ativo-assistido" defaultChecked={patient?.examMovement == 2} /> Ativo-Assistido
+              <Checkbox type="radio" name="movimento" value="ativo-assistido" checked={patient?.examMovement === 2} /> Ativo-Assistido
             </CheckboxLabel>
           </CheckboxGroup>
         </Row>
@@ -498,10 +498,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Faz uso de órtese:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="ortese" value="sim" defaultChecked={patient?.examOrtese == 1} /> Sim
+              <Checkbox type="radio" name="ortese" value="sim" checked={patient?.examOrtese === 1} /> Sim
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="ortese" value="nao" defaultChecked={patient?.examOrtese == 0}/> Não
+              <Checkbox type="radio" name="ortese" value="nao" checked={patient?.examOrtese === 0}/> Não
             </CheckboxLabel>
           </CheckboxGroup>
           <Field>
@@ -513,10 +513,10 @@ const FichaAvaliacaoPrint = forwardRef<HTMLDivElement, Props>(({ patient}, ref) 
           <Label>Desvios Posturais:</Label>
           <CheckboxGroup>
             <CheckboxLabel>
-              <Checkbox type="radio" name="desvios" value="sim" defaultChecked={patient?.examPosturalDeviations == 1} /> Sim
+              <Checkbox type="radio" name="desvios" value="sim" checked={patient?.examPosturalDeviations === 1} /> Sim
             </CheckboxLabel>
             <CheckboxLabel>
-              <Checkbox type="radio" name="desvios" value="nao" defaultChecked={patient?.examPosturalDeviations == 0} /> Não
+              <Checkbox type="radio" name="desvios" value="nao" checked={patient?.examPosturalDeviations === 0} /> Não
             </CheckboxLabel>
           </CheckboxGroup>
           <Input type="text" defaultValue={patient?.examPosturalDeviationsDesc} />
